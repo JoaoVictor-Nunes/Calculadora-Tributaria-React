@@ -11,6 +11,7 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import CalculoPF from "./Pages/CalculoPF";
 import CalculoPJ from "./Pages/CalculoPJ";
+import Explicacao from "./Pages/Explicacao";
 
 function App() {
   return (
@@ -43,6 +44,14 @@ function App() {
                   Calcular Tributação de Pessoa Jurídica
                 </Link>
               </li>
+              <li>
+                <Link
+                to="/Explicacao"
+                className="hover:text-blue-200 transition-colors duration-200 font-medium"
+                >
+                  Explicacoes necessarias
+                </Link>
+              </li>
             </ul>
           </div>
         </nav>
@@ -53,6 +62,7 @@ function App() {
           <Route path="/CalculoPessoaJuridica" element={<CalculoPJ />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Register" element={<Register />} />
+          <Route path="/Explicacao" element={<Explicacao />} />
           <Route path="*" element={<h1>ERROR 404: PAGE NOT FOUND</h1>} />
         </Routes>
       </div>

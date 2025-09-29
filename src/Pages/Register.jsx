@@ -47,7 +47,7 @@ const Register = () => {
         <input
           type="password"
           {...register("password", { required: "Senha obrigatória" })}
-          className="border rounded w-full px-2 py-1"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
         />
         {errors.password && <p className="text-red-500">{errors.password.message}</p>}
       </div>
@@ -61,7 +61,7 @@ const Register = () => {
             validate: (value) =>
               value === password || "As senhas não coincidem!"
           })}
-          className="border rounded w-full px-2 py-1"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md"
         />
         {errors.confirmPassword && (
           <p className="text-red-500">{errors.confirmPassword.message}</p>
