@@ -13,10 +13,15 @@ const Topbar = () => {
           </Link>
         </li>
         <li>
-        <Link to="/CalculoPJ" className="hover:text-blue-200 transition-colors duration-200 font-medium hover:underline">Calculo para Pessoa Juridica</Link>
+        <Link to="/CalculoPJ" 
+        className="hover:text-blue-200 transition-colors duration-200 font-medium hover:underline">
+          Calculo para Pessoa Juridica
+          </Link>
         </li>
         <li>
-        <Link to="/Explicacao" className="hover:text-blue-200 transition-colors duration-200 font-medium hover:underline">Explicacoes necessarias</Link>
+        <Link to="/Explicacao" 
+        className="hover:text-blue-200 transition-colors duration-200 font-medium hover:underline">Explicacoes necessarias
+        </Link>
         </li>
       </ul>
       </div>
