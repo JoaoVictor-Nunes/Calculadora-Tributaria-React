@@ -1,6 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import EmailInput from "../Components/EmailInput";
+import PasswordInput from "../Components/PasswordInput";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 const Register = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -13,92 +17,87 @@ const Register = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-md">
+       <div className="flex items-center justify-center min-h-screen">
+
+    <div className="container mx-auto px-4 py-8 max-w-md bg-white rounded-lg shadow-xl">
       <h1 className="text-3xl font-bold text-center mb-8">Registrar</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
         <div>
-          <label htmlFor="name" className="block text-sm font-medium mb-2">
-            Nome:
-          </label>
-          <input
-            id="name"
-            type="text"
-            {...register("name", { required: "Nome é obrigatório" })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
+          <TextField
+          label="Nome"
+          variant="outlined"
+          sx={{ 
+            width: '100%', 
+          }}
+          {...register("name", { required: "Nome é obrigatório" })}
+          >Nome:</TextField>
           {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
         </div>
 
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-2">
-            Email:
-          </label>
-          <input
-            id="email"
-            type="email"
-            {...register("email", {
-              required: "Email e obrigatorio", pattern: {
-                value: /^\S+@\S+$/i, message: "Formato de email invalido"
-              }
-            })}
-             className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-        </div>
+        <EmailInput
+          register={register}
+          errors={errors}
+        />
+
+        <PasswordInput
+          register={register}
+          errors={errors}
+        />
 
         <div>
-          <label>Senha:</label>
-          <input
-            type="password"
-            {...register("password", {
-              required: "Senha é obrigatória!",
-              minLength: {
-                value: 6,
-                message: "Senha deve ter no mínimo 6 caracteres"
-              },
-              pattern: {
-                value: /^(?=.*[0-9]).*$/,
-                message: "Sua senha deve conter pelo menos um número"
-              }
-            })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-          {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-        </div>
-
-        <div>
-          <label>Confirmar Senha:</label>
-          <input
+          <TextField
+          label="Confirme a Senha"
+          variant="outlined"
+          sx={{ width: '100%' }}
             type="password"
             {...register("confirmPassword", {
               required: "Confirmação obrigatória",
               validate: (value) =>
                 value === password || "As senhas não coincidem!"
             })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
+          >Confirme a Senha:</TextField>
           {errors.confirmPassword && (
             <p className="text-red-500">{errors.confirmPassword.message}</p>
           )}
         </div>
 
-        <button
+        <Button
+          variant="contained"
           type="submit"
-
-          className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+          sx={{
+            width: "100%",
+            bgcolor: "#3b82f6",
+            color: "white",
+            py: 1.5,
+            borderRadius: "8px",
+            "&:hover": {
+              bgcolor: "#2563eb",
+            },
+          }}
         >
           Registrar
-        </button>
+        </Button>
 
-        <button
-          type="button"
+        <Button
+          variant="contained"
           onClick={() => navigate("/")}
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+          sx={{
+            width: "100%",
+            bgcolor: "#3b82f6",
+            color: "white",
+            py: 1.5,
+            mt: 2,
+            borderRadius: "8px",
+            "&:hover": {
+              bgcolor: "#2563eb",
+            },
+          }}
         >
           Já possui uma conta?
-        </button>
+        </Button>
       </form>
+    </div>
     </div>
   );
 };
