@@ -19,15 +19,13 @@ function App() {
       <div className="app">
 
         <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route element={<TopbarLayout />}>
+            <Route path="/Home" element={<Home />} />
             <Route path="/CalculoPF" element={<CalculoPF />} />
             <Route path="/CalculoPJ" element={<CalculoPJ />} />
             <Route path="/Explicacao" element={<Explicacao />} />
-            <Route path="/Home" element={<Home />} /> 
-          </Route>
-          <Route>
-            <Route path="/" element={<Login />} />
-            <Route path="/register" element={<Register />} />
           </Route>
         </Routes>
       </div>

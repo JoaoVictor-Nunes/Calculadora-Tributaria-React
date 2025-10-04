@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import ModalCalculoPF from "../../Components/Modals/ModalCalculoPF"
+import ModalCalculoPJ from "../../Components/Modals/ModalCalculoPJ"
+import ModalExplicacoes from "../../Components/Modals/ModalExplicacoes"
 
 const Home = () => {
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-8">
@@ -12,11 +16,9 @@ const Home = () => {
         </p>
         <div className="space-y-4">
           <p>Escolha uma das opções no menu acima para começar:</p>
-          <ul className="list-disc list-inside space-y-2 max-w-md mx-auto">
-            <li>Calcular Tributação de Pessoa Física</li>
-            <li>Calcular Tributação de Pessoa Jurídica</li>
-            <li>Entender como eh feita a Tributação</li>
-          </ul>
+          <ModalCalculoPF />
+          <ModalCalculoPJ />
+          <ModalExplicacoes />
         </div>
       </div>
     </div>
