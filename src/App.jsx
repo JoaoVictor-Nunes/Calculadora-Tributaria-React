@@ -5,12 +5,12 @@ import {
   Routes,
 } from "react-router-dom";
 
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
+import Home from "./Pages/Página Inicial/Home";
+import Login from "./Pages/Login/Login";
+import Register from "./Pages/Register/Register";
 import CalculoPF from "./Pages/CalculoPF";
 import CalculoPJ from "./Pages/CalculoPJ";
-import Explicacao from "./Pages/Explicacao";
+import Explicacao from "./Pages/Explicação/Explicacao";
 import TopbarLayout from "./Layout/TopbarLayout";
 
 function App() {

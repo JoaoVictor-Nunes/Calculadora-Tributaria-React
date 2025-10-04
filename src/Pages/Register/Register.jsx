@@ -1,10 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import EmailInput from "../Components/EmailInput";
-import PasswordInput from "../Components/PasswordInput";
+import EmailInput from "../../Components/EmailInput";
+import PasswordInput from "../../Components/PasswordInput";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import "./RegisterStyles.css";
 
 const Register = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -63,36 +64,15 @@ const Register = () => {
         </div>
 
         <Button
-          variant="contained"
           type="submit"
-          sx={{
-            width: "100%",
-            bgcolor: "#3b82f6",
-            color: "white",
-            py: 1.5,
-            borderRadius: "8px",
-            "&:hover": {
-              bgcolor: "#2563eb",
-            },
-          }}
+          className="myButton"
         >
           Registrar
         </Button>
 
         <Button
-          variant="contained"
           onClick={() => navigate("/")}
-          sx={{
-            width: "100%",
-            bgcolor: "#3b82f6",
-            color: "white",
-            py: 1.5,
-            mt: 2,
-            borderRadius: "8px",
-            "&:hover": {
-              bgcolor: "#2563eb",
-            },
-          }}
+          className="myButton"
         >
           Já possui uma conta?
         </Button>
