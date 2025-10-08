@@ -1,10 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import EmailInput from "../../Components/EmailInput";
-import PasswordInput from "../../Components/PasswordInput";
-import Button from "@mui/material/Button";
+import EmailInput from "../../Components/Inputs/EmailInput";
+import PasswordInput from "../../Components/Inputs/PasswordInput";
 import TextField from "@mui/material/TextField";
+import ButtonUsage from "../../Components/ButtonUsage";
 import "./RegisterStyles.css";
 
 const Register = () => {
@@ -63,19 +63,17 @@ const Register = () => {
           )}
         </div>
 
-        <Button
+        <ButtonUsage
           type="submit"
-          className="myButton"
         >
           Registrar
-        </Button>
+        </ButtonUsage>
 
-        <Button
+        <ButtonUsage
           onClick={() => navigate("/")}
-          className="myButton"
         >
           Já possui uma conta?
-        </Button>
+        </ButtonUsage>
       </form>
     </div>
     </div>

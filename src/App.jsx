@@ -12,6 +12,7 @@ import CalculoPF from "./Pages/CalculoPF";
 import CalculoPJ from "./Pages/CalculoPJ";
 import Explicacao from "./Pages/Explicação/Explicacao";
 import TopbarLayout from "./Layout/TopbarLayout";
+import Teste from "./Components/TESTE";
 
 function App() {
   return (
@@ -22,10 +23,11 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route element={<TopbarLayout />}>
-            <Route path="/Home" element={<Home />} />
-            <Route path="/CalculoPF" element={<CalculoPF />} />
-            <Route path="/CalculoPJ" element={<CalculoPJ />} />
-            <Route path="/Explicacao" element={<Explicacao />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/calculopf" element={<CalculoPF />} />
+            <Route path="/calculopj" element={<CalculoPJ />} />
+            <Route path="/explicacao" element={<Explicacao />} />
+            <Route path="/Teste" element = {<Teste />} />
           </Route>
         </Routes>
       </div>

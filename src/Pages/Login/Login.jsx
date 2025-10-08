@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import PasswordInput from "../../Components/PasswordInput";
-import EmailInput from "../../Components/EmailInput";
-import Button from "@mui/material/Button";
-import "./LoginStyles.css";
+import PasswordInput from "../../Components/Inputs/PasswordInput";
+import EmailInput from "../../Components/Inputs/EmailInput";
+import ButtonUsage from "../../Components/ButtonUsage";
 
 const Login = () => {
 
@@ -30,18 +29,16 @@ const Login = () => {
             register={register}
             errors={errors}
           />
-          <Button
+          <ButtonUsage
             type="submit"
-            className="myButton"
           >
             Entrar
-          </Button>
-          <Button
+          </ButtonUsage>
+          <ButtonUsage
             onClick={() => navigate("/Register")}
-            className="myButton"
           >
             Nao possui uma conta?
-          </Button>
+          </ButtonUsage>
         </form>
       </div>
     </div>
