@@ -8,7 +8,7 @@ const ButtonUsage = ({ children, ...props }) => {
             {...props}
             sx={{
                 width: "100%",
-                backgroundColor: "#fff",
+                backgroundColor: "#3d9ad4ff",
                 color: "black",
                 paddingTop: "0.375rem",
                 paddingBottom: "0.375rem",
@@ -16,7 +16,8 @@ const ButtonUsage = ({ children, ...props }) => {
                 borderRadius: "8px",
                 transition: "background-color 0.2s ease-in-out",
                 "&:hover": {
-                    backgroundColor: "#000",
+                    backgroundColor: "#276f9bff",
+                    color: "white",
                 },
             }}
         >

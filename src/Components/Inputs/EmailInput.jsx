@@ -22,5 +22,4 @@ const EmailInput = ({ register, errors }) => {
     </div>
   );
 };
-
 export default EmailInput;
