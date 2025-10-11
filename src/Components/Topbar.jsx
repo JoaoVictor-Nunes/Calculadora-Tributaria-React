@@ -16,6 +16,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
+import Logo from "../../Assets/CRVascodaGama.png";
 
 const drawerWidth = 240;
 const navItems = ["Home", "Explicacao", "Contatos", "Calculo"];
@@ -45,7 +46,7 @@ function Topbar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography variant="h6" sx={{ my: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
         NAF
       </Typography>
       <Divider />
@@ -90,10 +91,17 @@ function Topbar(props) {
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", sm: "flex" },
+              alignItems: "center",
+              gap: 3, // espaçamento entre logo e texto
+            }}
           >
+            <img src={Logo} alt="Vasco" style={{ height: 24 }} />
             NAF
           </Typography>
+
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) =>
               item === "Calculo" ? (

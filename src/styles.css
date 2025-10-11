@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+:root {
+  --body_background: #white;
+}
 /* Custom styles for the calculator app */
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;

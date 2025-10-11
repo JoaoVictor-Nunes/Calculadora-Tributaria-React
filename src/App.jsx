@@ -13,6 +13,9 @@ import CalculoPJ from "./Pages/CalculoPJ";
 import Explicacao from "./Pages/Explicação/Explicacao";
 import TopbarLayout from "./Layout/TopbarLayout";
 import Esqueci from "./Pages/Esqueci a senha/Esqueci";
+import Footer from "./Components/Footer";
+import Contatos from "./Pages/Contatos";
+import DarkMode from "./Components/Modes/Dark Mode/DarkMode";
 
 function App() {
   return (
@@ -29,9 +32,13 @@ function App() {
             <Route path="/calculopf" element={<CalculoPF />} />
             <Route path="/calculopj" element={<CalculoPJ />} />
             <Route path="/explicacao" element={<Explicacao />} />
+            <Route path="*" element={<p>ERROR 404</p>} />
+            <Route path="/contatos" element={<Contatos />} />
 
           </Route>
         </Routes>
+                < DarkMode />
+        <Footer />
       </div>
     </BrowserRouter>
   );
