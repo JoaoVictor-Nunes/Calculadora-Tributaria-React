@@ -1,26 +1,28 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
 import PasswordInput from "../../Components/Inputs/PasswordInput";
 import EmailInput from "../../Components/Inputs/EmailInput";
 import ButtonUsage from "../../Components/ButtonUsage";
-import Esqueci from "../Esqueci a senha/Esqueci";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
-import { tokens } from "../../Tema";
+import { tokens, ColorModeContext } from "../../Tema";
+import { IconButton } from "@mui/material";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 
 const Login = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const colorMode = useContext(ColorModeContext);
 
   const { register, handleSubmit, formState: { errors } } = useForm();
-
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    console.log('Dados enviados: ', data);
+    console.log("Dados enviados: ", data);
     navigate("/Home");
   };
 
@@ -34,12 +36,33 @@ const Login = () => {
         backgroundColor: colors.primary[500]
       }}
     >
+      {/* Botão de alternar tema */}
+      <IconButton 
+        onClick={colorMode.toggleColorMode} 
+        sx={{ 
+          position: "absolute", 
+          top: 16, 
+          right: 16, 
+          color: colors.grey[100],
+          backgroundColor: colors.primary[400],
+          '&:hover': {
+            backgroundColor: colors.primary[300],
+          }
+        }}
+      >
+        {theme.palette.mode === "dark" ? (
+          <LightModeOutlinedIcon />
+        ) : (
+          <DarkModeOutlinedIcon />
+        )}
+      </IconButton>
+
       <Box 
         sx={{ 
           container: true,
           mx: 'auto',
           px: 4,
-          py: 7,
+          py: 8,
           maxWidth: 'md',
           backgroundColor: colors.primary[100],
           borderRadius: 2,

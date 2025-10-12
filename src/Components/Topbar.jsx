@@ -54,23 +54,23 @@ function Topbar(props) {
   };
 
   const drawer = (
-    <Box 
-      onClick={handleDrawerToggle} 
-      sx={{ 
+    <Box
+      onClick={handleDrawerToggle}
+      sx={{
         textAlign: "center",
         backgroundColor: colors.primary[500],
         color: colors.grey[100],
-        height: '100%'
+        height: "100%",
       }}
     >
-      <Typography 
-        variant="h6" 
-        sx={{ 
-          my: 2, 
-          display: 'flex', 
-          alignItems: 'center', 
+      <Typography
+        variant="h6"
+        sx={{
+          my: 2,
+          display: "flex",
+          alignItems: "center",
           gap: 1,
-          color: colors.grey[100]
+          color: colors.grey[100],
         }}
       >
         NAF
@@ -80,12 +80,12 @@ function Topbar(props) {
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
             <ListItemButton
-              sx={{ 
+              sx={{
                 textAlign: "center",
                 color: colors.grey[100],
-                '&:hover': {
-                  backgroundColor: colors.primary[400]
-                }
+                "&:hover": {
+                  backgroundColor: colors.primary[400],
+                },
               }}
               onClick={() => {
                 if (item === "Calculo") {
@@ -95,10 +95,7 @@ function Topbar(props) {
                 }
               }}
             >
-              <ListItemText 
-                primary={item} 
-                sx={{ color: colors.grey[100] }}
-              />
+              <ListItemText primary={item} sx={{ color: colors.grey[100] }} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -112,11 +109,11 @@ function Topbar(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar 
+      <AppBar
         component="nav"
         sx={{
           backgroundColor: colors.primary[500],
-          color: colors.grey[100]
+          color: colors.grey[100],
         }}
       >
         <Toolbar>
@@ -142,9 +139,12 @@ function Topbar(props) {
             <img src={Logo} alt="Vasco" style={{ height: 24 }} />
             NAF
           </Typography>
-          <IconButton onClick={colorMode.toggleColorMode} sx={{ ml: 1, color: "#fff"}}>
+          <IconButton
+            onClick={colorMode.toggleColorMode}
+            sx={{ ml: 1, color: "#fff" }}
+          >
             {theme.palette.mode === "dark" ? (
-              < LightModeOutlinedIcon />
+              <LightModeOutlinedIcon />
             ) : (
               <DarkModeOutlinedIcon />
             )}
@@ -154,13 +154,27 @@ function Topbar(props) {
             {navItems.map((item) =>
               item === "Calculo" ? (
                 <React.Fragment key={item}>
-                  <Button 
-                    sx={{ 
-                      color: colors.grey[100],
-                      '&:hover': {
-                        backgroundColor: colors.primary[400]
-                      }
-                    }} 
+                  <Button
+                    sx={{
+                    position: "relative",
+                    color: colors.grey[100],
+                    "&:hover": {
+                      backgroundColor: colors.primary[400],
+                    },
+                    "&::after": {
+                      content: '""',
+                      position: "absolute",
+                      left: 0,
+                      bottom: 0,
+                      width: 0,
+                      height: "2px",
+                      backgroundColor: "#2563eb",
+                      transition: "width 0.3s ease",
+                    },
+                    "&:hover::after": {
+                      width: "100%",
+                    },
+                  }}
                     onClick={handleCalculoClick}
                   >
                     {item}
@@ -181,13 +195,27 @@ function Topbar(props) {
               ) : (
                 <Button
                   key={item}
-                  sx={{ 
-                    color: colors.grey[100],
-                    '&:hover': {
-                      backgroundColor: colors.primary[400]
-                    }
-                  }}
                   onClick={() => navigate(`/${item.toLowerCase()}`)}
+                  sx={{
+                    position: "relative",
+                    color: colors.grey[100],
+                    "&:hover": {
+                      backgroundColor: colors.primary[400],
+                    },
+                    "&::after": {
+                      content: '""',
+                      position: "absolute",
+                      left: 0,
+                      bottom: 0,
+                      width: 0,
+                      height: "2px",
+                      backgroundColor: "#2563eb", // azul
+                      transition: "width 0.3s ease",
+                    },
+                    "&:hover::after": {
+                      width: "100%",
+                    },
+                  }}
                 >
                   {item}
                 </Button>

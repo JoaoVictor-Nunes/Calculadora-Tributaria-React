@@ -1,155 +1,30 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { X, Menu } from "lucide-react";
 
-const drawerWidth = 240;
-const navItems = ["Home", "Explicacao", "Contatos", "Calculo"];
+const Teste = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
-function Teste(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const navigate = useNavigate();
-
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
-
-  const handleCalculoClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  const handleNavigate = (path) => {
-    handleCloseMenu();
-    navigate(path);
-  };
-
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        NAF
-      </Typography>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton
-              sx={{ textAlign: "center" }}
-              onClick={() => {
-                if (item === "Calculo") {
-                  handleCalculoClick();
-                } else {
-                  navigate(`/${item.toLowerCase()}`);
-                }
-              }}
-            >
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const navItems = ["Home", "About", "Services", "Contact"];
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            NAF
-          </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) =>
-              item === "Calculo" ? (
-                <React.Fragment key={item}>
-                  <Button sx={{ color: "#fff" }} onClick={handleCalculoClick}>
-                    {item}
-                  </Button>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseMenu}
-                  >
-                    <MenuItem onClick={() => handleNavigate("/calculopf")}>
-                      Pessoa Física
-                    </MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/calculopj")}>
-                      Pessoa Jurídica
-                    </MenuItem>
-                  </Menu>
-                </React.Fragment>
-              ) : (
-                <Button
-                  key={item}
-                  sx={{ color: "#fff" }}
-                  onClick={() => navigate(`/${item.toLowerCase()}`)}
-                >
-                  {item}
-                </Button>
-              )
-            )}
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
-      <Box component="main" sx={{ p: 3 }}>
-        <Toolbar />
-      </Box>
-    </Box>
-  );
+    <nav className="bg-white/80 backdrop-blur-sm shadow-md fixed top-0 left-0 w-full z-50 transition-all duration-300">
+      <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+        <h1 className="text-2x1 font-extrabold text-blue-700 tracking-tight">Tes<span className="text-gray-800">te</span></h1>
+        <div className="hidden md:flex gap-8">
+          {navItems.map((item ) => (
+            <a 
+            key={item}
+            href="#"
+            className="text-gray-700 font-medium relative group transition"
+            >
+              {item}
+              <span className="absolute left-0 bottom-[-2px] w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full duration-300"></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </nav>
+  )
 }
-
 export default Teste;
