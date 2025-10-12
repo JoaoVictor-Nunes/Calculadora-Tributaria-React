@@ -3,8 +3,11 @@ import {
   BrowserRouter,
   Route,
   Routes,
+  Outlet,
 } from "react-router-dom";
 
+import { ColorModeContext, useMode } from "./Tema";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import Home from "./Pages/Página Inicial/Home";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
@@ -15,13 +18,18 @@ import TopbarLayout from "./Layout/TopbarLayout";
 import Esqueci from "./Pages/Esqueci a senha/Esqueci";
 import Footer from "./Components/Footer";
 import Contatos from "./Pages/Contatos";
-import DarkMode from "./Components/Modes/Dark Mode/DarkMode";
 
 function App() {
+  const [theme, colorMode] = useMode();
+
+
   return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+      <CssBaseline />
     <BrowserRouter>
       <div className="app">
-
+        <main className="content">
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
@@ -37,10 +45,13 @@ function App() {
 
           </Route>
         </Routes>
-                < DarkMode />
         <Footer />
+         </main>
       </div>
     </BrowserRouter>
+ 
+    </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 

@@ -8,8 +8,12 @@ import ButtonUsage from "../../Components/ButtonUsage";
 import Esqueci from "../Esqueci a senha/Esqueci";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
+import { tokens } from "../../Tema";
 
 const Login = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -21,10 +25,39 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="container mx-auto px-4 py-7 max-w-md bg-white rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold text-center mb-8">Login</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <Box 
+      sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        minHeight: '100vh',
+        backgroundColor: colors.primary[500]
+      }}
+    >
+      <Box 
+        sx={{ 
+          container: true,
+          mx: 'auto',
+          px: 4,
+          py: 7,
+          maxWidth: 'md',
+          backgroundColor: colors.primary[100],
+          borderRadius: 2,
+          boxShadow: 3
+        }}
+      >
+        <Typography 
+          variant="h1" 
+          sx={{ 
+            textAlign: 'center', 
+            mb: 8,
+            color: colors.grey[900],
+            fontWeight: 'bold'
+          }}
+        >
+          Login
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <EmailInput
             register={register}
             errors={errors}
@@ -43,20 +76,25 @@ const Login = () => {
           >
             Nao possui uma conta?
           </ButtonUsage>
-          <Box className="text-center mt-4">
-            <Typography variant="body2" color="textSecondary">
+          <Box sx={{ textAlign: 'center', mt: 4 }}>
+            <Typography variant="body2" sx={{ color: colors.grey[600] }}>
               <Link
                 onClick={() => navigate("/login/forgot")}
-                sx={{ cursor: "pointer" }}
+                sx={{ 
+                  cursor: "pointer",
+                  color: colors.blueAccent[500],
+                  '&:hover': {
+                    color: colors.blueAccent[600]
+                  }
+                }}
               >
                 Esqueceu a senha?
               </Link>
-
             </Typography>
           </Box>
-        </form>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

@@ -1,23 +1,35 @@
 import { Button } from "@mui/material";
 import React from "react";
+import { useTheme } from "@mui/material/styles";
+import { tokens } from "../Tema";
 
 const ButtonUsage = ({ children, ...props }) => {
-    return (
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
+    return (
         <Button
             {...props}
             sx={{
                 width: "100%",
-                backgroundColor: "#3d9ad4ff",
-                color: "black",
+                backgroundColor: colors.blueAccent[500],
+                color: colors.grey[100],
                 paddingTop: "0.375rem",
                 paddingBottom: "0.375rem",
                 marginTop: "0.5rem",
                 borderRadius: "8px",
-                transition: "background-color 0.2s ease-in-out",
+                transition: "all 0.2s ease-in-out",
+                fontWeight: 600,
+                textTransform: "none",
+                fontSize: "1rem",
                 "&:hover": {
-                    backgroundColor: "#276f9bff",
-                    color: "white",
+                    backgroundColor: colors.blueAccent[600],
+                    color: colors.grey[100],
+                    transform: "translateY(-1px)",
+                    boxShadow: `0 4px 8px ${colors.blueAccent[500]}40`,
+                },
+                "&:active": {
+                    transform: "translateY(0)",
                 },
             }}
         >

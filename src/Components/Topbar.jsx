@@ -1,10 +1,15 @@
 import * as React from "react";
+import { useContext } from "react";
+import { useTheme } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import { ColorModeContext, tokens } from "../Tema";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -22,6 +27,10 @@ const drawerWidth = 240;
 const navItems = ["Home", "Explicacao", "Contatos", "Calculo"];
 
 function Topbar(props) {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const colorMode = useContext(ColorModeContext);
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -45,8 +54,25 @@ function Topbar(props) {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+    <Box 
+      onClick={handleDrawerToggle} 
+      sx={{ 
+        textAlign: "center",
+        backgroundColor: colors.primary[500],
+        color: colors.grey[100],
+        height: '100%'
+      }}
+    >
+      <Typography 
+        variant="h6" 
+        sx={{ 
+          my: 2, 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 1,
+          color: colors.grey[100]
+        }}
+      >
         NAF
       </Typography>
       <Divider />
@@ -54,7 +80,13 @@ function Topbar(props) {
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
             <ListItemButton
-              sx={{ textAlign: "center" }}
+              sx={{ 
+                textAlign: "center",
+                color: colors.grey[100],
+                '&:hover': {
+                  backgroundColor: colors.primary[400]
+                }
+              }}
               onClick={() => {
                 if (item === "Calculo") {
                   handleCalculoClick();
@@ -63,7 +95,10 @@ function Topbar(props) {
                 }
               }}
             >
-              <ListItemText primary={item} />
+              <ListItemText 
+                primary={item} 
+                sx={{ color: colors.grey[100] }}
+              />
             </ListItemButton>
           </ListItem>
         ))}
@@ -77,7 +112,13 @@ function Topbar(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar 
+        component="nav"
+        sx={{
+          backgroundColor: colors.primary[500],
+          color: colors.grey[100]
+        }}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
@@ -95,18 +136,33 @@ function Topbar(props) {
               flexGrow: 1,
               display: { xs: "none", sm: "flex" },
               alignItems: "center",
-              gap: 3, // espaçamento entre logo e texto
+              gap: 3,
             }}
           >
             <img src={Logo} alt="Vasco" style={{ height: 24 }} />
             NAF
           </Typography>
+          <IconButton onClick={colorMode.toggleColorMode} sx={{ ml: 1, color: "#fff"}}>
+            {theme.palette.mode === "dark" ? (
+              < LightModeOutlinedIcon />
+            ) : (
+              <DarkModeOutlinedIcon />
+            )}
+          </IconButton>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) =>
               item === "Calculo" ? (
                 <React.Fragment key={item}>
-                  <Button sx={{ color: "#fff" }} onClick={handleCalculoClick}>
+                  <Button 
+                    sx={{ 
+                      color: colors.grey[100],
+                      '&:hover': {
+                        backgroundColor: colors.primary[400]
+                      }
+                    }} 
+                    onClick={handleCalculoClick}
+                  >
                     {item}
                   </Button>
                   <Menu
@@ -125,7 +181,12 @@ function Topbar(props) {
               ) : (
                 <Button
                   key={item}
-                  sx={{ color: "#fff" }}
+                  sx={{ 
+                    color: colors.grey[100],
+                    '&:hover': {
+                      backgroundColor: colors.primary[400]
+                    }
+                  }}
                   onClick={() => navigate(`/${item.toLowerCase()}`)}
                 >
                   {item}
@@ -147,6 +208,7 @@ function Topbar(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              backgroundColor: colors.primary[500],
             },
           }}
         >

@@ -5,9 +5,16 @@ import EmailInput from "../../Components/Inputs/EmailInput";
 import PasswordInput from "../../Components/Inputs/PasswordInput";
 import TextField from "@mui/material/TextField";
 import ButtonUsage from "../../Components/ButtonUsage";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
+import { tokens } from "../../Tema";
 import "./RegisterStyles.css";
 
 const Register = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const password = watch("password");
@@ -18,23 +25,73 @@ const Register = () => {
   };
 
   return (
-       <div className="flex items-center justify-center min-h-screen">
-
-    <div className="container mx-auto px-4 py-8 max-w-md bg-white rounded-lg shadow-xl">
-      <h1 className="text-3xl font-bold text-center mb-8">Registrar</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
-        <div>
-          <TextField
-          label="Nome"
-          variant="outlined"
+    <Box 
+      sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        minHeight: '100vh',
+        backgroundColor: colors.primary[500]
+      }}
+    >
+      <Box 
+        sx={{ 
+          container: true,
+          mx: 'auto',
+          px: 4,
+          py: 8,
+          maxWidth: 'md',
+          backgroundColor: colors.primary[100],
+          borderRadius: 2,
+          boxShadow: 3
+        }}
+      >
+        <Typography 
+          variant="h1" 
           sx={{ 
-            width: '100%', 
+            textAlign: 'center', 
+            mb: 8,
+            color: colors.grey[900],
+            fontWeight: 'bold'
           }}
-          {...register("name", { required: "Nome é obrigatório" })}
-          >Nome:</TextField>
-          {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
-        </div>
+        >
+          Registrar
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <TextField
+            label="Nome"
+            variant="outlined"
+            sx={{ 
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                backgroundColor: colors.primary[100],
+                '& fieldset': {
+                  borderColor: colors.grey[300],
+                },
+                '&:hover fieldset': {
+                  borderColor: colors.blueAccent[500],
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: colors.blueAccent[500],
+                },
+              },
+              '& .MuiInputLabel-root': {
+                color: colors.grey[600],
+                '&.Mui-focused': {
+                  color: colors.blueAccent[500],
+                },
+              },
+              '& .MuiOutlinedInput-input': {
+                color: colors.grey[900],
+              },
+            }}
+            {...register("name", { required: "Nome é obrigatório" })}
+          />
+          {errors.name && (
+            <p style={{ color: colors.redAccent[500], marginTop: '4px', fontSize: '0.875rem' }}>
+              {errors.name.message}
+            </p>
+          )}
 
         <EmailInput
           register={register}
@@ -46,37 +103,60 @@ const Register = () => {
           errors={errors}
         />
 
-        <div>
           <TextField
-          label="Confirme a Senha"
-          variant="outlined"
-          sx={{ width: '100%' }}
+            label="Confirme a Senha"
+            variant="outlined"
             type="password"
+            sx={{ 
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                backgroundColor: colors.primary[100],
+                '& fieldset': {
+                  borderColor: colors.grey[300],
+                },
+                '&:hover fieldset': {
+                  borderColor: colors.blueAccent[500],
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: colors.blueAccent[500],
+                },
+              },
+              '& .MuiInputLabel-root': {
+                color: colors.grey[600],
+                '&.Mui-focused': {
+                  color: colors.blueAccent[500],
+                },
+              },
+              '& .MuiOutlinedInput-input': {
+                color: colors.grey[900],
+              },
+            }}
             {...register("confirmPassword", {
               required: "Confirmação obrigatória",
               validate: (value) =>
                 value === password || "As senhas não coincidem!"
             })}
-          >Confirme a Senha:</TextField>
+          />
           {errors.confirmPassword && (
-            <p className="text-red-500">{errors.confirmPassword.message}</p>
+            <p style={{ color: colors.redAccent[500], marginTop: '4px', fontSize: '0.875rem' }}>
+              {errors.confirmPassword.message}
+            </p>
           )}
-        </div>
 
-        <ButtonUsage
-          type="submit"
-        >
-          Registrar
-        </ButtonUsage>
+          <ButtonUsage
+            type="submit"
+          >
+            Registrar
+          </ButtonUsage>
 
-        <ButtonUsage
-          onClick={() => navigate("/")}
-        >
-          Já possui uma conta?
-        </ButtonUsage>
-      </form>
-    </div>
-    </div>
+          <ButtonUsage
+            onClick={() => navigate("/")}
+          >
+            Já possui uma conta?
+          </ButtonUsage>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
