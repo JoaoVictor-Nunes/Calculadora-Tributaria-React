@@ -13,12 +13,13 @@ import { tokens, ColorModeContext } from "../../Tema";
 import { IconButton } from "@mui/material";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import Footer from "../../Components/Footer";
 
 const Register = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
-  
+
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const password = watch("password");
@@ -29,23 +30,24 @@ const Register = () => {
   };
 
   return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
         minHeight: '100vh',
-        backgroundColor: colors.primary[500]
       }}
     >
-            {/* Botão de alternar tema */}
-            <IconButton 
-        onClick={colorMode.toggleColorMode} 
-        sx={{ 
-          position: "absolute", 
-          top: 16, 
-          right: 16, 
-          color: colors.grey[100],
+      {/* Botão de alternar tema */}
+      <IconButton
+        onClick={colorMode.toggleColorMode}
+        sx={{
+          position: "absolute",
+          top: 16,
+          right: 16,
+          color: "#fff",
+          ml: 1,
           backgroundColor: colors.primary[400],
           '&:hover': {
             backgroundColor: colors.primary[300],
@@ -59,8 +61,8 @@ const Register = () => {
         )}
       </IconButton>
 
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           mx: 'auto',
           px: 4,
           py: 8,
@@ -70,10 +72,10 @@ const Register = () => {
           boxShadow: 3
         }}
       >
-        <Typography 
-          variant="h1" 
-          sx={{ 
-            textAlign: 'center', 
+        <Typography
+          variant="h1"
+          sx={{
+            textAlign: 'center',
             mb: 8,
             color: colors.grey[900],
             fontWeight: 'bold'
@@ -85,7 +87,7 @@ const Register = () => {
           <TextField
             label="Nome"
             variant="outlined"
-            sx={{ 
+            sx={{
               width: '100%',
               '& .MuiOutlinedInput-root': {
                 backgroundColor: colors.primary[100],
@@ -117,21 +119,21 @@ const Register = () => {
             </p>
           )}
 
-        <EmailInput
-          register={register}
-          errors={errors}
-        />
+          <EmailInput
+            register={register}
+            errors={errors}
+          />
 
-        <PasswordInput
-          register={register}
-          errors={errors}
-        />
+          <PasswordInput
+            register={register}
+            errors={errors}
+          />
 
           <TextField
             label="Confirme a Senha"
             variant="outlined"
             type="password"
-            sx={{ 
+            sx={{
               width: '100%',
               '& .MuiOutlinedInput-root': {
                 backgroundColor: colors.primary[100],
@@ -180,6 +182,8 @@ const Register = () => {
           </ButtonUsage>
         </Box>
       </Box>
+      <Footer />
+
     </Box>
   );
 };

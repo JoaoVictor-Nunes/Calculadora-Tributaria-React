@@ -9,11 +9,19 @@ import { useNavigate } from "react-router-dom";
 import ButtonUsage from "../../Components/ButtonUsage";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
+import { IconButton } from "@mui/material";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import { useContext } from "react";
+import { ColorModeContext } from "../../Tema";
+import Footer from "../../Components/Footer";
 
 const Esqueci = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+  const colorMode = useContext(ColorModeContext);
+
+
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [alertVisible, setAlertVisible] = React.useState(false);
 
@@ -31,13 +39,33 @@ const Esqueci = () => {
     <Box
       sx={{
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         minHeight: "100vh",
-        backgroundColor: colors.primary[500],
         padding: 4,
       }}
     >
+      <IconButton
+        onClick={colorMode.toggleColorMode}
+        sx={{
+          position: "absolute",
+          top: 16,
+          right: 16,
+          ml: 1,
+          color: "#fff",
+          backgroundColor: colors.primary[400],
+          '&:hover': {
+            backgroundColor: colors.primary[300],
+          }
+        }}
+      >
+        {theme.palette.mode === "dark" ? (
+          <LightModeOutlinedIcon />
+        ) : (
+          <DarkModeOutlinedIcon />
+        )}
+      </IconButton>
       <Box
         sx={{
           mx: "auto",
@@ -49,10 +77,10 @@ const Esqueci = () => {
           boxShadow: 3,
         }}
       >
-        <Typography 
-          variant="h1" 
-          sx={{ 
-            textAlign: 'center', 
+        <Typography
+          variant="h1"
+          sx={{
+            textAlign: 'center',
             mb: 8,
             color: colors.grey[900],
             fontWeight: 'bold'
@@ -68,12 +96,12 @@ const Esqueci = () => {
             Enviar link
           </ButtonUsage>
         </Box>
-        
+
         <Box sx={{ textAlign: 'center', mt: 4 }}>
           <Typography variant="body2" sx={{ color: colors.grey[600] }}>
             <Link
               onClick={() => navigate("/login")}
-              sx={{ 
+              sx={{
                 cursor: "pointer",
                 color: colors.blueAccent[500],
                 '&:hover': {
@@ -100,8 +128,8 @@ const Esqueci = () => {
           }}
         >
           <Collapse in={alertVisible}>
-            <Alert 
-              severity="success" 
+            <Alert
+              severity="success"
               onClose={() => setAlertVisible(false)}
               sx={{
                 backgroundColor: colors.greenAccent[100],
@@ -116,6 +144,8 @@ const Esqueci = () => {
           </Collapse>
         </Box>
       )}
+      <Footer />
+
     </Box>
   );
 };

@@ -44,8 +44,9 @@ function App() {
             <Route path="/contatos" element={<Contatos />} />
 
           </Route>
+          
         </Routes>
-        <Footer />
+
          </main>
       </div>
     </BrowserRouter>

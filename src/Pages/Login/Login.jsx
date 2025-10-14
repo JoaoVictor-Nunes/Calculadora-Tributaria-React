@@ -12,6 +12,7 @@ import { tokens, ColorModeContext } from "../../Tema";
 import { IconButton } from "@mui/material";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import Footer from "../../Components/Footer";
 
 const Login = () => {
   const theme = useTheme();
@@ -30,10 +31,10 @@ const Login = () => {
     <Box 
       sx={{ 
         display: 'flex', 
+        flexDirection: 'column',
         alignItems: 'center', 
         justifyContent: 'center', 
         minHeight: '100vh',
-        backgroundColor: colors.primary[500]
       }}
     >
       {/* Botão de alternar tema */}
@@ -43,7 +44,8 @@ const Login = () => {
           position: "absolute", 
           top: 16, 
           right: 16, 
-          color: colors.grey[100],
+          ml: 1, 
+          color: "#fff",
           backgroundColor: colors.primary[400],
           '&:hover': {
             backgroundColor: colors.primary[300],
@@ -59,10 +61,9 @@ const Login = () => {
 
       <Box 
         sx={{ 
-          container: true,
           mx: 'auto',
           px: 4,
-          py: 8,
+          py: 7,
           maxWidth: 'md',
           backgroundColor: colors.primary[100],
           borderRadius: 2,
@@ -117,6 +118,8 @@ const Login = () => {
           </Box>
         </Box>
       </Box>
+              <Footer />
+
     </Box>
   );
 };

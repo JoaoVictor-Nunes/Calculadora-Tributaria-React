@@ -26,6 +26,8 @@ const ModalExplicacoes = () => {
         boxShadow: 24,
         p: 4,
         borderRadius: 2,
+        maxHeight: '80vh',
+        overflowY: 'auto',
     }
 
     const handleOpen = () => setOpen(true);
