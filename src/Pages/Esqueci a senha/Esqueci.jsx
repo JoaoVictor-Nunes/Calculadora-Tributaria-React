@@ -115,35 +115,35 @@ const Esqueci = () => {
         </Box>
       </Box>
 
-      {alertVisible && (
-        <Box
-          sx={{
-            display: "block",
-            justifyContent: "center",
-            width: "100%",
-            maxWidth: 400,
-            mx: "auto",
-            mt: 2,
-            mb: 2,
-          }}
-        >
-          <Collapse in={alertVisible}>
-            <Alert
-              severity="success"
-              onClose={() => setAlertVisible(false)}
-              sx={{
-                backgroundColor: colors.greenAccent[100],
-                color: colors.greenAccent[900],
-                '& .MuiAlert-icon': {
-                  color: colors.greenAccent[500],
-                },
-              }}
-            >
-              Link de recuperação enviado!
-            </Alert>
-          </Collapse>
-        </Box>
-      )}
+      <Box
+  sx={{
+    display: "block",
+    justifyContent: "center",
+    width: "100%",
+    maxWidth: 400,
+    mx: "auto",
+    mt: 2,
+    mb: 2,
+  }}
+>
+  <Collapse in={alertVisible}>
+    <Alert
+      severity="success"
+      onClose={() => setAlertVisible(false)}
+      sx={{
+        backgroundColor: colors.greenAccent[100],
+        color: colors.greenAccent[900],
+        '& .MuiAlert-icon': {
+          color: colors.greenAccent[500],
+        },
+      }}
+    >
+      Link de recuperação enviado!
+    </Alert>
+  </Collapse>
+</Box>
+
+      
       <Footer />
 
     </Box>

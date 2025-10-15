@@ -2,11 +2,13 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
+import Typography from "@mui/material/Typography";
 
 const PasswordInput = ({ register, errors }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
+    const errorMessage = errors.password ? errors.password.message : "Mensagem de erro";
     return (
         <div>
             <div>
@@ -50,11 +52,23 @@ const PasswordInput = ({ register, errors }) => {
                         }
                     })}
                 />
-                {errors.password && (
+                {/* {errors.password && (
                     <p style={{ color: colors.redAccent[500], marginTop: '4px', fontSize: '0.875rem' }}>
                         {errors.password.message}
                     </p>
-                )}
+                )} */}
+                <Typography
+                    variant="caption"
+                    sx={{
+                        minHeight: "20px",
+                        color: errors.password ? colors.redAccent[500] : "transparent",
+                        visibility: errors.email ? "visible" : "hidden",
+                        marginTop: "4px",
+                        display: "block",
+                    }}
+                >
+                    {errorMessage}
+                </Typography>
             </div>
         </div>
     );

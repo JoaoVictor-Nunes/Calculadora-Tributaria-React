@@ -2,10 +2,14 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
+import Typography from "@mui/material/Typography";
 
 const EmailInput = ({ register, errors }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  // Mensagem padrão invisível para manter o espaço
+  const errorMessage = errors.email ? errors.email.message : "Mensagem de erro";
 
   return (
     <div>
@@ -44,11 +48,18 @@ const EmailInput = ({ register, errors }) => {
           },
         })}
       />
-      {errors.email && (
-        <p style={{ color: colors.redAccent[500], marginTop: '4px', fontSize: '0.875rem' }}>
-          {errors.email.message}
-        </p>
-      )}
+      <Typography
+        variant="caption"
+        sx={{
+          minHeight: "20px",
+          color: errors.email ? colors.redAccent[500] : "transparent",
+          visibility: errors.email ? "visible" : "hidden",
+          marginTop: "4px",
+          display: "block",
+        }}
+      >
+        {errorMessage}
+      </Typography>
     </div>
   );
 };

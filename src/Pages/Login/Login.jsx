@@ -9,9 +9,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 import { tokens, ColorModeContext } from "../../Tema";
-import { IconButton } from "@mui/material";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import { IconButton } from "@mui/material";
 import Footer from "../../Components/Footer";
 
 const Login = () => {
@@ -19,7 +19,11 @@ const Login = () => {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
@@ -28,28 +32,28 @@ const Login = () => {
   };
 
   return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        flexDirection: 'column',
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        minHeight: '100vh',
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
       }}
     >
       {/* Botão de alternar tema */}
-      <IconButton 
-        onClick={colorMode.toggleColorMode} 
-        sx={{ 
-          position: "absolute", 
-          top: 16, 
-          right: 16, 
-          ml: 1, 
+      <IconButton
+        onClick={colorMode.toggleColorMode}
+        sx={{
+          position: "absolute",
+          top: 16,
+          right: 16,
+          ml: 1,
           color: "#fff",
           backgroundColor: colors.primary[400],
-          '&:hover': {
+          "&:hover": {
             backgroundColor: colors.primary[300],
-          }
+          },
         }}
       >
         {theme.palette.mode === "dark" ? (
@@ -59,57 +63,49 @@ const Login = () => {
         )}
       </IconButton>
 
-      <Box 
-        sx={{ 
-          mx: 'auto',
+      <Box
+        sx={{
+          mx: "auto",
           px: 4,
           py: 7,
-          maxWidth: 'md',
+          maxWidth: "md",
           backgroundColor: colors.primary[100],
           borderRadius: 2,
-          boxShadow: 3
+          boxShadow: 3,
         }}
       >
-        <Typography 
-          variant="h1" 
-          sx={{ 
-            textAlign: 'center', 
+        <Typography
+          variant="h1"
+          sx={{
+            textAlign: "center",
             mb: 8,
             color: colors.grey[900],
-            fontWeight: 'bold'
+            fontWeight: "bold",
           }}
         >
           Login
         </Typography>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <EmailInput
-            register={register}
-            errors={errors}
-          />
-          <PasswordInput
-            register={register}
-            errors={errors}
-          />
-          <ButtonUsage
-            type="submit"
-          >
-            Entrar
-          </ButtonUsage>
-          <ButtonUsage
-            onClick={() => navigate("/Register")}
-          >
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+        >
+          <EmailInput register={register} errors={errors} />
+          <PasswordInput register={register} errors={errors} />
+          <ButtonUsage type="submit">Entrar</ButtonUsage>
+          <ButtonUsage onClick={() => navigate("/Register")}>
             Nao possui uma conta?
           </ButtonUsage>
-          <Box sx={{ textAlign: 'center', mt: 4 }}>
+          <Box sx={{ textAlign: "center", mt: 4 }}>
             <Typography variant="body2" sx={{ color: colors.grey[600] }}>
               <Link
                 onClick={() => navigate("/login/forgot")}
-                sx={{ 
+                sx={{
                   cursor: "pointer",
                   color: colors.blueAccent[500],
-                  '&:hover': {
-                    color: colors.blueAccent[600]
-                  }
+                  "&:hover": {
+                    color: colors.blueAccent[600],
+                  },
                 }}
               >
                 Esqueceu a senha?
@@ -118,8 +114,7 @@ const Login = () => {
           </Box>
         </Box>
       </Box>
-              <Footer />
-
+      <Footer />
     </Box>
   );
 };

@@ -19,10 +19,14 @@ const Register = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
-
+  
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const password = watch("password");
+
+  const errorName = errors.name ? errors.name.message : "Mensagem de erro";
+  const errorConfirmPassword = errors.confirmPassword ? errors.confirmPassword.message : "Mensagem de erro";
+
 
   const onSubmit = (data) => {
     console.log("Dados enviados: ", data);
@@ -113,11 +117,18 @@ const Register = () => {
             }}
             {...register("name", { required: "Nome é obrigatório" })}
           />
-          {errors.name && (
-            <p style={{ color: colors.redAccent[500], marginTop: '4px', fontSize: '0.875rem' }}>
-              {errors.name.message}
-            </p>
-          )}
+          <Typography
+            variant="caption"
+            sx={{
+              minHeight: "20px",
+              color: errors.name ? colors.redAccent[500] : "transparent",
+              visibility: errors.name ? "visible" : "hidden",
+              marginTop: "1px",
+              display: "block",
+            }}
+          >
+            {errorName}
+          </Typography>
 
           <EmailInput
             register={register}
@@ -163,11 +174,18 @@ const Register = () => {
                 value === password || "As senhas não coincidem!"
             })}
           />
-          {errors.confirmPassword && (
-            <p style={{ color: colors.redAccent[500], marginTop: '4px', fontSize: '0.875rem' }}>
-              {errors.confirmPassword.message}
-            </p>
-          )}
+          <Typography
+            variant="caption"
+            sx={{
+              minHeight: "10px",
+              color: errors.confirmPassword ? colors.redAccent[500] : "transparent",
+              visibility: errors.confirmPassword ? "visible" : "hidden",
+              marginTop: "1px",
+              display: "block",
+            }}
+          >
+            {errorConfirmPassword}
+          </Typography>
 
           <ButtonUsage
             type="submit"
