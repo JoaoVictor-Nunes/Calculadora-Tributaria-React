@@ -12,8 +12,8 @@ const ButtonUsage = ({ children, ...props }) => {
             {...props}
             sx={{
                 width: "100%",
-                backgroundColor: colors.blueAccent[500],
-                color: colors.grey[100],
+                backgroundColor: colors.redAccent[500],
+                color: colors.grey[900],
                 paddingTop: "0.375rem",
                 paddingBottom: "0.375rem",
                 marginTop: "0.5rem",
@@ -23,8 +23,8 @@ const ButtonUsage = ({ children, ...props }) => {
                 textTransform: "none",
                 fontSize: "1rem",
                 "&:hover": {
-                    backgroundColor: colors.blueAccent[600],
-                    color: colors.grey[100],
+                    backgroundColor: colors.redAccent[600],
+                    color: colors.grey[900],
                     transform: "translateY(-1px)",
                     boxShadow: `0 4px 8px ${colors.blueAccent[500]}40`,
                 },

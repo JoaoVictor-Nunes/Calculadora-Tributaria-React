@@ -13,6 +13,7 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { IconButton } from "@mui/material";
 import Footer from "../../Components/Footer";
+import { grey } from "@mui/material/colors";
 
 const Login = () => {
   const theme = useTheme();
@@ -69,8 +70,10 @@ const Login = () => {
           px: 4,
           py: 7,
           maxWidth: "md",
-          backgroundColor: colors.primary[100],
+          backgroundColor: colors.primary[500],
           borderRadius: 2,
+          borderColor: "#878787",
+          borderWidth: 1,
           boxShadow: 3,
         }}
       >
@@ -79,7 +82,7 @@ const Login = () => {
           sx={{
             textAlign: "center",
             mb: 8,
-            color: colors.grey[900],
+            color: colors.grey[100],
             fontWeight: "bold",
           }}
         >
@@ -114,7 +117,7 @@ const Login = () => {
           </Box>
         </Box>
       </Box>
-      <Footer />
+     {/* <Footer /> */}
     </Box>
   );
 };

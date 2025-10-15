@@ -16,10 +16,10 @@ const EmailInput = ({ register, errors }) => {
       <TextField
         label="Email"
         variant="outlined"
-        sx={{ 
+        fullWidth
+        sx={{
           width: "100%",
           '& .MuiOutlinedInput-root': {
-            backgroundColor: colors.primary[100],
             '& fieldset': {
               borderColor: colors.grey[300],
             },
@@ -31,13 +31,13 @@ const EmailInput = ({ register, errors }) => {
             },
           },
           '& .MuiInputLabel-root': {
-            color: colors.grey[600],
+            color: colors.grey[300],
             '&.Mui-focused': {
               color: colors.blueAccent[500],
             },
           },
           '& .MuiOutlinedInput-input': {
-            color: colors.grey[900],
+            color: colors.grey[100],
           },
         }}
         {...register("email", {
@@ -52,7 +52,8 @@ const EmailInput = ({ register, errors }) => {
         variant="caption"
         sx={{
           minHeight: "20px",
-          color: errors.email ? colors.redAccent[500] : "transparent",
+          fontWeight: "bold",
+          color: errors.email ? colors.redAccent[100] : "transparent",
           visibility: errors.email ? "visible" : "hidden",
           marginTop: "4px",
           display: "block",

@@ -70,20 +70,22 @@ const Esqueci = () => {
         sx={{
           mx: "auto",
           px: 4,
-          py: 6,
-          maxWidth: 400,
-          backgroundColor: colors.primary[100],
+          py: 7,
+          maxWidth: "md",
+          backgroundColor: colors.primary[500],
           borderRadius: 2,
+          borderColor: "#878787",
+          borderWidth: 1,
           boxShadow: 3,
         }}
       >
         <Typography
           variant="h1"
           sx={{
-            textAlign: 'center',
+            textAlign: "center",
             mb: 8,
-            color: colors.grey[900],
-            fontWeight: 'bold'
+            color: colors.grey[100],
+            fontWeight: "bold",
           }}
         >
           Recuperar senha
@@ -116,34 +118,34 @@ const Esqueci = () => {
       </Box>
 
       <Box
-  sx={{
-    display: "block",
-    justifyContent: "center",
-    width: "100%",
-    maxWidth: 400,
-    mx: "auto",
-    mt: 2,
-    mb: 2,
-  }}
->
-  <Collapse in={alertVisible}>
-    <Alert
-      severity="success"
-      onClose={() => setAlertVisible(false)}
-      sx={{
-        backgroundColor: colors.greenAccent[100],
-        color: colors.greenAccent[900],
-        '& .MuiAlert-icon': {
-          color: colors.greenAccent[500],
-        },
-      }}
-    >
-      Link de recuperação enviado!
-    </Alert>
-  </Collapse>
-</Box>
+        sx={{
+          display: "block",
+          justifyContent: "center",
+          width: "100%",
+          maxWidth: 400,
+          mx: "auto",
+          mt: 2,
+          mb: 2,
+        }}
+      >
+        <Collapse in={alertVisible}>
+          <Alert
+            severity="success"
+            onClose={() => setAlertVisible(false)}
+            sx={{
+              backgroundColor: colors.greenAccent[100],
+              color: colors.greenAccent[900],
+              '& .MuiAlert-icon': {
+                color: colors.greenAccent[500],
+              },
+            }}
+          >
+            Link de recuperação enviado!
+          </Alert>
+        </Collapse>
+      </Box>
 
-      
+
       <Footer />
 
     </Box>

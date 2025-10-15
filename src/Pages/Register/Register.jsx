@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import EmailInput from "../../Components/Inputs/EmailInput";
@@ -14,12 +14,18 @@ import { IconButton } from "@mui/material";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import Footer from "../../Components/Footer";
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const Register = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
-  
+
+  const [showPassword, setShowPassword] = useState(false);
+
+
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const password = watch("password");
@@ -67,22 +73,24 @@ const Register = () => {
 
       <Box
         sx={{
-          mx: 'auto',
+          mx: "auto",
           px: 4,
-          py: 8,
-          maxWidth: 'md',
-          backgroundColor: colors.primary[100],
+          py: 7,
+          maxWidth: "md",
+          backgroundColor: colors.primary[500],
           borderRadius: 2,
-          boxShadow: 3
+          borderColor: "#878787",
+          borderWidth: 1,
+          boxShadow: 3,
         }}
       >
         <Typography
           variant="h1"
           sx={{
-            textAlign: 'center',
+            textAlign: "center",
             mb: 8,
-            color: colors.grey[900],
-            fontWeight: 'bold'
+            color: colors.grey[100],
+            fontWeight: "bold",
           }}
         >
           Registrar
@@ -92,9 +100,9 @@ const Register = () => {
             label="Nome"
             variant="outlined"
             sx={{
-              width: '100%',
+              width: "100%",
               '& .MuiOutlinedInput-root': {
-                backgroundColor: colors.primary[100],
+                backgroundColor: "##F0F8EA",
                 '& fieldset': {
                   borderColor: colors.grey[300],
                 },
@@ -106,13 +114,13 @@ const Register = () => {
                 },
               },
               '& .MuiInputLabel-root': {
-                color: colors.grey[600],
+                color: colors.grey[300],
                 '&.Mui-focused': {
                   color: colors.blueAccent[500],
                 },
               },
               '& .MuiOutlinedInput-input': {
-                color: colors.grey[900],
+                color: "colors.grey[900]",
               },
             }}
             {...register("name", { required: "Nome é obrigatório" })}
@@ -121,7 +129,8 @@ const Register = () => {
             variant="caption"
             sx={{
               minHeight: "20px",
-              color: errors.name ? colors.redAccent[500] : "transparent",
+              fontWeight: "bold",
+              color: errors.name ? colors.redAccent[100] : "transparent",
               visibility: errors.name ? "visible" : "hidden",
               marginTop: "1px",
               display: "block",
@@ -143,11 +152,24 @@ const Register = () => {
           <TextField
             label="Confirme a Senha"
             variant="outlined"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={showPassword ? 'Esconder senha' : 'Mostrar senha'}
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
             sx={{
-              width: '100%',
+              width: "100%",
               '& .MuiOutlinedInput-root': {
-                backgroundColor: colors.primary[100],
+                backgroundColor: "##F0F8EA",
                 '& fieldset': {
                   borderColor: colors.grey[300],
                 },
@@ -159,13 +181,13 @@ const Register = () => {
                 },
               },
               '& .MuiInputLabel-root': {
-                color: colors.grey[600],
+                color: colors.grey[300],
                 '&.Mui-focused': {
                   color: colors.blueAccent[500],
                 },
               },
               '& .MuiOutlinedInput-input': {
-                color: colors.grey[900],
+                color: "colors.grey[900]",
               },
             }}
             {...register("confirmPassword", {
@@ -178,7 +200,8 @@ const Register = () => {
             variant="caption"
             sx={{
               minHeight: "10px",
-              color: errors.confirmPassword ? colors.redAccent[500] : "transparent",
+              fontWeight: "bold",
+              color: errors.confirmPassword ? colors.redAccent[100] : "transparent",
               visibility: errors.confirmPassword ? "visible" : "hidden",
               marginTop: "1px",
               display: "block",

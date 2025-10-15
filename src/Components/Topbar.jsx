@@ -141,7 +141,7 @@ function Topbar(props) {
           </Typography>
           <IconButton
             onClick={colorMode.toggleColorMode}
-            sx={{ ml: 1, color: "#fff" }}
+            sx={{ ml: 1, color: colors.grey[100] }}
           >
             {theme.palette.mode === "dark" ? (
               <LightModeOutlinedIcon />

@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
 import Typography from "@mui/material/Typography";
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
 
 const PasswordInput = ({ register, errors }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const errorMessage = errors.password ? errors.password.message : "Mensagem de erro";
     return (
@@ -15,11 +21,23 @@ const PasswordInput = ({ register, errors }) => {
                 <TextField
                     label="Senha"
                     variant="outlined"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label={showPassword ? 'Esconder senha' : 'Mostrar senha'}
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
                     sx={{
-                        width: '100%',
+                        width: "100%",
                         '& .MuiOutlinedInput-root': {
-                            backgroundColor: colors.primary[100],
                             '& fieldset': {
                                 borderColor: colors.grey[300],
                             },
@@ -31,13 +49,13 @@ const PasswordInput = ({ register, errors }) => {
                             },
                         },
                         '& .MuiInputLabel-root': {
-                            color: colors.grey[600],
+                            color: colors.grey[300],
                             '&.Mui-focused': {
                                 color: colors.blueAccent[500],
                             },
                         },
                         '& .MuiOutlinedInput-input': {
-                            color: colors.grey[900],
+                            color: colors.grey[100],
                         },
                     }}
                     {...register("password", {
@@ -61,7 +79,8 @@ const PasswordInput = ({ register, errors }) => {
                     variant="caption"
                     sx={{
                         minHeight: "20px",
-                        color: errors.password ? colors.redAccent[500] : "transparent",
+                        fontWeight: "bold",
+                        color: errors.password ? colors.redAccent[100] : "transparent",
                         visibility: errors.email ? "visible" : "hidden",
                         marginTop: "4px",
                         display: "block",

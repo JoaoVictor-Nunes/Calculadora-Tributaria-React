@@ -20,13 +20,15 @@ const ModalExplicacoes = () => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 400,
+        // make the modal responsive: full width on small screens, constrained on larger screens
+        width: { xs: '90vw', md: 800 },
         bgcolor: colors.primary[100],
         border: `2px solid ${colors.blueAccent[500]}`,
         boxShadow: 24,
         p: 4,
         borderRadius: 2,
         maxHeight: '80vh',
+        maxWidth: '90vw',
         overflowY: 'auto',
     }
 
@@ -82,9 +84,9 @@ const ModalExplicacoes = () => {
                         >
                             Explicacoes Necessárias
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <Box id="modal-modal-description" sx={{ mt: 2 }}>
                             <Explicacao />
-                        </Typography>
+                        </Box>
                     </Box>
                 </Fade>
             </Modal>
