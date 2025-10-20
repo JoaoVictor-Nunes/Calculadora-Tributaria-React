@@ -17,6 +17,7 @@ import Footer from "../../Components/Footer";
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Link } from "@mui/material";
 
 const Register = () => {
   const theme = useTheme();
@@ -75,8 +76,9 @@ const Register = () => {
         sx={{
           mx: "auto",
           px: 4,
-          py: 7,
-          maxWidth: "md",
+          py: 5,
+          // make the form wider on larger screens so inputs appear bigger (matches Login)
+          width: { xs: '92vw', sm: 480, md: 600 },
           backgroundColor: colors.primary[500],
           borderRadius: 2,
           borderColor: "#878787",
@@ -88,7 +90,7 @@ const Register = () => {
           variant="h1"
           sx={{
             textAlign: "center",
-            mb: 8,
+            mb: 5,
             color: colors.grey[100],
             fontWeight: "bold",
           }}
@@ -96,48 +98,51 @@ const Register = () => {
           Registrar
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField
-            label="Nome"
-            variant="outlined"
-            sx={{
-              width: "100%",
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: "##F0F8EA",
-                '& fieldset': {
-                  borderColor: colors.grey[300],
+          <Box>
+            <TextField
+              label="Nome"
+              variant="outlined"
+              sx={{
+                width: "100%",
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: "##F0F8EA",
+                  '& fieldset': {
+                    borderColor: colors.grey[300],
+                  },
+                  '&:hover fieldset': {
+                    borderColor: colors.blueAccent[500],
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: colors.blueAccent[500],
+                  },
                 },
-                '&:hover fieldset': {
-                  borderColor: colors.blueAccent[500],
+                '& .MuiInputLabel-root': {
+                  color: colors.grey[300],
+                  '&.Mui-focused': {
+                    color: colors.blueAccent[500],
+                  },
                 },
-                '&.Mui-focused fieldset': {
-                  borderColor: colors.blueAccent[500],
+                '& .MuiOutlinedInput-input': {
+                  color: "colors.grey[900]",
                 },
-              },
-              '& .MuiInputLabel-root': {
-                color: colors.grey[300],
-                '&.Mui-focused': {
-                  color: colors.blueAccent[500],
-                },
-              },
-              '& .MuiOutlinedInput-input': {
-                color: "colors.grey[900]",
-              },
-            }}
-            {...register("name", { required: "Nome é obrigatório" })}
-          />
-          <Typography
-            variant="caption"
-            sx={{
-              minHeight: "20px",
-              fontWeight: "bold",
-              color: errors.name ? colors.redAccent[100] : "transparent",
-              visibility: errors.name ? "visible" : "hidden",
-              marginTop: "1px",
-              display: "block",
-            }}
-          >
-            {errorName}
-          </Typography>
+              }}
+              {...register("name", { required: "Nome é obrigatório" })}
+            />
+            <Typography
+              variant="caption"
+              sx={{
+                minHeight: "20px",
+                fontWeight: "bold",
+                color: errors.name ? colors.redAccent[100] : "transparent",
+                visibility: errors.name ? "visible" : "hidden",
+                marginTop: "1px",
+                display: "block",
+              }}
+            >
+              {errorName}
+
+            </Typography>
+          </Box>
 
           <EmailInput
             register={register}
@@ -148,67 +153,69 @@ const Register = () => {
             register={register}
             errors={errors}
           />
+          <Box>
 
-          <TextField
-            label="Confirme a Senha"
-            variant="outlined"
-            type={showPassword ? 'text' : 'password'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label={showPassword ? 'Esconder senha' : 'Mostrar senha'}
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            sx={{
-              width: "100%",
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: "##F0F8EA",
-                '& fieldset': {
-                  borderColor: colors.grey[300],
+            <TextField
+              label="Confirme a Senha"
+              variant="outlined"
+              type={showPassword ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label={showPassword ? 'Esconder senha' : 'Mostrar senha'}
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                width: "100%",
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: "##F0F8EA",
+                  '& fieldset': {
+                    borderColor: colors.grey[300],
+                  },
+                  '&:hover fieldset': {
+                    borderColor: colors.blueAccent[500],
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: colors.blueAccent[500],
+                  },
                 },
-                '&:hover fieldset': {
-                  borderColor: colors.blueAccent[500],
+                '& .MuiInputLabel-root': {
+                  color: colors.grey[300],
+                  '&.Mui-focused': {
+                    color: colors.blueAccent[500],
+                  },
                 },
-                '&.Mui-focused fieldset': {
-                  borderColor: colors.blueAccent[500],
+                '& .MuiOutlinedInput-input': {
+                  color: "colors.grey[900]",
                 },
-              },
-              '& .MuiInputLabel-root': {
-                color: colors.grey[300],
-                '&.Mui-focused': {
-                  color: colors.blueAccent[500],
-                },
-              },
-              '& .MuiOutlinedInput-input': {
-                color: "colors.grey[900]",
-              },
-            }}
-            {...register("confirmPassword", {
-              required: "Confirmação obrigatória",
-              validate: (value) =>
-                value === password || "As senhas não coincidem!"
-            })}
-          />
-          <Typography
-            variant="caption"
-            sx={{
-              minHeight: "10px",
-              fontWeight: "bold",
-              color: errors.confirmPassword ? colors.redAccent[100] : "transparent",
-              visibility: errors.confirmPassword ? "visible" : "hidden",
-              marginTop: "1px",
-              display: "block",
-            }}
-          >
-            {errorConfirmPassword}
-          </Typography>
+              }}
+              {...register("confirmPassword", {
+                required: "Confirmação obrigatória",
+                validate: (value) =>
+                  value === password || "As senhas não coincidem!"
+              })}
+            />
+            <Typography
+              variant="caption"
+              sx={{
+                minHeight: "10px",
+                fontWeight: "bold",
+                color: errors.confirmPassword ? colors.redAccent[100] : "transparent",
+                visibility: errors.confirmPassword ? "visible" : "hidden",
+                marginTop: "1px",
+                display: "block",
+              }}
+            >
+              {errorConfirmPassword}
+            </Typography>
+          </Box>
 
           <ButtonUsage
             type="submit"
@@ -216,14 +223,35 @@ const Register = () => {
             Registrar
           </ButtonUsage>
 
-          <ButtonUsage
-            onClick={() => navigate("/")}
+          <Box sx={{
+            display: "flex",
+            justifyContent: "center",
+            mt: 2,
+            gap: 1
+          }}
           >
-            Já possui uma conta?
-          </ButtonUsage>
+            <Typography variant="body2" sx={{ color: colors.grey[100] }}>
+              Já possui uma conta?
+            </Typography>
+            <Typography variant="body2" sx={{ color: colors.grey[600] }}>
+              <Link
+                onClick={() => navigate("/login")}
+                sx={{
+                  cursor: "pointer",
+                  color: colors.blueAccent[500],
+                  "&:hover": {
+                    color: colors.blueAccent[600],
+                  },
+                  textDecoration: "underline",
+                }}
+              >
+                Faça Login
+              </Link>
+            </Typography>
+          </Box>
         </Box>
       </Box>
-      <Footer />
+      {/* <Footer /> */}
 
     </Box>
   );

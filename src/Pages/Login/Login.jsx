@@ -11,9 +11,8 @@ import { useTheme } from "@mui/material/styles";
 import { tokens, ColorModeContext } from "../../Tema";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import { IconButton } from "@mui/material";
+import { IconButton, Checkbox, FormControlLabel } from "@mui/material";
 import Footer from "../../Components/Footer";
-import { grey } from "@mui/material/colors";
 
 const Login = () => {
   const theme = useTheme();
@@ -69,12 +68,12 @@ const Login = () => {
           mx: "auto",
           px: 4,
           py: 7,
-          maxWidth: "md",
           backgroundColor: colors.primary[500],
           borderRadius: 2,
           borderColor: "#878787",
           borderWidth: 1,
           boxShadow: 3,
+          width: { xs: '92vw', sm: 480, md: 600 },
         }}
       >
         <Typography
@@ -95,29 +94,83 @@ const Login = () => {
         >
           <EmailInput register={register} errors={errors} />
           <PasswordInput register={register} errors={errors} />
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 2,
+              flexDirection: { xs: 'column', sm: 'row' },
+            }}
+          >
+            <FormControlLabel
+              label="Lembrar de mim?"
+              control={
+                <Checkbox
+                  sx={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    color: colors.grey[300],
+                    '&.Mui-checked': {
+                      color: colors.blueAccent[500],
+                    },
+                  }}
+                />
+              }
+              sx={{
+                '& .MuiFormControlLabel-label': {
+                  color: colors.grey[100],
+                },
+              }}
+            />
+
+            <Box sx={{ textAlign: { xs: 'center', sm: 'right' }, width: { xs: '100%', sm: 'auto' } }}>
+              <Typography variant="body2" sx={{ color: colors.grey[600] }}>
+                <Link
+                  onClick={() => navigate('/login/forgot')}
+                  sx={{
+                    cursor: 'pointer',
+                    color: colors.blueAccent[500],
+                    '&:hover': {
+                      color: colors.blueAccent[600],
+                    },
+                    textDecoration: 'underline',
+                  }}
+                >
+                  Esqueceu a senha?
+                </Link>
+              </Typography>
+            </Box>
+          </Box>
           <ButtonUsage type="submit">Entrar</ButtonUsage>
-          <ButtonUsage onClick={() => navigate("/Register")}>
-            Nao possui uma conta?
-          </ButtonUsage>
-          <Box sx={{ textAlign: "center", mt: 4 }}>
+          <Box sx={{ 
+            display: "flex",
+            justifyContent: "center",
+            mt: 2,
+            gap: 1 
+            }}>
+            <Typography variant="body2" sx={{ color: colors.grey[100] }}>
+              Não possui uma conta?
+            </Typography>
             <Typography variant="body2" sx={{ color: colors.grey[600] }}>
               <Link
-                onClick={() => navigate("/login/forgot")}
+                onClick={() => navigate("/Register")}
                 sx={{
                   cursor: "pointer",
                   color: colors.blueAccent[500],
                   "&:hover": {
                     color: colors.blueAccent[600],
                   },
+                  textDecoration: "underline",
                 }}
               >
-                Esqueceu a senha?
+                Registre-se
               </Link>
             </Typography>
           </Box>
         </Box>
       </Box>
-     {/* <Footer /> */}
+      {/* <Footer /> */}
     </Box>
   );
 };

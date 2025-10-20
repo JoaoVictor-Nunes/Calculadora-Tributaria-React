@@ -18,7 +18,7 @@ export const tokens = (mode) => ({
         },
         primary: {
           100: "#d0d1d5",
-          200: "#a1a4ab",
+          200: "#141b2d",
           300: "#727681",
           400: "#434957",
           500: "#141b2d",
@@ -78,7 +78,7 @@ export const tokens = (mode) => ({
         },
         primary: {
           100: "#1c044a",
-          200: "#080b12",
+          200: "#d1d4ce",
           300: "#394d80",
           400: "#1f2c4d",
           500: "#F0F8EA",
@@ -166,30 +166,30 @@ export const themeSettings = (mode) => {
           }),
     },
     typography: {
-      fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+      fontFamily: ["Roboto", "sans-serif"].join(","),
       fontSize: 12,
       h1: {
-        fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+        fontFamily: ["Roboto", "sans-serif"].join(","),
         fontSize: 40,
       },
       h2: {
-        fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+        fontFamily: ["Roboto", "sans-serif"].join(","),
         fontSize: 32,
       },
       h3: {
-        fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+        fontFamily: ["Roboto", "sans-serif"].join(","),
         fontSize: 24,
       },
       h4: {
-        fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+        fontFamily: ["Roboto", "sans-serif"].join(","),
         fontSize: 20,
       },
       h5: {
-        fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+        fontFamily: ["Roboto", "sans-serif"].join(","),
         fontSize: 16,
       },
       h6: {
-        fontFamily: ["Source Sans 3", "sans-serif"].join(","),
+        fontFamily: ["Roboto", "sans-serif"].join(","),
         fontSize: 14,
       },
     },

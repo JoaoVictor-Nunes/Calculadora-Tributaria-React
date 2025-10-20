@@ -112,7 +112,7 @@ function Topbar(props) {
       <AppBar
         component="nav"
         sx={{
-          backgroundColor: colors.primary[500],
+          backgroundColor: colors.primary[200],
           color: colors.grey[100],
         }}
       >
@@ -209,7 +209,7 @@ function Topbar(props) {
                       bottom: 0,
                       width: 0,
                       height: "2px",
-                      backgroundColor: "#2563eb", // azul
+                      backgroundColor: "#2563eb",
                       transition: "width 0.3s ease",
                     },
                     "&:hover::after": {
