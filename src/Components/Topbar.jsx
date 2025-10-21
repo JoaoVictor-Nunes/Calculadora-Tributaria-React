@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../../Assets/CRVascodaGama.png";
 
 const drawerWidth = 240;
-const navItems = ["Home", "Explicacao", "Contatos", "Calculo"];
+const navItems = ["Home", "Esclarecimento", "Contatos", "Calculo"];
 
 function Topbar(props) {
   const theme = useTheme();
@@ -84,7 +84,7 @@ function Topbar(props) {
                 textAlign: "center",
                 color: colors.grey[100],
                 "&:hover": {
-                  backgroundColor: colors.primary[400],
+                  backgroundColor: colors.primary[300],
                 },
               }}
               onClick={() => {
@@ -159,7 +159,7 @@ function Topbar(props) {
                     position: "relative",
                     color: colors.grey[100],
                     "&:hover": {
-                      backgroundColor: colors.primary[400],
+                      backgroundColor: colors.primary[300],
                     },
                     "&::after": {
                       content: '""',
@@ -200,7 +200,7 @@ function Topbar(props) {
                     position: "relative",
                     color: colors.grey[100],
                     "&:hover": {
-                      backgroundColor: colors.primary[400],
+                      backgroundColor: colors.primary[300],
                     },
                     "&::after": {
                       content: '""',

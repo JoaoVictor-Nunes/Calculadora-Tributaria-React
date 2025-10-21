@@ -18,6 +18,10 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Link } from "@mui/material";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const Register = () => {
   const theme = useTheme();
@@ -26,6 +30,12 @@ const Register = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const [profissao, setProfissao] = useState(''); // CORREÇÃO 1
+
+  const handleChange = (event) => {
+    setProfissao(event.target.value); // CORREÇÃO 2
+     setValue("profissao", event.target.value);
+  };
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
@@ -33,7 +43,7 @@ const Register = () => {
 
   const errorName = errors.name ? errors.name.message : "Mensagem de erro";
   const errorConfirmPassword = errors.confirmPassword ? errors.confirmPassword.message : "Mensagem de erro";
-
+  const errorProfissao = errors.profissao ? errors.profissao.message : "Mensagem de erro";
 
   const onSubmit = (data) => {
     console.log("Dados enviados: ", data);
@@ -77,7 +87,6 @@ const Register = () => {
           mx: "auto",
           px: 4,
           py: 5,
-          // make the form wider on larger screens so inputs appear bigger (matches Login)
           width: { xs: '92vw', sm: 480, md: 600 },
           backgroundColor: colors.primary[500],
           borderRadius: 2,
@@ -105,7 +114,7 @@ const Register = () => {
               sx={{
                 width: "100%",
                 '& .MuiOutlinedInput-root': {
-                  backgroundColor: "##F0F8EA",
+                  backgroundColor: colors.primary[500],
                   '& fieldset': {
                     borderColor: colors.grey[300],
                   },
@@ -123,7 +132,7 @@ const Register = () => {
                   },
                 },
                 '& .MuiOutlinedInput-input': {
-                  color: "colors.grey[900]",
+                  color: colors.grey[100],
                 },
               }}
               {...register("name", { required: "Nome é obrigatório" })}
@@ -141,6 +150,60 @@ const Register = () => {
             >
               {errorName}
 
+            </Typography>
+          </Box>
+          <Box>
+            <FormControl fullWidth>
+              <InputLabel
+                id="profissao"
+                sx={{
+                  color: colors.grey[300],
+                  '&.Mui-focused': {
+                    color: colors.blueAccent[500],
+                  },
+                }}
+              >
+                Profissão
+              </InputLabel>
+
+              <Select
+                labelId="profissao"
+                id="profissao"
+                label="Profissão"
+                onChange={handleChange}
+                sx={{
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: colors.grey[300],
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: colors.blueAccent[500],
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: colors.blueAccent[500],
+                  },
+                  '& .MuiSelect-select': {
+                    color: colors.grey[100],
+                    backgroundColor: colors.primary[500],
+                  },
+                }}
+                {...register("profissao", { required: "Profissão é obrigatória" })}
+              >
+                <MenuItem value="Psicólogo">Psicólogo</MenuItem>
+                <MenuItem value="Psicóloga">Psicóloga</MenuItem>
+              </Select>
+            </FormControl>
+            <Typography
+              variant="caption"
+              sx={{
+                minHeight: "20px",
+                fontWeight: "bold",
+                color: errors.profissao ? colors.redAccent[100] : "transparent",
+                visibility: errors.profissao ? "visible" : "hidden",
+                marginTop: "1px",
+                display: "block",
+              }}
+            >
+              {errorProfissao}
             </Typography>
           </Box>
 

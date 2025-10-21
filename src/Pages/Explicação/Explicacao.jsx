@@ -13,19 +13,19 @@ import TableRow from "@mui/material/TableRow";
 import Stack from "@mui/material/Stack";
 
 const Explicacao = () => {
-const theme = useTheme();
-const colors = tokens(theme.palette.mode);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   return (
     <Box py={6}>
-      <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
+      <Typography variant="h1" fontWeight="bold" align="center" gutterBottom>
         Sobre a tributação:
       </Typography>
       <Typography variant="h6" px={6} py={3} align="center">
         A tributação serve para a arrecadação de tributos com a finalidade de financiar seus gastos públicos como saúde, educação, segurança etc.
       </Typography>
       <Stack direction={{ xs: "column", md: "row" }} spacing={3} py={4} mx={3} justifyContent="center">
-        <Paper variant="outlined" elevation={4} sx={{ p: 3, minWidth: 280, backgroundColor: colors.primary[400] }}>
+        <Paper variant="outlined" elevation={4} sx={{ p: 3, minWidth: 280, backgroundColor: colors.primary[200] }}>
           <Typography variant="h6" fontWeight="bold" gutterBottom>
             Renda Mensal:
           </Typography>
@@ -33,7 +33,7 @@ const colors = tokens(theme.palette.mode);
             "É o valor que você espera receber por mês com o seu trabalho. No caso da psicologia, pode ser o total recebido das consultas, atendimentos ou serviços prestados, antes de descontar as despesas."
           </Typography>
         </Paper>
-        <Paper variant="outlined" sx={{ p: 3, minWidth: 280, backgroundColor: colors.primary[400] }}>
+        <Paper variant="outlined" sx={{ p: 3, minWidth: 280, backgroundColor: colors.primary[200] }}>
           <Typography variant="h6" fontWeight="bold" gutterBottom>
             Custos Mensais:
           </Typography>
@@ -100,7 +100,7 @@ const colors = tokens(theme.palette.mode);
         <Typography variant="h5" fontWeight="bold" align="center" py={2}>
           Como são realizadas as contas?
         </Typography>
-        <Paper variant="outlined" sx={{ p: 3, mx: { xs: 0, md: 6 }, my: 3, backgroundColor: colors.primary[400] }}>
+        <Paper variant="outlined" sx={{ p: 3, mx: { xs: 0, md: 6 }, my: 3, backgroundColor: colors.primary[200] }}>
           <Typography variant="h6" fontWeight="bold" gutterBottom align="center">
             Para Pessoa Física:
           </Typography>
@@ -111,8 +111,8 @@ const colors = tokens(theme.palette.mode);
             </Typography>
             <Typography>
               Com isso, o site vai começar subtraindo os seus{" "}
-              <Box component="span" sx={{color: colors.blueAccent[900]}} fontWeight="bold">Custos mensais</Box> da sua{" "}
-              <Box component="span" sx={{color: colors.blueAccent[900]}} fontWeight="bold">Renda mensal</Box>
+              <Box component="span" sx={{ color: colors.blueAccent[100] }} fontWeight="bold">Custos mensais</Box> da sua{" "}
+              <Box component="span" sx={{ color: colors.blueAccent[100] }} fontWeight="bold">Renda mensal</Box>
             </Typography>
             <Typography>
               Depois, a Base vai dar R$ 2.250, o programa vai comparar com as bases de cálculo da tabela, para ver se o valor é maior ou menor. No caso, é menor que R$ 2.428,80, portanto, você seria isento.
@@ -131,7 +131,7 @@ const colors = tokens(theme.palette.mode);
             </Typography>
           </Box>
         </Paper>
-        <Paper variant="outlined" sx={{ p: 3, mx: { xs: 0, md: 6 }, my: 3, backgroundColor: colors.primary[400] }}>
+        <Paper variant="outlined" sx={{ p: 3, mx: { xs: 0, md: 6 }, my: 3, backgroundColor: colors.primary[200] }}>
           <Typography variant="h6" fontWeight="bold" gutterBottom align="center">
             Para Pessoa Jurídica:
           </Typography>

@@ -22,7 +22,7 @@ const ModalExplicacoes = () => {
         transform: 'translate(-50%, -50%)',
         // make the modal responsive: full width on small screens, constrained on larger screens
         width: { xs: '90vw', md: 800 },
-        bgcolor: colors.primary[100],
+        bgcolor: colors.primary[500],
         border: `2px solid ${colors.blueAccent[500]}`,
         boxShadow: 24,
         p: 4,
@@ -52,11 +52,9 @@ const ModalExplicacoes = () => {
                     py: 1,
                 }}
             >
-                Explicacoes Necessárias
+                Explicações Necessárias
             </Button>
             <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
                 open={open}
                 onClose={handleClose}
                 closeAfterTransition
@@ -73,18 +71,17 @@ const ModalExplicacoes = () => {
                 <Fade in={open}>
                     <Box sx={style}>
                         <Typography 
-                            id="modal-modal-title" 
                             variant="h6" 
                             component="h2" 
                             sx={{ 
-                                color: colors.grey[900],
+                                color: colors.grey[100],
                                 fontWeight: 600,
                                 mb: 2
                             }}
                         >
-                            Explicacoes Necessárias
+                            Explicações Necessárias
                         </Typography>
-                        <Box id="modal-modal-description" sx={{ mt: 2 }}>
+                        <Box id="descricao" sx={{ mt: 2 }}>
                             <Explicacao />
                         </Box>
                     </Box>

@@ -50,7 +50,7 @@ const Contatos = () => {
                 justifyContent: "center",
                 minHeight: "40vh",
             }}>
-            <Typography variant="h4" align="center" sx={{ p: 1, mt: 2 }}>
+            <Typography variant="h1" align="center" sx={{ p: 1, mt: 2, fontWeight: "bold" }}>
                 Nos contate!
             </Typography>
 
@@ -88,7 +88,6 @@ const Contatos = () => {
                         flexShrink: 0
                     }}
                 >
-                    {/* ... resto do formulário permanece igual ... */}
                     <Box>
                         <TextField
                             label="Nome"
@@ -140,6 +139,7 @@ const Contatos = () => {
                         <TextField
                             label="Telefone"
                             variant="outlined"
+                            placeholder="(99) 99999-9999"
                             sx={{
                                 width: "100%",
                                 '& .MuiOutlinedInput-root': {
@@ -164,7 +164,13 @@ const Contatos = () => {
                                     color: colors.grey[100],
                                 },
                             }}
-                            {...register("phone", { required: "Telefone é obrigatório!" })}
+                            {...register("phone", {
+                                required: "Telefone é obrigatório!",
+                                pattern: {
+                                    value: /^\(?\d{2}\)?\s?(?:9\d{4}|\d{4})-?\d{4}$/,
+                                    message: "Formato de telefone inválido!",
+                                },
+                            })}
                         />
                         <Typography
                             variant="caption"
@@ -180,6 +186,7 @@ const Contatos = () => {
                             {errorPhone}
                         </Typography>
                     </Box>
+
 
                     <Box>
                         <TextField
@@ -283,7 +290,7 @@ const Contatos = () => {
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                         title="Localização do NAF"
-                        onLoad={handleMapLoaded}
+                        // onLoad={handleMapLoaded}
                     ></iframe>
                     {/* ) : (
                         <Skeleton variant="rectangular"
@@ -300,11 +307,11 @@ const Contatos = () => {
                     display: "block",
                     justifyContent: "center",
                     width: "100%",
-                    maxWidth: { xs: '92vw', sm: '90vw', md: '95vw', lg: 1200 }, 
+                    maxWidth: { xs: '92vw', sm: '90vw', md: '95vw', lg: 1200 },
                     mx: "auto",
                     mt: 2,
                     mb: 2,
-                    px: 4, 
+                    px: 4,
                 }}
             >
                 <Collapse in={alertVisible}>
