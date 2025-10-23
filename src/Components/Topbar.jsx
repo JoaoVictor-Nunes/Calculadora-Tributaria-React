@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../../Assets/CRVascodaGama.png";
 
 const drawerWidth = 240;
-const navItems = ["Home", "Esclarecimento", "Contatos", "Calculo"];
+const navItems = ["Home", "Detalhes", "Contatos", "Cálculo", "Sair"];
 
 function Topbar(props) {
   const theme = useTheme();
@@ -53,6 +53,16 @@ function Topbar(props) {
     navigate(path);
   };
 
+  const handleItemClick = (item, event) => {
+    if (item === "Cálculo") {
+      handleCalculoClick(event);
+    } else if (item === "Sair") {
+      navigate("/login");
+    } else {
+      navigate(`/${item.toLowerCase()}`);
+    }
+  };
+
   const drawer = (
     <Box
       onClick={handleDrawerToggle}
@@ -69,10 +79,12 @@ function Topbar(props) {
           my: 2,
           display: "flex",
           alignItems: "center",
+          justifyContent: "center",
           gap: 1,
           color: colors.grey[100],
         }}
       >
+        <img src={Logo} alt="Vasco" style={{ height: 24 }} />
         NAF
       </Typography>
       <Divider />
@@ -87,19 +99,25 @@ function Topbar(props) {
                   backgroundColor: colors.primary[300],
                 },
               }}
-              onClick={() => {
-                if (item === "Calculo") {
-                  handleCalculoClick();
-                } else {
-                  navigate(`/${item.toLowerCase()}`);
-                }
-              }}
+              onClick={(event) => handleItemClick(item, event)}
             >
               <ListItemText primary={item} sx={{ color: colors.grey[100] }} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem onClick={() => handleNavigate("/calculopf")}>
+          Pessoa Física
+        </MenuItem>
+        <MenuItem onClick={() => handleNavigate("/calculopj")}>
+          Pessoa Jurídica
+        </MenuItem>
+      </Menu>
     </Box>
   );
 
@@ -151,76 +169,109 @@ function Topbar(props) {
           </IconButton>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) =>
-              item === "Calculo" ? (
-                <React.Fragment key={item}>
+            {navItems.map((item) => {
+              if (item === "Cálculo") {
+                return (
+                  <React.Fragment key={item}>
+                    <Button
+                      sx={{
+                        position: "relative",
+                        color: colors.grey[100],
+                        "&:hover": {
+                          backgroundColor: colors.primary[300],
+                        },
+                        "&::after": {
+                          content: '""',
+                          position: "absolute",
+                          left: 0,
+                          bottom: 0,
+                          width: 0,
+                          height: "2px",
+                          backgroundColor: "#2563eb",
+                          transition: "width 0.3s ease",
+                        },
+                        "&:hover::after": {
+                          width: "100%",
+                        },
+                      }}
+                      onClick={handleCalculoClick}
+                    >
+                      {item}
+                    </Button>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleCloseMenu}
+                    >
+                      <MenuItem onClick={() => handleNavigate("/calculopf")}>
+                        Pessoa Física
+                      </MenuItem>
+                      <MenuItem onClick={() => handleNavigate("/calculopj")}>
+                        Pessoa Jurídica
+                      </MenuItem>
+                    </Menu>
+                  </React.Fragment>
+                );
+              } else if (item === "Sair") {
+                return (
                   <Button
+                    key={item}
                     sx={{
-                    position: "relative",
-                    color: colors.grey[100],
-                    "&:hover": {
-                      backgroundColor: colors.primary[300],
-                    },
-                    "&::after": {
-                      content: '""',
-                      position: "absolute",
-                      left: 0,
-                      bottom: 0,
-                      width: 0,
-                      height: "2px",
-                      backgroundColor: "#2563eb",
-                      transition: "width 0.3s ease",
-                    },
-                    "&:hover::after": {
-                      width: "100%",
-                    },
-                  }}
-                    onClick={handleCalculoClick}
+                      position: "relative",
+                      color: colors.grey[100],
+                      "&:hover": {
+                        backgroundColor: colors.primary[300],
+                      },
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        left: 0,
+                        bottom: 0,
+                        width: 0,
+                        height: "2px",
+                        backgroundColor: "#2563eb",
+                        transition: "width 0.3s ease",
+                      },
+                      "&:hover::after": {
+                        width: "100%",
+                      },
+                    }}
+                    onClick={() => navigate("/login")}
                   >
                     {item}
                   </Button>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseMenu}
+                );
+              } else {
+                return (
+                  <Button
+                    key={item}
+                    onClick={() => navigate(`/${item.toLowerCase()}`)}
+                    sx={{
+                      position: "relative",
+                      color: colors.grey[100],
+                      "&:hover": {
+                        backgroundColor: colors.primary[300],
+                      },
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        left: 0,
+                        bottom: 0,
+                        width: 0,
+                        height: "2px",
+                        backgroundColor: "#2563eb",
+                        transition: "width 0.3s ease",
+                      },
+                      "&:hover::after": {
+                        width: "100%",
+                      },
+                    }}
                   >
-                    <MenuItem onClick={() => handleNavigate("/calculopf")}>
-                      Pessoa Física
-                    </MenuItem>
-                    <MenuItem onClick={() => handleNavigate("/calculopj")}>
-                      Pessoa Jurídica
-                    </MenuItem>
-                  </Menu>
-                </React.Fragment>
-              ) : (
-                <Button
-                  key={item}
-                  onClick={() => navigate(`/${item.toLowerCase()}`)}
-                  sx={{
-                    position: "relative",
-                    color: colors.grey[100],
-                    "&:hover": {
-                      backgroundColor: colors.primary[300],
-                    },
-                    "&::after": {
-                      content: '""',
-                      position: "absolute",
-                      left: 0,
-                      bottom: 0,
-                      width: 0,
-                      height: "2px",
-                      backgroundColor: "#2563eb",
-                      transition: "width 0.3s ease",
-                    },
-                    "&:hover::after": {
-                      width: "100%",
-                    },
-                  }}
-                >
-                  {item}
-                </Button>
-              )
-            )}
+                    {item}
+                  </Button>
+                );
+              }
+            })}
           </Box>
         </Toolbar>
       </AppBar>

@@ -22,7 +22,7 @@ const ModalCalculoPF = () => {
         transform: 'translate(-50%, -50%)',
         // make the modal responsive: full width on small screens, constrained on larger screens
         width: { xs: '90vw', md: 800 },
-        bgcolor: colors.primary[100],
+        bgcolor: colors.primary[500],
         border: `2px solid ${colors.blueAccent[500]}`,
         boxShadow: 24,
         p: 4,
@@ -77,7 +77,7 @@ const ModalCalculoPF = () => {
                             variant="h6" 
                             component="h2" 
                             sx={{ 
-                                color: colors.grey[900],
+                                color: colors.grey[100],
                                 fontWeight: 600,
                                 mb: 2
                             }}

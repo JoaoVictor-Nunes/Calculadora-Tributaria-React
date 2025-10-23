@@ -26,9 +26,10 @@ const Login = () => {
   } = useForm();
   const navigate = useNavigate();
 
+
   const onSubmit = (data) => {
     console.log("Dados enviados: ", data);
-    navigate("/Home");
+    navigate("/home");
   };
 
   return (
@@ -49,11 +50,7 @@ const Login = () => {
           top: 16,
           right: 16,
           ml: 1,
-          color: "#fff",
-          backgroundColor: colors.primary[400],
-          "&:hover": {
-            backgroundColor: colors.primary[300],
-          },
+          color: colors.grey[100],
         }}
       >
         {theme.palette.mode === "dark" ? (
@@ -73,7 +70,7 @@ const Login = () => {
           borderColor: "#878787",
           borderWidth: 1,
           boxShadow: 3,
-          width: { xs: '92vw', sm: 480, md: 600 },
+          width: { xs: "92vw", sm: 480, md: 600 },
         }}
       >
         <Typography
@@ -96,11 +93,11 @@ const Login = () => {
           <PasswordInput register={register} errors={errors} />
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
               gap: 2,
-              flexDirection: { xs: 'column', sm: 'row' },
+              flexDirection: { xs: "column", sm: "row" },
             }}
           >
             <FormControlLabel
@@ -108,33 +105,38 @@ const Login = () => {
               control={
                 <Checkbox
                   sx={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
+                    display: "inline-flex",
+                    alignItems: "center",
                     color: colors.grey[300],
-                    '&.Mui-checked': {
+                    "&.Mui-checked": {
                       color: colors.blueAccent[500],
                     },
                   }}
                 />
               }
               sx={{
-                '& .MuiFormControlLabel-label': {
+                "& .MuiFormControlLabel-label": {
                   color: colors.grey[100],
                 },
               }}
             />
 
-            <Box sx={{ textAlign: { xs: 'center', sm: 'right' }, width: { xs: '100%', sm: 'auto' } }}>
+            <Box
+              sx={{
+                textAlign: { xs: "center", sm: "right" },
+                width: { xs: "100%", sm: "auto" },
+              }}
+            >
               <Typography variant="body2" sx={{ color: colors.grey[600] }}>
                 <Link
-                  onClick={() => navigate('/login/forgot')}
+                  onClick={() => navigate("/login/forgot")}
                   sx={{
-                    cursor: 'pointer',
+                    cursor: "pointer",
                     color: colors.blueAccent[500],
-                    '&:hover': {
+                    "&:hover": {
                       color: colors.blueAccent[600],
                     },
-                    textDecoration: 'underline',
+                    textDecoration: "underline",
                   }}
                 >
                   Esqueceu a senha?
@@ -143,12 +145,14 @@ const Login = () => {
             </Box>
           </Box>
           <ButtonUsage type="submit">Entrar</ButtonUsage>
-          <Box sx={{ 
-            display: "flex",
-            justifyContent: "center",
-            mt: 2,
-            gap: 1 
-            }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 2,
+              gap: 1,
+            }}
+          >
             <Typography variant="body2" sx={{ color: colors.grey[100] }}>
               Não possui uma conta?
             </Typography>

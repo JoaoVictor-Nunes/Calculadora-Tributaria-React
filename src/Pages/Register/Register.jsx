@@ -22,6 +22,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import useUserStore from "../../store/useUserStore"
+
 
 const Register = () => {
   const theme = useTheme();
@@ -37,9 +39,11 @@ const Register = () => {
      setValue("profissao", event.target.value);
   };
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const password = watch("password");
+    const setUserName = useUserStore((state) => state.setUserName);
+  
 
   const errorName = errors.name ? errors.name.message : "Mensagem de erro";
   const errorConfirmPassword = errors.confirmPassword ? errors.confirmPassword.message : "Mensagem de erro";
@@ -47,7 +51,8 @@ const Register = () => {
 
   const onSubmit = (data) => {
     console.log("Dados enviados: ", data);
-    navigate("/Home");
+    setUserName(data.name);
+    navigate("/home");
   };
 
   return (
@@ -67,12 +72,8 @@ const Register = () => {
           position: "absolute",
           top: 16,
           right: 16,
-          color: "#fff",
           ml: 1,
-          backgroundColor: colors.primary[400],
-          '&:hover': {
-            backgroundColor: colors.primary[300],
-          }
+          color: colors.grey[100],
         }}
       >
         {theme.palette.mode === "dark" ? (
@@ -238,7 +239,7 @@ const Register = () => {
               sx={{
                 width: "100%",
                 '& .MuiOutlinedInput-root': {
-                  backgroundColor: "##F0F8EA",
+                  backgroundColor: colors.primary[500],
                   '& fieldset': {
                     borderColor: colors.grey[300],
                   },

@@ -46,18 +46,14 @@ const Esqueci = () => {
         padding: 4,
       }}
     >
-      <IconButton
+     <IconButton
         onClick={colorMode.toggleColorMode}
         sx={{
           position: "absolute",
           top: 16,
           right: 16,
           ml: 1,
-          color: "#fff",
-          backgroundColor: colors.primary[400],
-          '&:hover': {
-            backgroundColor: colors.primary[300],
-          }
+          color: colors.grey[100],
         }}
       >
         {theme.palette.mode === "dark" ? (

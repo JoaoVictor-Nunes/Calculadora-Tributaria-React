@@ -76,7 +76,6 @@ const Contatos = () => {
                     justifyContent: "center",
                 }}>
 
-                {/* Formulário - ocupa 50% em desktop */}
                 <Box
                     component="form"
                     onSubmit={handleSubmit(onSubmit)}
