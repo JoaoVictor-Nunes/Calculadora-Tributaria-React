@@ -9,6 +9,8 @@ import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
+import GoBack from "../GoBack";
+
 
 const ModalCalculoPF = () => {
     const theme = useTheme();
@@ -37,8 +39,8 @@ const ModalCalculoPF = () => {
 
     return (
         <div>
-            <Button 
-                onClick={handleOpen} 
+            <Button
+                onClick={handleOpen}
                 sx={{
                     color: colors.grey[100],
                     border: `1px solid ${colors.blueAccent[500]}`,
@@ -72,11 +74,11 @@ const ModalCalculoPF = () => {
             >
                 <Fade in={open}>
                     <Box sx={style}>
-                        <Typography 
-                            id="modal-modal-title" 
-                            variant="h6" 
-                            component="h2" 
-                            sx={{ 
+                        <Typography
+                            id="modal-modal-title"
+                            variant="h6"
+                            component="h2"
+                            sx={{
                                 color: colors.grey[100],
                                 fontWeight: 600,
                                 mb: 2
@@ -84,6 +86,27 @@ const ModalCalculoPF = () => {
                         >
                             Calcular Tributação de Pessoa Física
                         </Typography>
+                        <Button
+                            onClick={handleClose}
+                            sx={{
+                                position: "absolute",
+                                top: 16,
+                                right: 16,
+                                ml: 1,
+                                bgcolor: "transparent",
+                                // quando passar o mouse, colore qualquer SVG dentro do Button (ícone do GoBack)
+                                "&:hover svg": {
+                                    color: colors.redAccent[400],
+                                },
+                                // opcional: se o GoBack for um componente que usa `color="inherit"`,
+                                // isso também força a cor do texto/ícone
+                                "&:hover": {
+                                    color: colors.redAccent[400],
+                                },
+                            }}
+                        >
+                            <GoBack />
+                        </Button>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                             <CalculoPF />
                         </Typography>
