@@ -13,19 +13,27 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import ModalTabelaTributacao from "./ModalTabelaTributacao";
 import GoBack from "../GoBack";
+import Grow from "@mui/material/Grow";
+
 
 const ModalExplicacoes = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [open, setOpen] = useState(false);
+  const [transformOrigin, setTransformOrigin] = useState('center center');
 
   const navigate = useNavigate();
 
+  const handleOpen = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const origin = `${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px`;
+    setTransformOrigin(origin);
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
   const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
     width: { xs: "90vw", md: 800 },
     bgcolor: colors.primary[500],
     border: `2px solid ${colors.blueAccent[500]}`,
@@ -35,30 +43,31 @@ const ModalExplicacoes = () => {
     maxHeight: "80vh",
     maxWidth: "90vw",
     overflowY: "auto",
+    zIndex: 1300,
+    position: "relative",
   };
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button
-        onClick={handleOpen}
+      <Button onClick={handleOpen}
         sx={{
           color: colors.grey[100],
           border: `1px solid ${colors.blueAccent[500]}`,
           backgroundColor: colors.blueAccent[500],
-          "&:hover": {
+          '&:hover': {
             backgroundColor: colors.blueAccent[600],
             borderColor: colors.blueAccent[600],
           },
           borderRadius: 1,
           px: 2,
           py: 1,
+          width: "300px",
+          height: "80px",
         }}
       >
         Como são feitos os cálculos?
       </Button>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -66,14 +75,21 @@ const ModalExplicacoes = () => {
         slots={{ backdrop: Backdrop }}
         slotProps={{
           backdrop: {
-            timeout: 1000,
-            sx: {
-              backgroundColor: "rgba(0, 0, 0, 0.7)",
-            },
+            timeout: 300,
+            sx: { backgroundColor: "rgba(0, 0, 0, 0.7)" },
           },
         }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-        <Fade in={open}>
+        <Grow
+          in={open}
+          timeout={400}
+          style={{ transformOrigin }}
+        >
           <Box sx={style}>
             <Typography
               variant="h4"
@@ -252,7 +268,7 @@ const ModalExplicacoes = () => {
               </Typography>
             </Box>
           </Box>
-        </Fade>
+        </Grow>
       </Modal>
     </div>
   );

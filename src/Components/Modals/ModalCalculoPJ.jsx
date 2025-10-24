@@ -1,40 +1,47 @@
 import React from "react";
 import { useState } from "react";
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
-import Modal from "@mui/material/Modal"
-import Typography from "@mui/material/Typography"
-import CalculoPJ from "../../Pages/CalculoPJ"
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import CalculoPJ from "../../Pages/CalculoPJ";
 import Backdrop from '@mui/material/Backdrop';
-import Fade from '@mui/material/Fade';
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
-import GoBack from "../GoBack"
+import GoBack from "../GoBack";
+import Grow from "@mui/material/Grow";
+import { useNavigate } from "react-router-dom"; // Importação faltando
 
 const ModalCalculoPJ = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [open, setOpen] = useState(false);
+    const [transformOrigin, setTransformOrigin] = useState('center center');
+
+    const navigate = useNavigate(); // Agora está importado
+
+    const handleOpen = (event) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const origin = `${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px`;
+        setTransformOrigin(origin);
+        setOpen(true);
+    };
+
+    const handleClose = () => setOpen(false);
 
     const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        // make the modal responsive: full width on small screens, constrained on larger screens
-        width: { xs: '90vw', md: 800 },
+        width: { xs: "90vw", md: 800 },
         bgcolor: colors.primary[500],
         border: `2px solid ${colors.blueAccent[500]}`,
         boxShadow: 24,
         p: 4,
         borderRadius: 2,
-        maxHeight: '80vh',
-        maxWidth: '90vw',
-        overflowY: 'auto',
-    }
-
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+        maxHeight: "80vh",
+        maxWidth: "90vw",
+        overflowY: "auto",
+        zIndex: 1300,
+        position: "relative",
+    };
 
     return (
         <div>
@@ -51,10 +58,13 @@ const ModalCalculoPJ = () => {
                     borderRadius: 1,
                     px: 2,
                     py: 1,
+                    width: "300px",
+                    height: "80px",
                 }}
             >
-                Calcular Tributação de Pessoa Jurídica
+                Pessoa Jurídica (PJ) {/* Texto corrigido */}
             </Button>
+
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -62,14 +72,21 @@ const ModalCalculoPJ = () => {
                 slots={{ backdrop: Backdrop }}
                 slotProps={{
                     backdrop: {
-                        timeout: 1000,
-                        sx: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                        },
+                        timeout: 300,
+                        sx: { backgroundColor: "rgba(0, 0, 0, 0.7)" },
                     },
                 }}
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
             >
-                <Fade in={open}>
+                <Grow
+                    in={open}
+                    timeout={400}
+                    style={{ transformOrigin }}
+                >
                     <Box sx={style}>
                         <Typography
                             id="tituloModalPJ"
@@ -91,7 +108,6 @@ const ModalCalculoPJ = () => {
                                 right: 16,
                                 ml: 1,
                                 bgcolor: "transparent",
-                                // quando passar o mouse, colore qualquer SVG dentro do Button (ícone do GoBack)
                                 "&:hover svg": {
                                     color: colors.redAccent[400],
                                 },
@@ -99,13 +115,13 @@ const ModalCalculoPJ = () => {
                         >
                             <GoBack />
                         </Button>
-                        <Typography id="conteudoModalPJ" sx={{ mt: 2 }}>
-                            <CalculoPJ />
-                        </Typography>
+                        {/* Removi a Typography extra que envolvia o CalculoPJ */}
+                        <CalculoPJ />
                     </Box>
-                </Fade>
+                </Grow>
             </Modal>
         </div>
     )
 }
+
 export default ModalCalculoPJ;
