@@ -57,8 +57,6 @@ const ModalCalculoPF = () => {
                 Calcular Tributação de Pessoa Física
             </Button>
             <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
                 open={open}
                 onClose={handleClose}
                 closeAfterTransition
@@ -75,7 +73,7 @@ const ModalCalculoPF = () => {
                 <Fade in={open}>
                     <Box sx={style}>
                         <Typography
-                            id="modal-modal-title"
+                            id="tituloModalPF"
                             variant="h6"
                             component="h2"
                             sx={{
@@ -98,16 +96,11 @@ const ModalCalculoPF = () => {
                                 "&:hover svg": {
                                     color: colors.redAccent[400],
                                 },
-                                // opcional: se o GoBack for um componente que usa `color="inherit"`,
-                                // isso também força a cor do texto/ícone
-                                "&:hover": {
-                                    color: colors.redAccent[400],
-                                },
                             }}
                         >
                             <GoBack />
                         </Button>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <Typography id="conteudoModalPF" sx={{ mt: 2 }}>
                             <CalculoPF />
                         </Typography>
                     </Box>

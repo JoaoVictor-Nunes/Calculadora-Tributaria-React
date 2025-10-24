@@ -3,6 +3,7 @@ import ModalCalculoPF from "../../Components/Modals/ModalCalculoPF";
 import ModalCalculoPJ from "../../Components/Modals/ModalCalculoPJ";
 import ModalExplicacoes from "../../Components/Modals/ModalExplicacoes";
 import  useUserStore  from "../../store/useUserStore";
+import { Box } from "@mui/material";
 
 const Home = () => {
   const userName = useUserStore((state) => state.userName);
@@ -12,10 +13,6 @@ const Home = () => {
         Bem vindo, {userName  || "visitante"}, à sua Calculadora de Tributação
       </h1>
       <div className="text-center">
-        {/* <p className="text-lg mb-6">
-          Bem-vindo à calculadora de tributação para Pessoa Física e Pessoa
-          Jurídica
-        </p> */}
         <div className="space-y-4">
           <p>Escolha uma das opções no menu acima para começar:</p>
           <ModalCalculoPF />
@@ -23,7 +20,7 @@ const Home = () => {
           <ModalExplicacoes />
         </div>
       </div>
-    </div>
+     </div>
   );
 };
 

@@ -56,8 +56,6 @@ const ModalCalculoPJ = () => {
                 Calcular Tributação de Pessoa Jurídica
             </Button>
             <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
                 open={open}
                 onClose={handleClose}
                 closeAfterTransition
@@ -74,11 +72,11 @@ const ModalCalculoPJ = () => {
                 <Fade in={open}>
                     <Box sx={style}>
                         <Typography
-                            id="modal-modal-title"
+                            id="tituloModalPJ"
                             variant="h6"
                             component="h2"
                             sx={{
-                                color: colors.grey[900],
+                                color: colors.grey[100],
                                 fontWeight: 600,
                                 mb: 2
                             }}
@@ -97,16 +95,11 @@ const ModalCalculoPJ = () => {
                                 "&:hover svg": {
                                     color: colors.redAccent[400],
                                 },
-                                // opcional: se o GoBack for um componente que usa `color="inherit"`,
-                                // isso também força a cor do texto/ícone
-                                "&:hover": {
-                                    color: colors.redAccent[400],
-                                },
                             }}
                         >
                             <GoBack />
                         </Button>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <Typography id="conteudoModalPJ" sx={{ mt: 2 }}>
                             <CalculoPJ />
                         </Typography>
                     </Box>

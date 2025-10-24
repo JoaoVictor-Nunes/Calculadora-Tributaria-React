@@ -4,8 +4,13 @@ import Typography from "@mui/material/Typography";
 
 const Footer = () => {
     return (
-        <Box>
-            <Typography variant="body2" color="text.secondary" align="center" sx={{ width: "100%", p: 2, mt: 4, borderTop: '1px solid gray' }}>
+        <Box component="footer" sx={{ 
+            width: "100%", 
+            p: 2, 
+            borderTop: '1px solid gray',
+            mt: 'auto' // Importante para funcionar com flexbox
+        }}>
+            <Typography variant="body2" color="text.secondary" align="center">
                 {'© '}
                 NAF - Núcleo de Apoio Fiscal da Unichristus {new Date().getFullYear()}
                 {'.'}

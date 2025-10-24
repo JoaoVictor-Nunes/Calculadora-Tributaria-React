@@ -99,11 +99,6 @@ const ModalExplicacoes = () => {
                 "&:hover svg": {
                   color: colors.redAccent[400],
                 },
-                // opcional: se o GoBack for um componente que usa `color="inherit"`,
-                // isso também força a cor do texto/ícone
-                "&:hover": {
-                  color: colors.redAccent[400],
-                },
               }}
             >
               <GoBack />

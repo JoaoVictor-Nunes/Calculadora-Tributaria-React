@@ -15,7 +15,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
-import Link from "@mui/material/Link"; // Importação faltando
+import Link from "@mui/material/Link";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
@@ -95,11 +95,6 @@ const ModalTabelaTributacao = () => {
                 bgcolor: "transparent",
                 // quando passar o mouse, colore qualquer SVG dentro do Button (ícone do GoBack)
                 "&:hover svg": {
-                  color: colors.redAccent[400],
-                },
-                // opcional: se o GoBack for um componente que usa `color="inherit"`,
-                // isso também força a cor do texto/ícone
-                "&:hover": {
                   color: colors.redAccent[400],
                 },
               }}
