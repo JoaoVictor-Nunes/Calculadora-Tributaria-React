@@ -5,6 +5,9 @@ import Typography from "@mui/material/Typography";
 const Footer = () => {
     return (
         <Box component="footer" sx={{ 
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             width: "100%", 
             p: 2, 
             borderTop: '1px solid gray',

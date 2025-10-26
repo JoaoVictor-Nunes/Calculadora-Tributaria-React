@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
@@ -27,7 +27,19 @@ const Contatos = () => {
     const errorMessage = errors.message ? errors.message.message : "";
 
     const [alertVisible, setAlertVisible] = useState(false);
-    const [mapLoaded, setMapLoaded] = useState(false);
+        const [mapLoaded, setMapLoaded] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMapLoaded(true);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    const handleMapLoaded = () => {
+        setMapLoaded(true);
+    }
 
     const onSubmit = (data) => {
         console.log("Dados enviados: ", data);
@@ -35,10 +47,6 @@ const Contatos = () => {
         setTimeout(() => {
             setAlertVisible(false);
         }, 2000);
-    }
-
-    const handleMapLoaded = () => {
-        setMapLoaded(true);
     }
 
     return (
@@ -279,7 +287,7 @@ const Contatos = () => {
                         alignItems: "center"
                     }}
                 >
-                    {/* {mapLoaded ? ( */}
+                     {mapLoaded ? (
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.344439541306!2d-38.493394099999996!3d-3.7349013999999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c7487d0c53520f%3A0xd568fa9590e225b9!2sR.%20Cel.%20Linhares%2C%20771%20-%20Meireles%2C%20Fortaleza%20-%20CE%2C%2060170-075!5e0!3m2!1spt-BR!2sbr!4v1760978253111!5m2!1spt-BR!2sbr"
                         width="100%"
@@ -289,16 +297,16 @@ const Contatos = () => {
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                         title="Localização do NAF"
-                        // onLoad={handleMapLoaded}
+                        onLoad={handleMapLoaded}
                     ></iframe>
-                    {/* ) : (
+                     ) : (
                         <Skeleton variant="rectangular"
                             sx={{
                                 width: "100%",
                                 height: 530,
                                 borderRadius: 2,
                             }} />
-                    )} */}
+                    )}
                 </Box>
             </Box>
             <Box

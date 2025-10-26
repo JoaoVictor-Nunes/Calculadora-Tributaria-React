@@ -4,13 +4,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import CalculoPJ from "../../Pages/CalculoPJ";
+import CalculoPF from "../../Pages/CalculoPF";
 import Backdrop from '@mui/material/Backdrop';
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
 import Grow from "@mui/material/Grow";
-import { useNavigate } from "react-router-dom"; // Importação faltando
+import { useNavigate } from "react-router-dom";
 
 const ModalCalculoPJ = () => {
     const theme = useTheme();
@@ -18,7 +18,7 @@ const ModalCalculoPJ = () => {
     const [open, setOpen] = useState(false);
     const [transformOrigin, setTransformOrigin] = useState('center center');
 
-    const navigate = useNavigate(); // Agora está importado
+    const navigate = useNavigate();
 
     const handleOpen = (event) => {
         const rect = event.currentTarget.getBoundingClientRect();
@@ -48,18 +48,23 @@ const ModalCalculoPJ = () => {
             <Button
                 onClick={handleOpen}
                 sx={{
-                    color: colors.grey[100],
-                    border: `1px solid ${colors.blueAccent[500]}`,
-                    backgroundColor: colors.blueAccent[500],
-                    '&:hover': {
-                        backgroundColor: colors.blueAccent[600],
-                        borderColor: colors.blueAccent[600],
-                    },
-                    borderRadius: 1,
+                    color: colors.grey[900],
+                    backgroundColor: colors.redAccent[500],
                     px: 2,
                     py: 1,
                     width: "300px",
                     height: "80px",
+                    // Transições para o efeito hover
+                    transition: "all 0.3s ease-in-out",
+                    transitionDelay: "30ms",
+                    // Estilo normal
+                    transform: "translateY(0) scale(1)",
+                    // Efeito hover
+                    '&:hover': {
+                        backgroundColor: colors.redAccent[600],
+                        transform: "translateY(-4px) scale(1.02)",
+                        boxShadow: `0 10px 25px -5px rgba(0, 0, 0, 0.3)`,
+                    },
                 }}
             >
                 Pessoa Física (PF)
@@ -98,7 +103,7 @@ const ModalCalculoPJ = () => {
                                 mb: 2
                             }}
                         >
-                            Calcular Tributação de Pessoa Jurídica
+                            Calcular Tributação de Pessoa Física
                         </Typography>
                         <Button
                             onClick={handleClose}
@@ -115,8 +120,7 @@ const ModalCalculoPJ = () => {
                         >
                             <GoBack />
                         </Button>
-                        {/* Removi a Typography extra que envolvia o CalculoPJ */}
-                        <CalculoPJ />
+                        <CalculoPF />
                     </Box>
                 </Grow>
             </Modal>

@@ -21,7 +21,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../Assets/CRVascodaGama.png";
+import Logo from "../../Assets/NAF.png";
 
 const drawerWidth = 240;
 const navItems = ["Home", "Detalhes", "Contatos", "Cálculo", "Sair"];
@@ -220,7 +220,7 @@ function Topbar(props) {
                       position: "relative",
                       color: colors.grey[100],
                       "&:hover": {
-                        backgroundColor: colors.primary[300],
+                        backgroundColor: colors.redAccent[800],
                       },
                       "&::after": {
                         content: '""',
@@ -229,7 +229,7 @@ function Topbar(props) {
                         bottom: 0,
                         width: 0,
                         height: "2px",
-                        backgroundColor: "#2563eb",
+                        backgroundColor: colors.redAccent[400],
                         transition: "width 0.3s ease",
                       },
                       "&:hover::after": {

@@ -1,10 +1,20 @@
 import React, { useState } from "react";
+import { useTheme } from "@mui/material/styles";
+import { tokens } from "../Tema";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 
 const CalculoPJ = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const [formData, setFormData] = useState({
-    faturamento: "",
-    regimeTributario: "simples",
-    despesas: ""
+    rendaMensal: "",
+    salarioMinimo: "1382.50" // valor padrão, ajuste se quiser
   });
 
   const [resultado, setResultado] = useState(null);
@@ -16,148 +26,135 @@ const CalculoPJ = () => {
     });
   };
 
-  const calcularTributacao = () => {
-    const faturamento = parseFloat(formData.faturamento) || 0;
-    const despesas = parseFloat(formData.despesas) || 0;
-    const lucroBruto = faturamento - despesas;
+  const calcularPJ = () => {
+    const renda = parseFloat(formData.rendaMensal) || 0;
+    const salarioMinimo = parseFloat(formData.salarioMinimo) || 0;
 
-    let impostos = 0;
-    let aliquota = 0;
+    // Pró-labore: maior entre 28% da renda e salário mínimo
+    const proLabore = Math.max(renda * 0.28, salarioMinimo);
 
-    if (formData.regimeTributario === "simples") {
-      // Simples Nacional - alíquotas aproximadas
-      if (faturamento <= 180000) {
-        aliquota = 0.06; // 6%
-      } else if (faturamento <= 360000) {
-        aliquota = 0.112; // 11.2%
-      } else if (faturamento <= 720000) {
-        aliquota = 0.135; // 13.5%
-      } else if (faturamento <= 1800000) {
-        aliquota = 0.16; // 16%
-      } else if (faturamento <= 3600000) {
-        aliquota = 0.21; // 21%
-      } else {
-        aliquota = 0.33; // 33%
-      }
-      impostos = faturamento * aliquota;
-    } else if (formData.regimeTributario === "presumido") {
-      // Lucro Presumido - alíquotas aproximadas
-      aliquota = 0.32; // 32% sobre o lucro presumido
-      const lucroPresumido = faturamento * 0.32; // 32% do faturamento
-      impostos = lucroPresumido * aliquota;
-    } else {
-      // Lucro Real
-      aliquota = 0.25; // 25% sobre o lucro real
-      impostos = Math.max(0, lucroBruto * aliquota);
-    }
+    // Simples Nacional (exemplo): 6% sobre a renda mensal
+    const simples = renda * 0.06;
+
+    // INSS sobre pró-labore (exemplo): 11%
+    const inss = proLabore * 0.11;
+
+    // Total PJ (simples + INSS) - IR sobre pró-labore não incluído aqui (pode aplicar tabela PF se desejar)
+    const totalPJ = simples + inss;
 
     setResultado({
-      faturamento,
-      despesas,
-      lucroBruto,
-      impostos,
-      aliquota: (aliquota * 100).toFixed(2),
-      lucroLiquido: lucroBruto - impostos
+      renda,
+      proLabore,
+      simples,
+      inss,
+      totalPJ,
+      rendaLiquidaPJ: renda - totalPJ
     });
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <h1 className="text-3xl font-bold text-center mb-8">
-        Cálculo de Tributação - Pessoa Jurídica
-      </h1>
-      
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <form className="space-y-4">
-          <div>
-            <label htmlFor="faturamento" className="block text-sm font-medium mb-2">
-              Faturamento Mensal (R$):
-            </label>
-            <input
-              type="number"
-              id="faturamento"
-              name="faturamento"
-              value={formData.faturamento}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Digite o faturamento mensal"
-            />
-          </div>
+    <Box sx={{ maxWidth: 900, mx: "auto", p: { xs: 2, md: 4 } }}>
+      <Typography variant="h4" align="center" fontWeight="bold" sx={{ mb: 3 }}>
+        Cálculo de Tributação - Pessoa Jurídica (PJ)
+      </Typography>
 
-          <div>
-            <label htmlFor="regimeTributario" className="block text-sm font-medium mb-2">
-              Regime Tributário:
-            </label>
-            <select
-              id="regimeTributario"
-              name="regimeTributario"
-              value={formData.regimeTributario}
+      <Paper sx={{ p: 3, backgroundColor: colors.primary[500] }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              label="Renda Mensal (R$)"
+              name="rendaMensal"
+              type="number"
+              value={formData.rendaMensal}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              fullWidth
+              variant="outlined"
+              sx={{ backgroundColor: colors.primary[400] }}
+              placeholder="Digite a receita mensal"
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Salário Mínimo (para pró-labore)"
+              name="salarioMinimo"
+              type="number"
+              value={formData.salarioMinimo}
+              onChange={handleChange}
+              fullWidth
+              variant="outlined"
+              sx={{ backgroundColor: colors.primary[400] }}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={calcularPJ}
+              sx={{
+                bgcolor: colors.greenAccent[600],
+                "&:hover": { bgcolor: colors.greenAccent[700] }
+              }}
             >
-              <option value="simples">Simples Nacional</option>
-              <option value="presumido">Lucro Presumido</option>
-              <option value="real">Lucro Real</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="despesas" className="block text-sm font-medium mb-2">
-              Despesas Mensais (R$):
-            </label>
-            <input
-              type="number"
-              id="despesas"
-              name="despesas"
-              value={formData.despesas}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Digite as despesas mensais"
-            />
-          </div>
-
-          <button
-            type="button"
-            onClick={calcularTributacao}
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Calcular Tributação
-          </button>
-        </form>
+              Calcular PJ
+            </Button>
+          </Grid>
+        </Grid>
 
         {resultado && (
-          <div className="mt-6 p-4 bg-gray-50 rounded-md">
-            <h3 className="text-lg font-semibold mb-4">Resultado do Cálculo:</h3>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="font-medium">Faturamento:</span>
-                <span className="ml-2">R$ {resultado.faturamento.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div>
-                <span className="font-medium">Despesas:</span>
-                <span className="ml-2">R$ {resultado.despesas.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div>
-                <span className="font-medium">Lucro Bruto:</span>
-                <span className="ml-2">R$ {resultado.lucroBruto.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div>
-                <span className="font-medium">Alíquota:</span>
-                <span className="ml-2">{resultado.aliquota}%</span>
-              </div>
-              <div className="col-span-2">
-                <span className="font-medium text-red-600">Impostos Devidos:</span>
-                <span className="ml-2 text-red-600 font-bold">R$ {resultado.impostos.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div className="col-span-2">
-                <span className="font-medium text-green-600">Lucro Líquido:</span>
-                <span className="ml-2 text-green-600 font-bold">R$ {resultado.lucroLiquido.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-            </div>
-          </div>
+          <Paper sx={{ mt: 3, p: 2, backgroundColor: colors.primary[400] }}>
+            <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
+              Resultado PJ:
+            </Typography>
+
+            <Grid container spacing={1}>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">Renda Mensal:</Typography>
+                <Typography variant="body2">
+                  R$ {resultado.renda.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">Pró-labore:</Typography>
+                <Typography variant="body2">
+                  R$ {resultado.proLabore.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">Simples Nacional (6%):</Typography>
+                <Typography variant="body2">
+                  R$ {resultado.simples.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">INSS (11% sobre pró-labore):</Typography>
+                <Typography variant="body2">
+                  R$ {resultado.inss.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body2" fontWeight="600">Total PJ (Simples + INSS):</Typography>
+                <Typography variant="body1" fontWeight="bold" color="error.main">
+                  R$ {resultado.totalPJ.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body2" fontWeight="600" color="success.main">Renda Líquida aproximada:</Typography>
+                <Typography variant="body1" fontWeight="bold" color="success.main">
+                  R$ {resultado.rendaLiquidaPJ.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Paper>
         )}
-      </div>
-    </div>
+      </Paper>
+    </Box>
   );
 };
 

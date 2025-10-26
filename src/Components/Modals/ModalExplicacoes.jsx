@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Backdrop from "@mui/material/Backdrop";
-import Fade from "@mui/material/Fade";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
 import Link from "@mui/material/Link";
@@ -51,19 +50,24 @@ const ModalExplicacoes = () => {
     <div>
       <Button onClick={handleOpen}
         sx={{
-          color: colors.grey[100],
-          border: `1px solid ${colors.blueAccent[500]}`,
-          backgroundColor: colors.blueAccent[500],
-          '&:hover': {
-            backgroundColor: colors.blueAccent[600],
-            borderColor: colors.blueAccent[600],
-          },
-          borderRadius: 1,
-          px: 2,
-          py: 1,
-          width: "300px",
-          height: "80px",
-        }}
+                    color: colors.grey[900],
+                    backgroundColor: colors.redAccent[500],
+                    px: 2,
+                    py: 1,
+                    width: "300px",
+                    height: "80px",
+                    // Transições para o efeito hover
+                    transition: "all 0.3s ease-in-out",
+                    transitionDelay: "30ms",
+                    // Estilo normal
+                    transform: "translateY(0) scale(1)",
+                    // Efeito hover
+                    '&:hover': {
+                        backgroundColor: colors.redAccent[600],
+                        transform: "translateY(-4px) scale(1.02)",
+                        boxShadow: `0 10px 25px -5px rgba(0, 0, 0, 0.3)`,
+                    },
+                }}
       >
         Como são feitos os cálculos?
       </Button>

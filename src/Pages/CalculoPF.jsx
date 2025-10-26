@@ -1,10 +1,21 @@
 import React, { useState } from "react";
+import { useTheme } from "@mui/material/styles";
+import { tokens } from "../Tema";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 
 const CalculoPF = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+
   const [formData, setFormData] = useState({
     rendaBruta: "",
     dependentes: "0",
-    despesasDeduciveis: ""
+    despesasDeduciveis: "",
   });
 
   const [resultado, setResultado] = useState(null);
@@ -12,7 +23,7 @@ const CalculoPF = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -21,31 +32,39 @@ const CalculoPF = () => {
     const dependentes = parseInt(formData.dependentes) || 0;
     const despesasDeduciveis = parseFloat(formData.despesasDeduciveis) || 0;
 
-    // Dedução por dependente (2024)
+    // Dedução por dependente (valor usado no projeto)
     const deducaoPorDependente = 2275.08;
     const totalDeducaoDependentes = dependentes * deducaoPorDependente;
 
     // Base de cálculo
-    const baseCalculo = rendaBruta - totalDeducaoDependentes - despesasDeduciveis;
+    const baseCalculo =
+      rendaBruta - totalDeducaoDependentes - despesasDeduciveis;
 
-    // Alíquotas e faixas do IRPF 2024
+    // Alíquotas e faixas (mesma lógica do original)
     let imposto = 0;
     let aliquotaEfetiva = 0;
 
     if (baseCalculo <= 22847.76) {
       imposto = 0;
       aliquotaEfetiva = 0;
-    } else if (baseCalculo <= 33919.80) {
+    } else if (baseCalculo <= 33919.8) {
       imposto = (baseCalculo - 22847.76) * 0.075;
       aliquotaEfetiva = (imposto / rendaBruta) * 100;
-    } else if (baseCalculo <= 45012.60) {
-      imposto = (33919.80 - 22847.76) * 0.075 + (baseCalculo - 33919.80) * 0.15;
+    } else if (baseCalculo <= 45012.6) {
+      imposto = (33919.8 - 22847.76) * 0.075 + (baseCalculo - 33919.8) * 0.15;
       aliquotaEfetiva = (imposto / rendaBruta) * 100;
     } else if (baseCalculo <= 55976.16) {
-      imposto = (33919.80 - 22847.76) * 0.075 + (45012.60 - 33919.80) * 0.15 + (baseCalculo - 45012.60) * 0.225;
+      imposto =
+        (33919.8 - 22847.76) * 0.075 +
+        (45012.6 - 33919.8) * 0.15 +
+        (baseCalculo - 45012.6) * 0.225;
       aliquotaEfetiva = (imposto / rendaBruta) * 100;
     } else {
-      imposto = (33919.80 - 22847.76) * 0.075 + (45012.60 - 33919.80) * 0.15 + (55976.16 - 45012.60) * 0.225 + (baseCalculo - 55976.16) * 0.275;
+      imposto =
+        (33919.8 - 22847.76) * 0.075 +
+        (45012.6 - 33919.8) * 0.15 +
+        (55976.16 - 45012.6) * 0.225 +
+        (baseCalculo - 55976.16) * 0.275;
       aliquotaEfetiva = (imposto / rendaBruta) * 100;
     }
 
@@ -57,113 +76,262 @@ const CalculoPF = () => {
       baseCalculo,
       imposto,
       aliquotaEfetiva: aliquotaEfetiva.toFixed(2),
-      rendaLiquida: rendaBruta - imposto
+      rendaLiquida: rendaBruta - imposto,
     });
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <h1 className="text-3xl font-bold text-center mb-8">
+    <Box sx={{ maxWidth: 900, mx: "auto", p: { xs: 2, md: 4 }, minHeight: "50vh"}}>
+      <Typography variant="h4" align="center" fontWeight="bold" sx={{ mb: 3 }}>
         Cálculo de Tributação - Pessoa Física (IRPF)
-      </h1>
-      
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <form className="space-y-4">
-          <div>
-            <label htmlFor="rendaBruta" className="block text-sm font-medium mb-2">
-              Renda Bruta Anual (R$):
-            </label>
-            <input
-              type="number"
-              id="rendaBruta"
-              name="rendaBruta"
-              value={formData.rendaBruta}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Digite sua renda bruta anual"
-            />
-          </div>
+      </Typography>
 
-          <div>
-            <label htmlFor="dependentes" className="block text-sm font-medium mb-2">
-              Número de Dependentes:
-            </label>
-            <input
-              type="number"
-              id="dependentes"
-              name="dependentes"
-              value={formData.dependentes}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              min="0"
-            />
-          </div>
+      <Paper
+        sx={{
+          p: 3,
+          backgroundColor: colors.primary[500],
+          border: "1px solid",
+          borderColor: "#878787",
+        }}
+      >
+        <Box component="form" noValidate>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                label="Renda Bruta Anual (R$)"
+                name="rendaBruta"
+                type="number"
+                value={formData.rendaBruta}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                sx={{
+                  width: "100%",
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: colors.primary[500],
+                    "& fieldset": {
+                      borderColor: colors.grey[300],
+                    },
+                    "&:hover fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: colors.grey[300],
+                    "&.Mui-focused": {
+                      color: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    color: "colors.grey[900]",
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Número de Dependentes"
+                name="dependentes"
+                type="number"
+                value={formData.dependentes}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                sx={{
+                  width: "100%",
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: colors.primary[500],
+                    "& fieldset": {
+                      borderColor: colors.grey[300],
+                    },
+                    "&:hover fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: colors.grey[300],
+                    "&.Mui-focused": {
+                      color: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    color: "colors.grey[900]",
+                  },
+                }}
+                inputProps={{ min: 0 }}
+              />
+            </Grid>
 
-          <div>
-            <label htmlFor="despesasDeduciveis" className="block text-sm font-medium mb-2">
-              Despesas Dedutíveis (R$):
-            </label>
-            <input
-              type="number"
-              id="despesasDeduciveis"
-              name="despesasDeduciveis"
-              value={formData.despesasDeduciveis}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Gastos com saúde, educação, etc."
-            />
-          </div>
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Despesas Dedutíveis (R$)"
+                name="despesasDeduciveis"
+                type="number"
+                value={formData.despesasDeduciveis}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                sx={{
+                  width: "100%",
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: colors.primary[500],
+                    "& fieldset": {
+                      borderColor: colors.grey[300],
+                    },
+                    "&:hover fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: colors.grey[300],
+                    "&.Mui-focused": {
+                      color: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    color: "colors.grey[900]",
+                  },
+                }}
+                placeholder="Gastos com saúde, educação, etc."
+              />
+            </Grid>
 
-          <button
-            type="button"
-            onClick={calcularIRPF}
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Calcular IRPF
-          </button>
-        </form>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={calcularIRPF}
+                sx={{
+                  bgcolor: colors.blueAccent[500],
+                  "&:hover": { bgcolor: colors.blueAccent[600] },
+                }}
+              >
+                Calcular IRPF
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
 
         {resultado && (
-          <div className="mt-6 p-4 bg-gray-50 rounded-md">
-            <h3 className="text-lg font-semibold mb-4">Resultado do Cálculo:</h3>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="font-medium">Renda Bruta:</span>
-                <span className="ml-2">R$ {resultado.rendaBruta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div>
-                <span className="font-medium">Dependentes:</span>
-                <span className="ml-2">{resultado.dependentes}</span>
-              </div>
-              <div>
-                <span className="font-medium">Dedução por Dependentes:</span>
-                <span className="ml-2">R$ {resultado.totalDeducaoDependentes.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div>
-                <span className="font-medium">Despesas Dedutíveis:</span>
-                <span className="ml-2">R$ {resultado.despesasDeduciveis.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div>
-                <span className="font-medium">Base de Cálculo:</span>
-                <span className="ml-2">R$ {resultado.baseCalculo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div>
-                <span className="font-medium">Alíquota Efetiva:</span>
-                <span className="ml-2">{resultado.aliquotaEfetiva}%</span>
-              </div>
-              <div className="col-span-2">
-                <span className="font-medium text-red-600">Imposto Devido:</span>
-                <span className="ml-2 text-red-600 font-bold">R$ {resultado.imposto.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-              <div className="col-span-2">
-                <span className="font-medium text-green-600">Renda Líquida:</span>
-                <span className="ml-2 text-green-600 font-bold">R$ {resultado.rendaLiquida.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-              </div>
-            </div>
-          </div>
+          <Paper sx={{ mt: 3, p: 2, backgroundColor: colors.primary[400] }}>
+            <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
+              Resultado do Cálculo:
+            </Typography>
+
+            <Grid container spacing={1}>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">
+                  Renda Bruta:
+                </Typography>
+                <Typography variant="body2">
+                  R${" "}
+                  {resultado.rendaBruta.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">
+                  Dependentes:
+                </Typography>
+                <Typography variant="body2">{resultado.dependentes}</Typography>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">
+                  Dedução por Dependentes:
+                </Typography>
+                <Typography variant="body2">
+                  R${" "}
+                  {resultado.totalDeducaoDependentes.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">
+                  Despesas Dedutíveis:
+                </Typography>
+                <Typography variant="body2">
+                  R${" "}
+                  {resultado.despesasDeduciveis.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">
+                  Base de Cálculo:
+                </Typography>
+                <Typography variant="body2">
+                  R${" "}
+                  {resultado.baseCalculo.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">
+                  Alíquota Efetiva:
+                </Typography>
+                <Typography variant="body2">
+                  {resultado.aliquotaEfetiva}%
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="body2" fontWeight="600" color="error.main">
+                  Imposto Devido:
+                </Typography>
+                <Typography
+                  variant="body1"
+                  fontWeight="bold"
+                  color="error.main"
+                >
+                  R${" "}
+                  {resultado.imposto.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography
+                  variant="body2"
+                  fontWeight="600"
+                  color="success.main"
+                >
+                  Renda Líquida:
+                </Typography>
+                <Typography
+                  variant="body1"
+                  fontWeight="bold"
+                  color="success.main"
+                >
+                  R${" "}
+                  {resultado.rendaLiquida.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                  })}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Paper>
         )}
-      </div>
-    </div>
+      </Paper>
+    </Box>
   );
 };
 
