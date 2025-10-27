@@ -1,87 +1,78 @@
 import React, { useState } from "react";
-import { useTheme } from "@mui/material/styles";
-import { tokens } from "../Tema";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Grid,
+  useTheme,
+} from "@mui/material";
+import { tokens } from "../Tema"; // ajuste o caminho conforme seu projeto
 
 const CalculoPF = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const [formData, setFormData] = useState({
-    rendaBruta: "",
-    dependentes: "0",
-    despesasDeduciveis: "",
+    rendaMensal: "",
+    custosMensais: "",
   });
 
   const [resultado, setResultado] = useState(null);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const calcularIRPF = () => {
-    const rendaBruta = parseFloat(formData.rendaBruta) || 0;
-    const dependentes = parseInt(formData.dependentes) || 0;
-    const despesasDeduciveis = parseFloat(formData.despesasDeduciveis) || 0;
+    const rendaMensal = parseFloat(formData.rendaMensal) || 0;
+    const custosMensais = parseFloat(formData.custosMensais) || 0;
 
-    // Dedução por dependente (valor usado no projeto)
-    const deducaoPorDependente = 2275.08;
-    const totalDeducaoDependentes = dependentes * deducaoPorDependente;
+    // Base de cálculo (conforme PDF)
+    const baseCalculo = rendaMensal - custosMensais;
 
-    // Base de cálculo
-    const baseCalculo =
-      rendaBruta - totalDeducaoDependentes - despesasDeduciveis;
+    // Tabela IRPF mensal (PDF)
+    const faixas = [
+      { limite: 2259.20, aliquota: 0, deducao: 0 },
+      { limite: 2826.65, aliquota: 0.075, deducao: 169.44 },
+      { limite: 3751.05, aliquota: 0.15, deducao: 381.44 },
+      { limite: 4664.68, aliquota: 0.225, deducao: 662.77 },
+      { limite: Infinity, aliquota: 0.275, deducao: 896.00 },
+    ];
 
-    // Alíquotas e faixas (mesma lógica do original)
-    let imposto = 0;
-    let aliquotaEfetiva = 0;
+    let aliquota = 0;
+    let deducao = 0;
 
-    if (baseCalculo <= 22847.76) {
-      imposto = 0;
-      aliquotaEfetiva = 0;
-    } else if (baseCalculo <= 33919.8) {
-      imposto = (baseCalculo - 22847.76) * 0.075;
-      aliquotaEfetiva = (imposto / rendaBruta) * 100;
-    } else if (baseCalculo <= 45012.6) {
-      imposto = (33919.8 - 22847.76) * 0.075 + (baseCalculo - 33919.8) * 0.15;
-      aliquotaEfetiva = (imposto / rendaBruta) * 100;
-    } else if (baseCalculo <= 55976.16) {
-      imposto =
-        (33919.8 - 22847.76) * 0.075 +
-        (45012.6 - 33919.8) * 0.15 +
-        (baseCalculo - 45012.6) * 0.225;
-      aliquotaEfetiva = (imposto / rendaBruta) * 100;
-    } else {
-      imposto =
-        (33919.8 - 22847.76) * 0.075 +
-        (45012.6 - 33919.8) * 0.15 +
-        (55976.16 - 45012.6) * 0.225 +
-        (baseCalculo - 55976.16) * 0.275;
-      aliquotaEfetiva = (imposto / rendaBruta) * 100;
+    // Identifica a faixa correta
+    for (let faixa of faixas) {
+      if (baseCalculo <= faixa.limite) {
+        aliquota = faixa.aliquota;
+        deducao = faixa.deducao;
+        break;
+      }
     }
 
+    // Cálculo do IR (após aplicar a alíquota e dedução)
+    let imposto = baseCalculo * aliquota - deducao;
+    if (imposto < 0) imposto = 0;
+
     setResultado({
-      rendaBruta,
-      dependentes,
-      despesasDeduciveis,
-      totalDeducaoDependentes,
+      rendaMensal,
+      custosMensais,
       baseCalculo,
+      aliquota: aliquota * 100,
+      deducao,
       imposto,
-      aliquotaEfetiva: aliquotaEfetiva.toFixed(2),
-      rendaLiquida: rendaBruta - imposto,
     });
   };
 
   return (
-    <Box sx={{ maxWidth: 900, mx: "auto", p: { xs: 2, md: 4 }, minHeight: "50vh"}}>
+    <Box sx={{ maxWidth: 900, mx: "auto", p: { xs: 2, md: 4 } }}>
       <Typography variant="h4" align="center" fontWeight="bold" sx={{ mb: 3 }}>
         Cálculo de Tributação - Pessoa Física (IRPF)
       </Typography>
@@ -94,135 +85,81 @@ const CalculoPF = () => {
           borderColor: "#878787",
         }}
       >
-        <Box component="form" noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                label="Renda Bruta Anual (R$)"
-                name="rendaBruta"
-                type="number"
-                value={formData.rendaBruta}
-                onChange={handleChange}
-                fullWidth
-                variant="outlined"
-                sx={{
-                  width: "100%",
-                  "& .MuiOutlinedInput-root": {
-                    backgroundColor: colors.primary[500],
-                    "& fieldset": {
-                      borderColor: colors.grey[300],
-                    },
-                    "&:hover fieldset": {
-                      borderColor: colors.blueAccent[500],
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: colors.blueAccent[500],
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: colors.grey[300],
-                    "&.Mui-focused": {
-                      color: colors.blueAccent[500],
-                    },
-                  },
-                  "& .MuiOutlinedInput-input": {
-                    color: "colors.grey[900]",
-                  },
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                label="Número de Dependentes"
-                name="dependentes"
-                type="number"
-                value={formData.dependentes}
-                onChange={handleChange}
-                fullWidth
-                variant="outlined"
-                sx={{
-                  width: "100%",
-                  "& .MuiOutlinedInput-root": {
-                    backgroundColor: colors.primary[500],
-                    "& fieldset": {
-                      borderColor: colors.grey[300],
-                    },
-                    "&:hover fieldset": {
-                      borderColor: colors.blueAccent[500],
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: colors.blueAccent[500],
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: colors.grey[300],
-                    "&.Mui-focused": {
-                      color: colors.blueAccent[500],
-                    },
-                  },
-                  "& .MuiOutlinedInput-input": {
-                    color: "colors.grey[900]",
-                  },
-                }}
-                inputProps={{ min: 0 }}
-              />
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <TextField
-                label="Despesas Dedutíveis (R$)"
-                name="despesasDeduciveis"
-                type="number"
-                value={formData.despesasDeduciveis}
-                onChange={handleChange}
-                fullWidth
-                variant="outlined"
-                sx={{
-                  width: "100%",
-                  "& .MuiOutlinedInput-root": {
-                    backgroundColor: colors.primary[500],
-                    "& fieldset": {
-                      borderColor: colors.grey[300],
-                    },
-                    "&:hover fieldset": {
-                      borderColor: colors.blueAccent[500],
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: colors.blueAccent[500],
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: colors.grey[300],
-                    "&.Mui-focused": {
-                      color: colors.blueAccent[500],
-                    },
-                  },
-                  "& .MuiOutlinedInput-input": {
-                    color: "colors.grey[900]",
-                  },
-                }}
-                placeholder="Gastos com saúde, educação, etc."
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={calcularIRPF}
-                sx={{
-                  bgcolor: colors.blueAccent[500],
-                  "&:hover": { bgcolor: colors.blueAccent[600] },
-                }}
-              >
-                Calcular IRPF
-              </Button>
-            </Grid>
+        <Grid container spacing={2}>
+          {/* Campo Renda Mensal */}
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Renda Mensal (R$)"
+              name="rendaMensal"
+              type="number"
+              value={formData.rendaMensal}
+              onChange={handleChange}
+              fullWidth
+              variant="outlined"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: colors.primary[500],
+                  "& fieldset": { borderColor: colors.grey[300] },
+                  "&:hover fieldset": { borderColor: colors.blueAccent[500] },
+                  "&.Mui-focused fieldset": { borderColor: colors.blueAccent[500] },
+                },
+                "& .MuiInputLabel-root": {
+                  color: colors.grey[300],
+                  "&.Mui-focused": { color: colors.blueAccent[500] },
+                },
+                "& .MuiOutlinedInput-input": { color: colors.grey[100] },
+              }}
+            />
           </Grid>
-        </Box>
 
+          {/* Campo Custos Mensais */}
+          <Grid item xs={12} md={4}>
+            <TextField
+              label="Custos Mensais (R$)"
+              name="custosMensais"
+              type="number"
+              value={formData.custosMensais}
+              onChange={handleChange}
+              fullWidth
+              variant="outlined"
+              placeholder="Despesas dedutíveis mensais"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: colors.primary[500],
+                  "& fieldset": { borderColor: colors.grey[300] },
+                  "&:hover fieldset": { borderColor: colors.blueAccent[500] },
+                  "&.Mui-focused fieldset": { borderColor: colors.blueAccent[500] },
+                },
+                "& .MuiInputLabel-root": {
+                  color: colors.grey[300],
+                  "&.Mui-focused": { color: colors.blueAccent[500] },
+                },
+                "& .MuiOutlinedInput-input": { color: colors.grey[100] },
+              }}
+            />
+          </Grid>
+
+          {/* Botão Calcular */}
+          <Grid item xs={12} md={2} display="flex" alignItems="stretch">
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={calcularIRPF}
+              sx={{
+                bgcolor: colors.blueAccent[500],
+                "&:hover": { bgcolor: colors.blueAccent[600] },
+                height: "100%",
+                fontWeight: "bold",
+              }}
+            >
+              Calcular
+            </Button>
+          </Grid>
+        </Grid>
+
+        {/* Exibição dos resultados */}
         {resultado && (
-          <Paper sx={{ mt: 3, p: 2, backgroundColor: colors.primary[400] }}>
+          <Paper variant="outlined" sx={{ mt: 3, p: 2, backgroundColor: colors.primary[200] }}>
             <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
               Resultado do Cálculo:
             </Typography>
@@ -230,11 +167,11 @@ const CalculoPF = () => {
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
                 <Typography variant="body2" fontWeight="600">
-                  Renda Bruta:
+                  Renda Mensal:
                 </Typography>
                 <Typography variant="body2">
                   R${" "}
-                  {resultado.rendaBruta.toLocaleString("pt-BR", {
+                  {resultado.rendaMensal.toLocaleString("pt-BR", {
                     minimumFractionDigits: 2,
                   })}
                 </Typography>
@@ -242,30 +179,11 @@ const CalculoPF = () => {
 
               <Grid item xs={12} sm={6}>
                 <Typography variant="body2" fontWeight="600">
-                  Dependentes:
-                </Typography>
-                <Typography variant="body2">{resultado.dependentes}</Typography>
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <Typography variant="body2" fontWeight="600">
-                  Dedução por Dependentes:
+                  Custos Mensais:
                 </Typography>
                 <Typography variant="body2">
                   R${" "}
-                  {resultado.totalDeducaoDependentes.toLocaleString("pt-BR", {
-                    minimumFractionDigits: 2,
-                  })}
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <Typography variant="body2" fontWeight="600">
-                  Despesas Dedutíveis:
-                </Typography>
-                <Typography variant="body2">
-                  R${" "}
-                  {resultado.despesasDeduciveis.toLocaleString("pt-BR", {
+                  {resultado.custosMensais.toLocaleString("pt-BR", {
                     minimumFractionDigits: 2,
                   })}
                 </Typography>
@@ -285,10 +203,20 @@ const CalculoPF = () => {
 
               <Grid item xs={12} sm={6}>
                 <Typography variant="body2" fontWeight="600">
-                  Alíquota Efetiva:
+                  Alíquota:
+                </Typography>
+                <Typography variant="body2">{resultado.aliquota}%</Typography>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2" fontWeight="600">
+                  Parcela Dedutível:
                 </Typography>
                 <Typography variant="body2">
-                  {resultado.aliquotaEfetiva}%
+                  R${" "}
+                  {resultado.deducao.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                  })}
                 </Typography>
               </Grid>
 
@@ -303,26 +231,6 @@ const CalculoPF = () => {
                 >
                   R${" "}
                   {resultado.imposto.toLocaleString("pt-BR", {
-                    minimumFractionDigits: 2,
-                  })}
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Typography
-                  variant="body2"
-                  fontWeight="600"
-                  color="success.main"
-                >
-                  Renda Líquida:
-                </Typography>
-                <Typography
-                  variant="body1"
-                  fontWeight="bold"
-                  color="success.main"
-                >
-                  R${" "}
-                  {resultado.rendaLiquida.toLocaleString("pt-BR", {
                     minimumFractionDigits: 2,
                   })}
                 </Typography>

@@ -5,11 +5,20 @@ import Footer from "../Components/Footer";
 
 const TopbarLayout = () => {
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh", // altura total da tela
+      }}
+    >
       <Topbar />
-      <Outlet />
+      <div style={{ flex: 1 }}> {/* ocupa o espaço restante */}
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );
 };
+
 export default TopbarLayout;

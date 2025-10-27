@@ -22,9 +22,18 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+
+  const watchedFields = watch();
+
+  const areAllFieldsFilled =
+    watchedFields.email &&
+    watchedFields.password;
+
+  const isButtonDisabled = !areAllFieldsFilled;
 
 
   const onSubmit = (data) => {
@@ -33,18 +42,23 @@ const Login = () => {
   };
 
   return (
+    // Box para armazenar o conteúdo da página
     <Box
+
+    // estilização da página
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         minHeight: "100vh",
+        paddingTop: "100px",
       }}
     >
       {/* Botão de alternar tema */}
       <IconButton
-        onClick={colorMode.toggleColorMode}
+        onClick={colorMode.toggleColorMode} // quando clicar, muda de tema escuro para claro
+        // Estilização para manter o botão na parte superior direita
         sx={{
           position: "absolute",
           top: 16,
@@ -53,41 +67,51 @@ const Login = () => {
           color: colors.grey[100],
         }}
       >
-        {theme.palette.mode === "dark" ? (
-          <LightModeOutlinedIcon />
+        {theme.palette.mode === "dark" ? ( 
+          <LightModeOutlinedIcon /> // se o tema for "escuro" aparece o sol
         ) : (
-          <DarkModeOutlinedIcon />
+          <DarkModeOutlinedIcon /> // se o tema for "claro" aparece a lua
         )}
       </IconButton>
 
+      {/*Box para armazenar o form*/}
       <Box
         sx={{
-          mx: "auto",
-          px: 4,
-          py: 7,
-          backgroundColor: colors.primary[500],
-          borderRadius: 2,
-          borderColor: "#878787",
-          borderWidth: 1,
-          boxShadow: 3,
-          width: { xs: "92vw", sm: 480, md: 600 },
+          mx: "auto", // centraliza a box horizontalmente
+          my: "auto", // centraliza a box verticalmente
+          px: 4, // padding na horizontal de 4
+          py: 7, // padding na vertical de 7
+          backgroundColor: colors.primary[500], // deixa o background da box com a mesma cor da página
+          borderRadius: 2, // arredonda a borda da box
+          borderColor: "#878787", // borda cinza
+          borderWidth: 1, // coloca a grossura da borda
+          boxShadow: 3, // adiciona uma sombra na box 
+          // width: { xs: "92vw", sm: 480, md: 600 }, // altera o tamanho horizontal da box
         }}
       >
+        {/*Cria o título de login do form*/}
         <Typography
-          variant="h1"
+          variant="h1" // tamanho da fonte (h1)
+          // estilização da escrita
           sx={{
-            textAlign: "center",
-            mb: 8,
-            color: colors.grey[100],
-            fontWeight: "bold",
+            textAlign: "center", // alinha o texto horizontalmente
+            mb: 8, // margem inferior de 8
+            color: colors.grey[100], // cor fica branca no modo escuro e preta no modo claro
+            fontWeight: "bold", // fonte negrito
           }}
         >
           Login
         </Typography>
+
+        {/*Formulário em si*/}
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
-          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          sx={{ 
+            display: "flex", 
+            flexDirection: "column", 
+            gap: 2 
+          }}
         >
           <EmailInput register={register} errors={errors} />
           <PasswordInput register={register} errors={errors} />
@@ -144,7 +168,12 @@ const Login = () => {
               </Typography>
             </Box>
           </Box>
-          <ButtonUsage type="submit">Entrar</ButtonUsage>
+          <ButtonUsage
+            type="submit"
+            disabled={isButtonDisabled}
+          >
+            Entrar
+          </ButtonUsage>
           <Box
             sx={{
               display: "flex",
@@ -174,7 +203,7 @@ const Login = () => {
           </Box>
         </Box>
       </Box>
-      {/* <Footer /> */}
+      <Footer />
     </Box>
   );
 };

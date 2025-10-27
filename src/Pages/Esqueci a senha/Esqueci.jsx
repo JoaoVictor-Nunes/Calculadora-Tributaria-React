@@ -43,10 +43,10 @@ const Esqueci = () => {
         alignItems: "center",
         justifyContent: "center",
         minHeight: "100vh",
-        padding: 4,
+        paddingTop: "100px"
       }}
     >
-     <IconButton
+      <IconButton
         onClick={colorMode.toggleColorMode}
         sx={{
           position: "absolute",
@@ -65,14 +65,16 @@ const Esqueci = () => {
       <Box
         sx={{
           mx: "auto",
+          my: "auto",
           px: 4,
           py: 7,
-          maxWidth: "md",
           backgroundColor: colors.primary[500],
           borderRadius: 2,
           borderColor: "#878787",
           borderWidth: 1,
           boxShadow: 3,
+          // width: { xs: "92vw", sm: 480, md: 600 }, // altera o tamanho horizontal da box
+
         }}
       >
         <Typography

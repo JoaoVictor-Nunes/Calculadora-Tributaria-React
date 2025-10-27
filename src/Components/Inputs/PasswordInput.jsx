@@ -20,9 +20,10 @@ const PasswordInput = ({ register, errors }) => {
       <TextField
         label="Senha"
         variant="outlined"
+        size="small"
         type={show ? "text" : "password"}
         fullWidth
-        InputProps={{
+        slotProps={{
           endAdornment: (
             <InputAdornment position="end">
               <IconButton onClick={() => setShow(!show)} edge="end">
@@ -69,6 +70,7 @@ const PasswordInput = ({ register, errors }) => {
           visibility: errors.password ? "visible" : "hidden",
           marginTop: "4px",
           display: "block",
+          fontSize: "12px"
         }}
       >
         {errorMessage}

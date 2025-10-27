@@ -17,6 +17,7 @@ const EmailInput = ({ register, errors }) => {
         label="Email"
         variant="outlined"
         fullWidth
+        size="small"
         sx={{
           width: "100%",
           '& .MuiOutlinedInput-root': {
@@ -41,10 +42,10 @@ const EmailInput = ({ register, errors }) => {
           },
         }}
         {...register("email", {
-          required: "Email é obrigatório",
+          required: "Email é obrigatório!",
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: "Formato de email inválido",
+            message: "Formato de email inválido.",
           },
         })}
       />
@@ -57,6 +58,7 @@ const EmailInput = ({ register, errors }) => {
           visibility: errors.email ? "visible" : "hidden",
           marginTop: "4px",
           display: "block",
+          fontSize: "12px"
         }}
       >
         {errorMessage}

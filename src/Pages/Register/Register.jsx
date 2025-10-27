@@ -8,12 +8,10 @@ import ButtonUsage from "../../Components/ButtonUsage";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
-import "./RegisterStyles.css";
 import { tokens, ColorModeContext } from "../../Tema";
 import { IconButton } from "@mui/material";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import Footer from "../../Components/Footer";
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -22,8 +20,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import useUserStore from "../../store/useUserStore"
-
+import useUserStore from "../../store/useUserStore";
+import Footer from "../../Components/Footer";
 
 const Register = () => {
   const theme = useTheme();
@@ -31,25 +29,46 @@ const Register = () => {
   const colorMode = useContext(ColorModeContext);
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const [profissao, setProfissao] = useState(''); // CORREÇÃO 1
+  const [profissao, setProfissao] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const handleChange = (event) => {
-    setProfissao(event.target.value); // CORREÇÃO 2
-     setValue("profissao", event.target.value);
+    setProfissao(event.target.value);
+    setValue("profissao", event.target.value);
   };
 
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const password = watch("password");
-    const setUserName = useUserStore((state) => state.setUserName);
+  const confirmPassword = watch("confirmPassword");
+  const setUserName = useUserStore((state) => state.setUserName);
+
+  // Observar todos os campos
+  const watchedFields = watch();
   
+  // Verificar se todos os campos obrigatórios estão preenchidos
+  const areAllFieldsFilled = 
+    watchedFields.name && 
+    watchedFields.profissao && 
+    watchedFields.email && 
+    watchedFields.password && 
+    watchedFields.confirmPassword;
+
+  // Botão habilitado apenas se todos os campos estiverem preenchidos
+  const isButtonDisabled = !areAllFieldsFilled;
 
   const errorName = errors.name ? errors.name.message : "Mensagem de erro";
-  const errorConfirmPassword = errors.confirmPassword ? errors.confirmPassword.message : "Mensagem de erro";
   const errorProfissao = errors.profissao ? errors.profissao.message : "Mensagem de erro";
 
   const onSubmit = (data) => {
+    // Verificar se as senhas coincidem
+    if (data.password !== data.confirmPassword) {
+      setConfirmPasswordError("As senhas não coincidem!");
+      return; // Não prossegue se as senhas não coincidem
+    }
+
+    // Se chegou aqui, as senhas coincidem - limpa o erro
+    setConfirmPasswordError("");
     console.log("Dados enviados: ", data);
     setUserName(data.name);
     navigate("/home");
@@ -63,6 +82,7 @@ const Register = () => {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
+        paddingTop: "100px"
       }}
     >
       {/* Botão de alternar tema */}
@@ -86,9 +106,10 @@ const Register = () => {
       <Box
         sx={{
           mx: "auto",
+          my:"auto",
           px: 4,
           py: 5,
-          width: { xs: '92vw', sm: 480, md: 600 },
+          // width: { xs: '92vw', sm: 480, md: 600 },
           backgroundColor: colors.primary[500],
           borderRadius: 2,
           borderColor: "#878787",
@@ -112,6 +133,7 @@ const Register = () => {
             <TextField
               label="Nome"
               variant="outlined"
+              size="small"
               sx={{
                 width: "100%",
                 '& .MuiOutlinedInput-root': {
@@ -141,7 +163,7 @@ const Register = () => {
             <Typography
               variant="caption"
               sx={{
-                minHeight: "20px",
+                minHeight: "10px",
                 fontWeight: "bold",
                 color: errors.name ? colors.redAccent[100] : "transparent",
                 visibility: errors.name ? "visible" : "hidden",
@@ -150,11 +172,11 @@ const Register = () => {
               }}
             >
               {errorName}
-
             </Typography>
           </Box>
+
           <Box>
-            <FormControl fullWidth>
+            <FormControl fullWidth size="small">
               <InputLabel
                 id="profissao"
                 sx={{
@@ -166,7 +188,6 @@ const Register = () => {
               >
                 Profissão
               </InputLabel>
-
               <Select
                 labelId="profissao"
                 id="profissao"
@@ -196,7 +217,7 @@ const Register = () => {
             <Typography
               variant="caption"
               sx={{
-                minHeight: "20px",
+                minHeight: "10px",
                 fontWeight: "bold",
                 color: errors.profissao ? colors.redAccent[100] : "transparent",
                 visibility: errors.profissao ? "visible" : "hidden",
@@ -217,11 +238,12 @@ const Register = () => {
             register={register}
             errors={errors}
           />
-          <Box>
 
+          <Box>
             <TextField
               label="Confirme a Senha"
               variant="outlined"
+              size="small"
               type={showPassword ? 'text' : 'password'}
               InputProps={{
                 endAdornment: (
@@ -262,8 +284,6 @@ const Register = () => {
               }}
               {...register("confirmPassword", {
                 required: "Confirmação obrigatória",
-                validate: (value) =>
-                  value === password || "As senhas não coincidem!"
               })}
             />
             <Typography
@@ -271,18 +291,19 @@ const Register = () => {
               sx={{
                 minHeight: "10px",
                 fontWeight: "bold",
-                color: errors.confirmPassword ? colors.redAccent[100] : "transparent",
-                visibility: errors.confirmPassword ? "visible" : "hidden",
+                color: confirmPasswordError ? colors.redAccent[100] : "transparent",
+                visibility: confirmPasswordError ? "visible" : "hidden",
                 marginTop: "1px",
                 display: "block",
               }}
             >
-              {errorConfirmPassword}
+              {confirmPasswordError}
             </Typography>
           </Box>
 
           <ButtonUsage
             type="submit"
+            disabled={isButtonDisabled}
           >
             Registrar
           </ButtonUsage>
@@ -315,8 +336,7 @@ const Register = () => {
           </Box>
         </Box>
       </Box>
-      {/* <Footer /> */}
-
+      < Footer />
     </Box>
   );
 };
