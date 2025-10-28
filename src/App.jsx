@@ -13,6 +13,7 @@ import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import CalculoPF from "./Pages/CalculoPF";
 import CalculoPJ from "./Pages/CalculoPJ";
+import CalculadoraTributaria from "./Pages/CalculadoraTributaria";
 import Explicacao from "./Pages/Explicação/Explicacao";
 import TopbarLayout from "./Layout/TopbarLayout";
 import Esqueci from "./Pages/Esqueci a senha/Esqueci";
@@ -39,6 +40,7 @@ function App() {
           <Route path="*" element={<Error />} />
           <Route element={<TopbarLayout />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/calculadora" element={<CalculadoraTributaria />} />
             <Route path="/calculopf" element={<CalculoPF />} />
             <Route path="/calculopj" element={<CalculoPJ />} />
             <Route path="/detalhes" element={<Explicacao />} />
