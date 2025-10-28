@@ -4,6 +4,7 @@ import ModalCalculoPF from "../../Components/Modals/ModalCalculoPF";
 import ModalCalculoPJ from "../../Components/Modals/ModalCalculoPJ";
 import ModalExplicacoes from "../../Components/Modals/ModalExplicacoes";
 import useUserStore from "../../store/useUserStore";
+import ModalRendaMensal from "../../Components/Modals/ModalRendaMensal";
 
 const Home = () => {
   const userName = useUserStore((state) => state.userName);

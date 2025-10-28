@@ -9,6 +9,9 @@ import {
   useTheme,
 } from "@mui/material";
 import { tokens } from "../Tema"; // ajuste o caminho conforme seu projeto
+import ModalRendaMensal from "../Components/Modals/ModalRendaMensal";
+import ModalCustosMensais from "../Components/Modals/ModalCustosMensais";
+import { FormControlLabel, Checkbox } from "@mui/material";
 
 const CalculoPF = () => {
   const theme = useTheme();
@@ -38,11 +41,11 @@ const CalculoPF = () => {
 
     // Tabela IRPF mensal (PDF)
     const faixas = [
-      { limite: 2259.20, aliquota: 0, deducao: 0 },
-      { limite: 2826.65, aliquota: 0.075, deducao: 169.44 },
-      { limite: 3751.05, aliquota: 0.15, deducao: 381.44 },
-      { limite: 4664.68, aliquota: 0.225, deducao: 662.77 },
-      { limite: Infinity, aliquota: 0.275, deducao: 896.00 },
+      { limite: 2428.8, aliquota: 0, deducao: 0 },
+      { limite: 2826.65, aliquota: 0.075, deducao: 182.16 },
+      { limite: 3751.05, aliquota: 0.15, deducao: 394.16 },
+      { limite: 4664.68, aliquota: 0.225, deducao: 675.49 },
+      { limite: Infinity, aliquota: 0.275, deducao: 908.73 },
     ];
 
     let aliquota = 0;
@@ -87,56 +90,83 @@ const CalculoPF = () => {
       >
         <Grid container spacing={2}>
           {/* Campo Renda Mensal */}
+
           <Grid item xs={12} md={6}>
-            <TextField
-              label="Renda Mensal (R$)"
-              name="rendaMensal"
-              type="number"
-              value={formData.rendaMensal}
-              onChange={handleChange}
-              fullWidth
-              variant="outlined"
+            <Box
               sx={{
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: colors.primary[500],
-                  "& fieldset": { borderColor: colors.grey[300] },
-                  "&:hover fieldset": { borderColor: colors.blueAccent[500] },
-                  "&.Mui-focused fieldset": { borderColor: colors.blueAccent[500] },
-                },
-                "& .MuiInputLabel-root": {
-                  color: colors.grey[300],
-                  "&.Mui-focused": { color: colors.blueAccent[500] },
-                },
-                "& .MuiOutlinedInput-input": { color: colors.grey[100] },
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
               }}
-            />
+            >
+              <TextField
+                label="Renda Mensal (R$)"
+                name="rendaMensal"
+                type="number"
+                value={formData.rendaMensal}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                sx={{
+                  marginBottom: 1,
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: colors.primary[500],
+                    "& fieldset": { borderColor: colors.grey[300] },
+                    "&:hover fieldset": { borderColor: colors.blueAccent[500] },
+                    "&.Mui-focused fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: colors.grey[300],
+                    "&.Mui-focused": { color: colors.blueAccent[500] },
+                  },
+                  "& .MuiOutlinedInput-input": { color: colors.grey[100] },
+                }}
+              />
+              <ModalRendaMensal />
+            </Box>
           </Grid>
 
           {/* Campo Custos Mensais */}
           <Grid item xs={12} md={4}>
-            <TextField
-              label="Custos Mensais (R$)"
-              name="custosMensais"
-              type="number"
-              value={formData.custosMensais}
-              onChange={handleChange}
-              fullWidth
-              variant="outlined"
-              placeholder="Despesas dedutíveis mensais"
+            <Box
               sx={{
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: colors.primary[500],
-                  "& fieldset": { borderColor: colors.grey[300] },
-                  "&:hover fieldset": { borderColor: colors.blueAccent[500] },
-                  "&.Mui-focused fieldset": { borderColor: colors.blueAccent[500] },
-                },
-                "& .MuiInputLabel-root": {
-                  color: colors.grey[300],
-                  "&.Mui-focused": { color: colors.blueAccent[500] },
-                },
-                "& .MuiOutlinedInput-input": { color: colors.grey[100] },
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
               }}
-            />
+            >
+              <TextField
+                label="Custos Mensais (R$)"
+                name="custosMensais"
+                type="number"
+                value={formData.custosMensais}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                placeholder="Despesas dedutíveis mensais"
+                sx={{
+                  marginBottom: 1,
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: colors.primary[500],
+                    "& fieldset": { borderColor: colors.grey[300] },
+                    "&:hover fieldset": { borderColor: colors.blueAccent[500] },
+                    "&.Mui-focused fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: colors.grey[300],
+                    "&.Mui-focused": { color: colors.blueAccent[500] },
+                  },
+                  "& .MuiOutlinedInput-input": { color: colors.grey[100] },
+                }}
+              />
+              <ModalCustosMensais />
+            </Box>
           </Grid>
 
           {/* Botão Calcular */}
@@ -159,7 +189,10 @@ const CalculoPF = () => {
 
         {/* Exibição dos resultados */}
         {resultado && (
-          <Paper variant="outlined" sx={{ mt: 3, p: 2, backgroundColor: colors.primary[200] }}>
+          <Paper
+            variant="outlined"
+            sx={{ mt: 3, p: 2, backgroundColor: colors.primary[200] }}
+          >
             <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
               Resultado do Cálculo:
             </Typography>
@@ -234,10 +267,32 @@ const CalculoPF = () => {
                     minimumFractionDigits: 2,
                   })}
                 </Typography>
+                
               </Grid>
             </Grid>
+             
           </Paper>
         )}
+     <FormControlLabel
+        label="Deseja receber os resultados via email?"
+        control={
+          <Checkbox
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              color: colors.grey[300],
+              "&.Mui-checked": {
+                color: colors.blueAccent[500],
+              },
+            }}
+          />
+        }
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: colors.grey[100],
+          },
+        }}
+      />
       </Paper>
     </Box>
   );

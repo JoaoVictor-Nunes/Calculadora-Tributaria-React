@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useState } from "react"; // Importação faltando
+import { useState } from "react"; 
 import {
   Backdrop,
   Box,
-  Fade, // Importação faltando
-  Typography, // Importação faltando
+  Fade, 
+  Typography, 
 } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
