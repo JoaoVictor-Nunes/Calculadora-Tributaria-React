@@ -1,0 +1,14 @@
+.myButton {
+  width: 100% !important;
+  background-color: #3b82f6 !important; /* tailwind blue-500 */
+  color: white !important;
+  padding-top: 0.375rem !important;  /* py-1.5 = 6px */
+  padding-bottom: 0.375rem !important;
+  margin-top: 0.5rem !important;     /* mt-2 = 8px */
+  border-radius: 8px !important;     /* rounded-lg */
+  transition: background-color 0.2s ease-in-out !important;
+}
+
+.myButton:hover {
+  background-color: #2563eb !important; /* tailwind blue-600 */
+}
