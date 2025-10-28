@@ -27,7 +27,6 @@ import Collapse from "@mui/material/Collapse";
 const CalculadoraTributaria = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const appColors = getAppColors(theme);
 
   // Estado para controlar a aba ativa
   const [tabValue, setTabValue] = useState(0);
@@ -277,7 +276,6 @@ const CalculadoraTributaria = () => {
         fontWeight="600"
         sx={{
           mb: 1,
-          color: theme.palette.mode === "dark" ? colors.grey[100] : colors.grey[800]
         }}
       >
         Calculadora de Tributação
@@ -309,7 +307,7 @@ const CalculadoraTributaria = () => {
         elevation={0}
         sx={{
           p: { xs: 2, md: 3 },
-          backgroundColor: theme.palette.mode === "dark" ? colors.primary[400] : "#ffffff",
+          backgroundColor: colors.primary[500],
           border: "1px solid",
           borderColor: theme.palette.mode === "dark" ? colors.grey[700] : colors.grey[300],
           borderRadius: 2,
@@ -338,7 +336,7 @@ const CalculadoraTributaria = () => {
               onChange={handleChange}
               fullWidth
               required
-              inputProps={{
+              slotProps={{
                 min: 0,
                 max: LIMITE_RENDA,
                 step: "0.01"
@@ -357,26 +355,18 @@ const CalculadoraTributaria = () => {
               }}
               sx={{
                 "& .MuiOutlinedInput-root": {
-                  backgroundColor: theme.palette.mode === "dark" ? colors.primary[500] : "#fafafa",
-                  "& fieldset": {
-                    borderColor: theme.palette.mode === "dark" ? colors.grey[600] : colors.grey[400]
-                  },
-                  "&:hover fieldset": {
-                    borderColor: theme.palette.mode === "dark" ? colors.grey[500] : colors.grey[600]
-                  },
+                  backgroundColor: colors.primary[500],
+                  "& fieldset": { borderColor: colors.grey[300] },
+                  "&:hover fieldset": { borderColor: colors.blueAccent[500] },
                   "&.Mui-focused fieldset": {
-                    borderColor: theme.palette.mode === "dark" ? "#5b9bd5" : "#2563eb"
-                  }
+                    borderColor: colors.blueAccent[500],
+                  },
                 },
                 "& .MuiInputLabel-root": {
-                  color: theme.palette.mode === "dark" ? colors.grey[400] : colors.grey[600],
-                  "&.Mui-focused": {
-                    color: theme.palette.mode === "dark" ? "#5b9bd5" : "#2563eb"
-                  }
+                  color: colors.grey[300],
+                  "&.Mui-focused": { color: colors.blueAccent[500] },
                 },
-                "& .MuiOutlinedInput-input": {
-                  color: theme.palette.mode === "dark" ? colors.grey[100] : colors.grey[800]
-                },
+                "& .MuiOutlinedInput-input": { color: colors.grey[100] },
                 "& .MuiFormHelperText-root": {
                   color: theme.palette.mode === "dark" ? colors.grey[500] : colors.grey[600]
                 }
@@ -413,25 +403,20 @@ const CalculadoraTributaria = () => {
               }}
               sx={{
                 "& .MuiOutlinedInput-root": {
-                  backgroundColor: colors.primary[400],
-                  "& fieldset": {
-                    borderColor: colors.grey[300]
-                  },
-                  "&:hover fieldset": {
-                    borderColor: colors.blueAccent[500]
-                  },
+                  backgroundColor: colors.primary[500],
+                  "& fieldset": { borderColor: colors.grey[300] },
+                  "&:hover fieldset": { borderColor: colors.blueAccent[500] },
                   "&.Mui-focused fieldset": {
-                    borderColor: colors.blueAccent[500]
-                  }
+                    borderColor: colors.blueAccent[500],
+                  },
                 },
                 "& .MuiInputLabel-root": {
                   color: colors.grey[300],
-                  "&.Mui-focused": {
-                    color: colors.blueAccent[500]
-                  }
+                  "&.Mui-focused": { color: colors.blueAccent[500] },
                 },
-                "& .MuiOutlinedInput-input": {
-                  color: colors.grey[100]
+                "& .MuiOutlinedInput-input": { color: colors.grey[100] },
+                "& .MuiFormHelperText-root": {
+                  color: theme.palette.mode === "dark" ? colors.grey[500] : colors.grey[600]
                 }
               }}
             />
@@ -509,27 +494,27 @@ const CalculadoraTributaria = () => {
                 fullWidth
                 required={formData.enviarEmail}
                 sx={{
-                  "& .MuiOutlinedInput-root": {
-                    backgroundColor: colors.primary[400],
-                    "& fieldset": {
-                      borderColor: colors.grey[300]
+                  width: "100%",
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: colors.grey[300],
                     },
-                    "&:hover fieldset": {
-                      borderColor: colors.blueAccent[500]
+                    '&:hover fieldset': {
+                      borderColor: colors.blueAccent[500],
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: colors.blueAccent[500]
-                    }
+                    '&.Mui-focused fieldset': {
+                      borderColor: colors.blueAccent[500],
+                    },
                   },
-                  "& .MuiInputLabel-root": {
+                  '& .MuiInputLabel-root': {
                     color: colors.grey[300],
-                    "&.Mui-focused": {
-                      color: colors.blueAccent[500]
-                    }
+                    '&.Mui-focused': {
+                      color: colors.blueAccent[500],
+                    },
                   },
-                  "& .MuiOutlinedInput-input": {
-                    color: colors.grey[100]
-                  }
+                  '& .MuiOutlinedInput-input': {
+                    color: colors.grey[100],
+                  },
                 }}
               />
             </Grid>
@@ -545,27 +530,27 @@ const CalculadoraTributaria = () => {
               onChange={handleChange}
               fullWidth
               sx={{
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: colors.primary[400],
-                  "& fieldset": {
-                    borderColor: colors.grey[300]
+                width: "100%",
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: colors.grey[300],
                   },
-                  "&:hover fieldset": {
-                    borderColor: colors.blueAccent[500]
+                  '&:hover fieldset': {
+                    borderColor: colors.blueAccent[500],
                   },
-                  "&.Mui-focused fieldset": {
-                    borderColor: colors.blueAccent[500]
-                  }
+                  '&.Mui-focused fieldset': {
+                    borderColor: colors.blueAccent[500],
+                  },
                 },
-                "& .MuiInputLabel-root": {
+                '& .MuiInputLabel-root': {
                   color: colors.grey[300],
-                  "&.Mui-focused": {
-                    color: colors.blueAccent[500]
-                  }
+                  '&.Mui-focused': {
+                    color: colors.blueAccent[500],
+                  },
                 },
-                "& .MuiOutlinedInput-input": {
-                  color: colors.grey[100]
-                }
+                '& .MuiOutlinedInput-input': {
+                  color: colors.grey[100],
+                },
               }}
               helperText="E-mail do Núcleo de Apoio Contábil e Fiscal (NAF)"
             />

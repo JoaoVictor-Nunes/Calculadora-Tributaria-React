@@ -52,6 +52,7 @@ const ModalExplicacoes = () => {
         sx={{
                     color: colors.grey[900],
                     backgroundColor: colors.redAccent[500],
+                    fontSize: "1.1rem",
                     px: 2,
                     py: 1,
                     width: "300px",

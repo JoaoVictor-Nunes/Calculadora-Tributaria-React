@@ -47,48 +47,60 @@ const Home = () => {
           startIcon={<CalculateIcon />}
           onClick={() => navigate("/calculadora")}
           sx={{
-            ...getButtonStyles(theme, "primary"),
+            // ...getButtonStyles(theme, "primary"),
+            // px: 4,
+             fontSize: "1.1rem",
+            color: colors.grey[900],
+            backgroundColor: colors.redAccent[500],
             px: 4,
-            fontSize: "1.1rem"
+            py: 1,
+            // Transições para o efeito hover
+            transition: "all 0.3s ease-in-out",
+            transitionDelay: "30ms",
+            // Estilo normal
+            transform: "translateY(0) scale(1)",
+            // Efeito hover
+            '&:hover': {
+              backgroundColor: colors.redAccent[600],
+              transform: "translateY(-4px) scale(1.02)",
+              boxShadow: `0 10px 25px -5px rgba(0, 0, 0, 0.3)`,
+            },
           }}
         >
           Acessar Calculadora Completa
         </Button>
         <Typography
-          variant="caption"
-          display="block"
           sx={{
             mt: 1,
-            color: theme.palette.mode === "dark" ? colors.grey[400] : colors.grey[600]
           }}
         >
           Calcule e compare PF x PJ em uma única página
         </Typography>
       </Box>
 
-      <Typography variant="body1" sx={{ mb: 2, color: colors.grey[300] }}>
+      <Typography variant="body1" sx={{ mb: 2}}>
         Ou escolha uma modalidade específica:
       </Typography>
       <Stack
-      direction="column"
-      spacing={3}
-      alignItems="center"
-      justifyContent="center"
-      >
-      <Stack
-        direction="row"
-        spacing={2}
+        direction="column"
+        spacing={3}
         alignItems="center"
         justifyContent="center"
+      >
+        <Stack
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          justifyContent="center"
         >
-        <ModalCalculoPF />
-        <ModalCalculoPJ />
-      </Stack>
-      <Typography sx={{pt: 5}}>
-        Dúvidas sobre os cálculos?
-      </Typography>
-       <ModalExplicacoes />
+          <ModalCalculoPF />
+          <ModalCalculoPJ />
         </Stack>
+        <Typography sx={{ pt: 5 }}>
+          Dúvidas sobre os cálculos?
+        </Typography>
+        <ModalExplicacoes />
+      </Stack>
     </Box>
   );
 };

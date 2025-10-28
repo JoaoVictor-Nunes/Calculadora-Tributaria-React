@@ -7,6 +7,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import ModalRendaMensal from "../Components/Modals/ModalRendaMensal";
+import ModalCustosMensais from "../Components/Modals/ModalCustosMensais";
 
 const CalculoPJ = () => {
   const theme = useTheme();
@@ -61,30 +63,81 @@ const CalculoPJ = () => {
       <Paper sx={{ p: 3, backgroundColor: colors.primary[500] }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField
-              label="Renda Mensal (R$)"
-              name="rendaMensal"
-              type="number"
-              value={formData.rendaMensal}
-              onChange={handleChange}
-              fullWidth
-              variant="outlined"
-              sx={{ backgroundColor: colors.primary[400] }}
-              placeholder="Digite a receita mensal"
-            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+
+              <TextField
+                label="Renda Mensal (R$)"
+                name="rendaMensal"
+                type="number"
+                value={formData.rendaMensal}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                sx={{
+                  marginBottom: 1,
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: colors.primary[500],
+                    "& fieldset": { borderColor: colors.grey[300] },
+                    "&:hover fieldset": { borderColor: colors.blueAccent[500] },
+                    "&.Mui-focused fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: colors.grey[300],
+                    "&.Mui-focused": { color: colors.blueAccent[500] },
+                  },
+                  "& .MuiOutlinedInput-input": { color: colors.grey[100] },
+                }}
+                placeholder="Digite a receita mensal"
+              />
+              < ModalCustosMensais />
+            </Box>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <TextField
-              label="Salário Mínimo (para pró-labore)"
-              name="salarioMinimo"
-              type="number"
-              value={formData.salarioMinimo}
-              onChange={handleChange}
-              fullWidth
-              variant="outlined"
-              sx={{ backgroundColor: colors.primary[400] }}
-            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "left"
+              }}>
+
+              <TextField
+                label="Salário Mínimo (para pró-labore)"
+                name="salarioMinimo"
+                type="number"
+                value={formData.salarioMinimo}
+                onChange={handleChange}
+                fullWidth
+                variant="outlined"
+                sx={{
+                  marginBottom: 1,
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: colors.primary[500],
+                    "& fieldset": { borderColor: colors.grey[300] },
+                    "&:hover fieldset": { borderColor: colors.blueAccent[500] },
+                    "&.Mui-focused fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: colors.grey[300],
+                    "&.Mui-focused": { color: colors.blueAccent[500] },
+                  },
+                  "& .MuiOutlinedInput-input": { color: colors.grey[100] },
+                }}
+              />
+              < ModalRendaMensal />
+            </Box>
           </Grid>
 
           <Grid item xs={12}>
@@ -93,8 +146,10 @@ const CalculoPJ = () => {
               variant="contained"
               onClick={calcularPJ}
               sx={{
-                bgcolor: colors.greenAccent[600],
-                "&:hover": { bgcolor: colors.greenAccent[700] }
+                bgcolor: colors.blueAccent[500],
+                "&:hover": { bgcolor: colors.blueAccent[600] },
+                height: "100%",
+                fontWeight: "bold",
               }}
             >
               Calcular PJ
@@ -103,7 +158,9 @@ const CalculoPJ = () => {
         </Grid>
 
         {resultado && (
-          <Paper sx={{ mt: 3, p: 2, backgroundColor: colors.primary[400] }}>
+          <Paper 
+          variant="outlined"
+          sx={{ mt: 3, p: 2, backgroundColor: colors.primary[200] }}>
             <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
               Resultado PJ:
             </Typography>
