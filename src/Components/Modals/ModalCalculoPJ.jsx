@@ -47,14 +47,15 @@ const ModalCalculoPJ = () => {
         <div>
             <Button
                 onClick={handleOpen}
+                size="large"
                sx={{
                     color: colors.grey[900],
                     backgroundColor: colors.redAccent[500],
                     fontSize: "1.1rem",
                     px: 2,
                     py: 1,
-                    width: "300px",
-                    height: "80px",
+                    // width: "300px",
+                    // height: "80px",
                     // Transições para o efeito hover
                     transition: "all 0.3s ease-in-out",
                     transitionDelay: "30ms",
@@ -96,7 +97,7 @@ const ModalCalculoPJ = () => {
                     <Box sx={style}>
                         <Typography
                             id="tituloModalPJ"
-                            variant="h6"
+                            variant="h5"
                             component="h2"
                             sx={{
                                 color: colors.grey[100],

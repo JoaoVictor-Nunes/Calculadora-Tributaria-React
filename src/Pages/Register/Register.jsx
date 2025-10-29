@@ -194,18 +194,30 @@ const Register = () => {
                 label="Profissão"
                 onChange={handleChange}
                 sx={{
-                  '& .MuiOutlinedInput-notchedOutline': {
+                  "& .MuiOutlinedInput-notchedOutline": {
                     borderColor: colors.grey[300],
                   },
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
                     borderColor: colors.blueAccent[500],
                   },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                     borderColor: colors.blueAccent[500],
                   },
-                  '& .MuiSelect-select': {
-                    color: colors.grey[100],
+                  "& .MuiOutlinedInput-root": {
                     backgroundColor: colors.primary[500],
+                    "& fieldset": { borderColor: colors.grey[300] },
+                    "&:hover fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: colors.blueAccent[500],
+                    },
+                  },
+                  "& .MuiSelect-select": {
+                    color: colors.grey[100],
+                    display: "flex",
+                    alignItems: "center",
+                    minHeight: "auto",
                   },
                 }}
                 {...register("profissao", { required: "Profissão é obrigatória" })}

@@ -14,18 +14,19 @@ import ModalTabelaTributacao from "./ModalTabelaTributacao";
 import GoBack from "../GoBack";
 import Grow from "@mui/material/Grow";
 
-
 const ModalExplicacoes = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [open, setOpen] = useState(false);
-  const [transformOrigin, setTransformOrigin] = useState('center center');
+  const [transformOrigin, setTransformOrigin] = useState("center center");
 
   const navigate = useNavigate();
 
   const handleOpen = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
-    const origin = `${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px`;
+    const origin = `${rect.left + rect.width / 2}px ${
+      rect.top + rect.height / 2
+    }px`;
     setTransformOrigin(origin);
     setOpen(true);
   };
@@ -48,27 +49,29 @@ const ModalExplicacoes = () => {
 
   return (
     <div>
-      <Button onClick={handleOpen}
+      <Button
+        onClick={handleOpen}
+        size="large"
         sx={{
-                    color: colors.grey[900],
-                    backgroundColor: colors.redAccent[500],
-                    fontSize: "1.1rem",
-                    px: 2,
-                    py: 1,
-                    width: "300px",
-                    height: "80px",
-                    // Transições para o efeito hover
-                    transition: "all 0.3s ease-in-out",
-                    transitionDelay: "30ms",
-                    // Estilo normal
-                    transform: "translateY(0) scale(1)",
-                    // Efeito hover
-                    '&:hover': {
-                        backgroundColor: colors.redAccent[600],
-                        transform: "translateY(-4px) scale(1.02)",
-                        boxShadow: `0 10px 25px -5px rgba(0, 0, 0, 0.3)`,
-                    },
-                }}
+          color: colors.grey[900],
+          backgroundColor: colors.redAccent[500],
+          fontSize: "1.1rem",
+          px: 2,
+          py: 1,
+          // width: "300px",
+          // height: "80px",
+          // Transições para o efeito hover
+          transition: "all 0.3s ease-in-out",
+          transitionDelay: "30ms",
+          // Estilo normal
+          transform: "translateY(0) scale(1)",
+          // Efeito hover
+          "&:hover": {
+            backgroundColor: colors.redAccent[600],
+            transform: "translateY(-4px) scale(1.02)",
+            boxShadow: `0 10px 25px -5px rgba(0, 0, 0, 0.3)`,
+          },
+        }}
       >
         Como são feitos os cálculos?
       </Button>
@@ -90,20 +93,15 @@ const ModalExplicacoes = () => {
           justifyContent: "center",
         }}
       >
-        <Grow
-          in={open}
-          timeout={400}
-          style={{ transformOrigin }}
-        >
+        <Grow in={open} timeout={400} style={{ transformOrigin }}>
           <Box sx={style}>
             <Typography
-              variant="h4"
+              variant="h5"
               component="h2"
               sx={{
                 color: colors.grey[100],
                 fontWeight: 600,
-                mb: 3,
-                textAlign: "center",
+                mb: 2,
               }}
             >
               Como são feitos os cálculos?
