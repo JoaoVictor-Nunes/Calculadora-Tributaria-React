@@ -49,26 +49,26 @@ const CalculadoraTributaria = () => {
 
   // Estilos dos alertas
   const getAlertStyles = (severity) => {
-  if (severity === "success") {
-    return {
-      mb: 3,
-      backgroundColor: colors.greenAccent[100],
-      color: colors.greenAccent[900],
-      '& .MuiAlert-icon': {
-        color: colors.greenAccent[500],
-      },
-    };
-  } else {
-    return {
-      mb: 3,
-      backgroundColor: colors.redAccent[100],
-      color: colors.redAccent[900],
-      '& .MuiAlert-icon': {
-        color: colors.redAccent[500],
-      },
-    };
-  }
-};
+    if (severity === "success") {
+      return {
+        mb: 3,
+        backgroundColor: colors.greenAccent[100],
+        color: colors.greenAccent[900],
+        '& .MuiAlert-icon': {
+          color: colors.greenAccent[500],
+        },
+      };
+    } else {
+      return {
+        mb: 3,
+        backgroundColor: colors.redAccent[100],
+        color: colors.redAccent[900],
+        '& .MuiAlert-icon': {
+          color: colors.redAccent[500],
+        },
+      };
+    }
+  };
 
   // Estados do formulário
   const [formData, setFormData] = useState({
@@ -847,194 +847,208 @@ const CalculadoraTributaria = () => {
               </Grid>
             </Paper>
           )}
-
           {/* Conteúdo da aba Comparação */}
           {tabValue === 2 && (
-            <Paper sx={{
-              p: 3,
-              backgroundColor: colors.primary[500],
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center", // ← Mantém apenas alignItems
-              width: "100%"
-            }}>
-              <Typography
-                variant="h5"
-                fontWeight="bold"
-                sx={{ mb: 3 }}
-                align="center"
-              >
-                Comparação PF x PJ
-              </Typography>
-
-              {/* Container principal*/}
-              <Box sx={{
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Paper sx={{
+                p: 3,
+                backgroundColor: colors.primary[500],
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                width: "100%",
-                maxWidth: "900px"
+                width: "100%"
               }}>
-                <Grid container spacing={3} sx={{ width: "100%" }}>
-                  {/* Comparação de Tributos */}
-                  <Grid item xs={12} md={6}>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        backgroundColor: colors.primary[200],
-                        border: `2px solid ${colors.blueAccent[500]}`,
-                      }}
-                    >
-                      <Typography
-                        variant="h6"
-                        fontWeight="bold"
-                        align="center"
-                        sx={{ mb: 2, color: colors.blueAccent[400] }}
-                      >
-                        Pessoa Física (PF)
-                      </Typography>
-                      <Typography variant="body2" sx={{ mb: 1 }}>
-                        Tributos Totais:{" "}
-                        <strong style={{ color: colors.redAccent[400] }}>
-                          {formatMoney(resultadoPF.imposto)}
-                        </strong>
-                      </Typography>
-                      <Typography variant="body2" sx={{ mb: 1 }}>
-                        Renda Líquida:{" "}
-                        <strong style={{ color: colors.greenAccent[400] }}>
-                          {formatMoney(resultadoPF.rendaLiquida)}
-                        </strong>
-                      </Typography>
-                      <Typography variant="body2">
-                        Alíquota Efetiva:{" "}
-                        <strong>{resultadoPF.aliquotaEfetiva.toFixed(2)}%</strong>
-                      </Typography>
-                    </Paper>
-                  </Grid>
 
-                  <Grid item xs={12} md={6}>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        backgroundColor: colors.primary[200],
-                        border: `2px solid ${colors.greenAccent[500]}`,
-                      }}
-                    >
-                      <Typography
-                        variant="h6"
-                        fontWeight="bold"
-                        align="center"
-                        sx={{ mb: 2, color: colors.greenAccent[400] }}
-                      >
-                        Pessoa Jurídica (PJ)
-                      </Typography>
-                      <Typography variant="body2" sx={{ mb: 1 }}>
-                        Tributos Totais:{" "}
-                        <strong style={{ color: colors.redAccent[400] }}>
-                          {formatMoney(resultadoPJ.totalPJ)}
-                        </strong>
-                      </Typography>
-                      <Typography variant="body2" sx={{ mb: 1 }}>
-                        Renda Líquida:{" "}
-                        <strong style={{ color: colors.greenAccent[400] }}>
-                          {formatMoney(resultadoPJ.rendaLiquida)}
-                        </strong>
-                      </Typography>
-                      <Typography variant="body2">
-                        Alíquota Total:{" "}
-                        <strong>
-                          {(
-                            (resultadoPJ.totalPJ / resultadoPJ.renda) *
-                            100
-                          ).toFixed(2)}
-                          %
-                        </strong>
-                      </Typography>
-                    </Paper>
-                  </Grid>
+                {/* Primeira linha: Título */}
+                <Box sx={{ width: "100%", textAlign: "center", mb: 3 }}>
+                  <Typography
+                    variant="h5"
+                    fontWeight="bold"
+                  >
+                    Comparação PF x PJ
+                  </Typography>
+                </Box>
 
-                  {/* Recomendação */}
-                  <Grid item xs={12}>
-                    <Paper
-                      sx={{
-                        p: 3,
-                        backgroundColor:
-                          resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
-                            ? colors.blueAccent[800]
-                            : colors.greenAccent[800],
-                        border: `3px solid ${resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
-                          ? colors.blueAccent[500]
-                          : colors.greenAccent[500]
-                          }`,
-                      }}
-                    >
-                      <Typography
-                        variant="h5"
-                        fontWeight="bold"
-                        align="center"
-                        sx={{ mb: 2 }}
-                      >
-                        Recomendação
-                      </Typography>
-                      <Typography variant="h6" align="center">
-                        {resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
-                          ? `Pessoa Física (PF) é mais vantajosa!`
-                          : `Pessoa Jurídica (PJ) é mais vantajosa!`}
-                      </Typography>
-                      <Typography variant="body1" align="center" sx={{ mt: 2 }}>
-                        Economia de:{" "}
-                        <strong>
-                          {formatMoney(
-                            Math.abs(
-                              resultadoPF.rendaLiquida - resultadoPJ.rendaLiquida
-                            )
-                          )}
-                        </strong>{" "}
-                        por mês
-                      </Typography>
-                    </Paper>
-                  </Grid>
+                {/* Segunda linha: Comparação PF, PJ e Recomendação */}
+                <Box sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  maxWidth: "900px",
+                  gap: 3,
+                  mb: 3
+                }}>
+                  <Grid container spacing={3} sx={{ width: "100%" }}>
 
-                  {/* Observações*/}
-                  <Grid item xs={12}>
-                    <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
-                      <Paper sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        p: 2,
-                        backgroundColor: colors.primary[200],
-                        border: "1px solid grey",
-                        width: "100%",
-                        maxWidth: "800px"
-                      }}>
+                    {/* Pessoa Física */}
+                    <Grid item xs={12} md={4}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          backgroundColor: colors.primary[200],
+                          border: `2px solid ${colors.blueAccent[500]}`,
+                          textAlign: "center",
+                          height: "100%"
+                        }}
+                      >
                         <Typography
-                          variant="body2"
+                          variant="h6"
+                          fontWeight="bold"
+                          sx={{ mb: 2, color: colors.blueAccent[400] }}
+                        >
+                          Pessoa Física (PF)
+                        </Typography>
+                        <Typography variant="body2" sx={{ mb: 1 }}>
+                          Tributos Totais:{" "}
+                          <strong style={{ color: colors.redAccent[400] }}>
+                            {formatMoney(resultadoPF.imposto)}
+                          </strong>
+                        </Typography>
+                        <Typography variant="body2" sx={{ mb: 1 }}>
+                          Renda Líquida:{" "}
+                          <strong style={{ color: colors.greenAccent[400] }}>
+                            {formatMoney(resultadoPF.rendaLiquida)}
+                          </strong>
+                        </Typography>
+                        <Typography variant="body2">
+                          Alíquota Efetiva:{" "}
+                          <strong>{resultadoPF.aliquotaEfetiva.toFixed(2)}%</strong>
+                        </Typography>
+                      </Paper>
+                    </Grid>
+
+                    {/* Pessoa Jurídica */}
+                    <Grid item xs={12} md={4}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          backgroundColor: colors.primary[200],
+                          border: `2px solid ${colors.greenAccent[500]}`,
+                          textAlign: "center",
+                          height: "100%"
+                        }}
+                      >
+                        <Typography
+                          variant="h6"
+                          fontWeight="bold"
+                          sx={{ mb: 2, color: colors.greenAccent[400] }}
+                        >
+                          Pessoa Jurídica (PJ)
+                        </Typography>
+                        <Typography variant="body2" sx={{ mb: 1 }}>
+                          Tributos Totais:{" "}
+                          <strong style={{ color: colors.redAccent[400] }}>
+                            {formatMoney(resultadoPJ.totalPJ)}
+                          </strong>
+                        </Typography>
+                        <Typography variant="body2" sx={{ mb: 1 }}>
+                          Renda Líquida:{" "}
+                          <strong style={{ color: colors.greenAccent[400] }}>
+                            {formatMoney(resultadoPJ.rendaLiquida)}
+                          </strong>
+                        </Typography>
+                        <Typography variant="body2">
+                          Alíquota Total:{" "}
+                          <strong>
+                            {(
+                              (resultadoPJ.totalPJ / resultadoPJ.renda) *
+                              100
+                            ).toFixed(2)}
+                            %
+                          </strong>
+                        </Typography>
+                      </Paper>
+                    </Grid>
+
+                    {/* Recomendação */}
+                    <Grid item xs={12} md={4}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          backgroundColor:
+                            resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
+                              ? colors.blueAccent[800]
+                              : colors.greenAccent[800],
+                          border: `3px solid ${resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
+                              ? colors.blueAccent[500]
+                              : colors.greenAccent[500]
+                            }`,
+                          textAlign: "center",
+                          height: "100%",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center"
+                        }}
+                      >
+                        <Typography
+                          variant="h6"
                           fontWeight="bold"
                           sx={{ mb: 1 }}
-                          align="center"
                         >
-                          Observações Importantes:
+                          Recomendação
                         </Typography>
-                        <Box sx={{ display: "flex", justifyContent: "center" }}>
-                          <Typography variant="body2" component="ul" sx={{
-                            textAlign: "left",
-                            pl: 2,
-                            margin: 0
-                          }}>
-                            <li>Os cálculos são baseados na legislação atual (2025)</li>
-                            <li>Pessoa Jurídica terá custos adicionais de contabilidade</li>
-                            <li>Consulte um contador para análise personalizada</li>
-                            <li>
-                              Para dúvidas, entre em contato com o NAF: {formData.emailNAF}
-                            </li>
-                          </Typography>
-                        </Box>
+                        <Typography variant="body1" sx={{ mb: 1 }}>
+                          {resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
+                            ? `Pessoa Física (PF) é mais vantajosa!`
+                            : `Pessoa Jurídica (PJ) é mais vantajosa!`}
+                        </Typography>
+                        <Typography variant="body2">
+                          Economia de:{" "}
+                          <strong>
+                            {formatMoney(
+                              Math.abs(
+                                resultadoPF.rendaLiquida - resultadoPJ.rendaLiquida
+                              )
+                            )}
+                          </strong>{" "}
+                          por mês
+                        </Typography>
                       </Paper>
-                    </Box>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Box>
-            </Paper>
+                </Box>
+
+                {/* Terceira linha: Observações */}
+                <Box sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center"
+                }}>
+                  <Paper sx={{
+                    p: 2,
+                    backgroundColor: colors.primary[200],
+                    border: "1px solid grey",
+                    width: "100%",
+                    maxWidth: "800px",
+                    textAlign: "center"
+                  }}>
+                    <Typography
+                      variant="body2"
+                      fontWeight="bold"
+                      sx={{ mb: 1 }}
+                    >
+                      Observações Importantes:
+                    </Typography>
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <Typography variant="body2" component="ul" sx={{
+                        textAlign: "left",
+                        pl: 2,
+                        margin: 0
+                      }}>
+                        <li>Os cálculos são baseados na legislação atual (2025)</li>
+                        <li>Pessoa Jurídica terá custos adicionais de contabilidade</li>
+                        <li>Consulte um contador para análise personalizada</li>
+                        <li>
+                          Para dúvidas, entre em contato com o NAF: {formData.emailNAF}
+                        </li>
+                      </Typography>
+                    </Box>
+                  </Paper>
+                </Box>
+              </Paper>
+            </Box>
           )}
           <Box
             sx={{
