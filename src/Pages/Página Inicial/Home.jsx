@@ -9,6 +9,7 @@ import ModalCalculoPJ from "../../Components/Modals/ModalCalculoPJ";
 import ModalExplicacoes from "../../Components/Modals/ModalExplicacoes";
 import useUserStore from "../../store/useUserStore";
 import CalculateIcon from "@mui/icons-material/Calculate";
+import ModalComparacao from "../../Components/Modals/ModalComparacao";
 
 const Home = () => {
   const userName = useUserStore((state) => state.userName);
@@ -41,8 +42,7 @@ const Home = () => {
 
       {/* Botão Principal - Nova Calculadora Completa */}
       <Box sx={{ mb: 5 }}>
-        <Button
-          variant="contained"
+        {/* <Button
           size="large"
           startIcon={<CalculateIcon />}
           onClick={() => navigate("/calculadora")}
@@ -68,7 +68,8 @@ const Home = () => {
           }}
         >
           Acessar Calculadora Completa
-        </Button>
+        </Button> */}
+        < ModalComparacao />
         <Typography
           sx={{
             mt: 1,
