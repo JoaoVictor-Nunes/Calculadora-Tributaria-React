@@ -1,16 +1,9 @@
-import React from "react";
 import { useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import Backdrop from "@mui/material/Backdrop";
-import { useTheme } from "@mui/material/styles";
+import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow } from "@mui/material"
 import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
-import Grow from "@mui/material/Grow";
 import CalculateIcon from "@mui/icons-material/Calculate";
-import CalculadoraTributaria from "../../Pages/CalculadoraTributaria";
+import CalculadoraTributaria from "../../Pages/Cálculos/CalculadoraTributaria";
 
 
 const ModalComparacao = () => {

@@ -1,7 +1,5 @@
-import * as React from "react";
+import { IconButton, useTheme } from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { tokens } from "../Tema";
 
 

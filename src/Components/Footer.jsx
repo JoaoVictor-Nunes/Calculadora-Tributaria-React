@@ -1,8 +1,5 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { Box, Typography, useTheme } from "@mui/material"
 import EmailIcon from "@mui/icons-material/Email";
-import { useTheme } from "@mui/material/styles";
 import { tokens } from "../Tema";
 
 const Footer = () => {

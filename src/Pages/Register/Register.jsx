@@ -1,25 +1,27 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import {
+  useTheme,
+  Box,
+  Typography,
+  TextField,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  Link
+} from "@mui/material";
+import { tokens, ColorModeContext } from "../../Tema";
 import EmailInput from "../../Components/Inputs/EmailInput";
 import PasswordInput from "../../Components/Inputs/PasswordInput";
-import TextField from "@mui/material/TextField";
 import ButtonUsage from "../../Components/ButtonUsage";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
-import { tokens, ColorModeContext } from "../../Tema";
-import { IconButton } from "@mui/material";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Link } from "@mui/material";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import useUserStore from "../../store/useUserStore";
 import Footer from "../../Components/Footer";
 
@@ -45,13 +47,13 @@ const Register = () => {
 
   // Observar todos os campos
   const watchedFields = watch();
-  
+
   // Verificar se todos os campos obrigatórios estão preenchidos
-  const areAllFieldsFilled = 
-    watchedFields.name && 
-    watchedFields.profissao && 
-    watchedFields.email && 
-    watchedFields.password && 
+  const areAllFieldsFilled =
+    watchedFields.name &&
+    watchedFields.profissao &&
+    watchedFields.email &&
+    watchedFields.password &&
     watchedFields.confirmPassword;
 
   // Botão habilitado apenas se todos os campos estiverem preenchidos
@@ -106,7 +108,7 @@ const Register = () => {
       <Box
         sx={{
           mx: "auto",
-          my:"auto",
+          my: "auto",
           px: 4,
           py: 5,
           // width: { xs: '92vw', sm: 480, md: 600 },
@@ -222,8 +224,7 @@ const Register = () => {
                 }}
                 {...register("profissao", { required: "Profissão é obrigatória" })}
               >
-                <MenuItem value="Psicólogo">Psicólogo</MenuItem>
-                <MenuItem value="Psicóloga">Psicóloga</MenuItem>
+                <MenuItem value="Psicólogo">Psicólogo(a)</MenuItem>
               </Select>
             </FormControl>
             <Typography

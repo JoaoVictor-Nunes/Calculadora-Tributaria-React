@@ -1,28 +1,30 @@
 import React, { useState } from "react";
-import { useTheme } from "@mui/material/styles";
-import { tokens } from "../Tema";
+import { tokens } from "../../Tema";
 import { useForm } from "react-hook-form";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import InfoIcon from "@mui/icons-material/Info";
-import InputAdornment from "@mui/material/InputAdornment";
-import Alert from "@mui/material/Alert";
-import Collapse from "@mui/material/Collapse";
-import { Grow } from "@mui/material";
+import {
+  Box,
+  useTheme,
+  Typography,
+  TextField,
+  Button,
+  Paper,
+  Grid,
+  Tabs,
+  Tab,
+  Select,
+  MenuItem,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  Checkbox,
+  Tooltip,
+  IconButton,
+  InputAdornment,
+  Alert,
+  Collapse,
+  Grow
+} from "@mui/material"
+import Info from '@mui/icons-material/Info';
 
 const CalculadoraTributaria = () => {
   const theme = useTheme();
@@ -423,7 +425,7 @@ const CalculadoraTributaria = () => {
                     <InputAdornment position="end">
                       <InfoTooltip title="É o valor que você espera receber por mês com o seu trabalho. No caso da psicologia, pode ser o total recebido das consultas, atendimentos ou serviços prestados, antes de descontar as despesas.">
                         <IconButton size="small">
-                          <InfoIcon fontSize="small" />
+                          <Info fontSize="small" />
                         </IconButton>
                       </InfoTooltip>
                     </InputAdornment>
@@ -476,7 +478,7 @@ const CalculadoraTributaria = () => {
                     <InputAdornment position="end">
                       <InfoTooltip title="São os gastos mensais necessários para o seu trabalho acontecer, como aluguel da sala, internet, energia, telefone, material de escritório, entre outros. Essas despesas podem ser usadas para reduzir a base de cálculo do imposto (no caso da pessoa física).">
                         <IconButton size="small">
-                          <InfoIcon fontSize="small" />
+                          <Info fontSize="small" />
                         </IconButton>
                       </InfoTooltip>
                     </InputAdornment>
@@ -562,8 +564,7 @@ const CalculadoraTributaria = () => {
                     },
                   }}
                 >
-                  <MenuItem value="Psicólogo">Psicólogo</MenuItem>
-                  <MenuItem value="Psicóloga">Psicóloga</MenuItem>
+                  <MenuItem value="Psicólogo">Psicólogo(a)</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -870,131 +871,131 @@ const CalculadoraTributaria = () => {
                   mb: 3
                 }}>
 
-                    {/* Pessoa Física */}
-                    
-                      <Paper
-                        sx={{
-                          p: 2,
-                          backgroundColor: colors.primary[200],
-                          border: `2px solid ${colors.blueAccent[500]}`,
-                          textAlign: "center",
-                          height: "100%"
-                        }}
-                      >
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ mb: 2, color: colors.blueAccent[400] }}
-                        >
-                          Pessoa Física (PF)
-                        </Typography>
-                        <Typography variant="body2" sx={{ mb: 1 }}>
-                          Tributos Totais:{" "}
-                          <strong style={{ color: colors.redAccent[400] }}>
-                            {formatMoney(resultadoPF.imposto)}
-                          </strong>
-                        </Typography>
-                        <Typography variant="body2" sx={{ mb: 1 }}>
-                          Renda Líquida:{" "}
-                          <strong style={{ color: colors.greenAccent[400] }}>
-                            {formatMoney(resultadoPF.rendaLiquida)}
-                          </strong>
-                        </Typography>
-                        <Typography variant="body2">
-                          Alíquota Efetiva:{" "}
-                          <strong>{resultadoPF.aliquotaEfetiva.toFixed(2)}%</strong>
-                        </Typography>
-                      </Paper>
-                    {/* </Grid> */}
+                  {/* Pessoa Física */}
 
-                    {/* Pessoa Jurídica */}
-                    <Grid item xs={12} md={4}>
-                      <Paper
-                        sx={{
-                          p: 2,
-                          backgroundColor: colors.primary[200],
-                          border: `2px solid ${colors.greenAccent[500]}`,
-                          textAlign: "center",
-                          height: "100%"
-                        }}
-                      >
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ mb: 2, color: colors.greenAccent[400] }}
-                        >
-                          Pessoa Jurídica (PJ)
-                        </Typography>
-                        <Typography variant="body2" sx={{ mb: 1 }}>
-                          Tributos Totais:{" "}
-                          <strong style={{ color: colors.redAccent[400] }}>
-                            {formatMoney(resultadoPJ.totalPJ)}
-                          </strong>
-                        </Typography>
-                        <Typography variant="body2" sx={{ mb: 1 }}>
-                          Renda Líquida:{" "}
-                          <strong style={{ color: colors.greenAccent[400] }}>
-                            {formatMoney(resultadoPJ.rendaLiquida)}
-                          </strong>
-                        </Typography>
-                        <Typography variant="body2">
-                          Alíquota Total:{" "}
-                          <strong>
-                            {(
-                              (resultadoPJ.totalPJ / resultadoPJ.renda) *
-                              100
-                            ).toFixed(2)}
-                            %
-                          </strong>
-                        </Typography>
-                      </Paper>
-                    </Grid>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      backgroundColor: colors.primary[200],
+                      border: `2px solid ${colors.blueAccent[500]}`,
+                      textAlign: "center",
+                      height: "100%"
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      sx={{ mb: 2, color: colors.blueAccent[400] }}
+                    >
+                      Pessoa Física (PF)
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
+                      Tributos Totais:{" "}
+                      <strong style={{ color: colors.redAccent[400] }}>
+                        {formatMoney(resultadoPF.imposto)}
+                      </strong>
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
+                      Renda Líquida:{" "}
+                      <strong style={{ color: colors.greenAccent[400] }}>
+                        {formatMoney(resultadoPF.rendaLiquida)}
+                      </strong>
+                    </Typography>
+                    <Typography variant="body2">
+                      Alíquota Efetiva:{" "}
+                      <strong>{resultadoPF.aliquotaEfetiva.toFixed(2)}%</strong>
+                    </Typography>
+                  </Paper>
+                  {/* </Grid> */}
 
-                    {/* Recomendação */}
-                    <Grid item xs={12} md={4}>
-                      <Paper
-                        sx={{
-                          p: 2,
-                          backgroundColor:
-                            resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
-                              ? colors.blueAccent[800]
-                              : colors.greenAccent[800],
-                          border: `3px solid ${resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
-                              ? colors.blueAccent[500]
-                              : colors.greenAccent[500]
-                            }`,
-                          textAlign: "center",
-                          height: "100%",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center"
-                        }}
+                  {/* Pessoa Jurídica */}
+                  <Grid item xs={12} md={4}>
+                    <Paper
+                      sx={{
+                        p: 2,
+                        backgroundColor: colors.primary[200],
+                        border: `2px solid ${colors.greenAccent[500]}`,
+                        textAlign: "center",
+                        height: "100%"
+                      }}
+                    >
+                      <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        sx={{ mb: 2, color: colors.greenAccent[400] }}
                       >
-                        <Typography
-                          variant="h6"
-                          fontWeight="bold"
-                          sx={{ mb: 1 }}
-                        >
-                          Recomendação
-                        </Typography>
-                        <Typography variant="body1" sx={{ mb: 1 }}>
-                          {resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
-                            ? `Pessoa Física (PF) é mais vantajosa!`
-                            : `Pessoa Jurídica (PJ) é mais vantajosa!`}
-                        </Typography>
-                        <Typography variant="body2">
-                          Economia de:{" "}
-                          <strong>
-                            {formatMoney(
-                              Math.abs(
-                                resultadoPF.rendaLiquida - resultadoPJ.rendaLiquida
-                              )
-                            )}
-                          </strong>{" "}
-                          por mês
-                        </Typography>
-                      </Paper>
-                    </Grid>
+                        Pessoa Jurídica (PJ)
+                      </Typography>
+                      <Typography variant="body2" sx={{ mb: 1 }}>
+                        Tributos Totais:{" "}
+                        <strong style={{ color: colors.redAccent[400] }}>
+                          {formatMoney(resultadoPJ.totalPJ)}
+                        </strong>
+                      </Typography>
+                      <Typography variant="body2" sx={{ mb: 1 }}>
+                        Renda Líquida:{" "}
+                        <strong style={{ color: colors.greenAccent[400] }}>
+                          {formatMoney(resultadoPJ.rendaLiquida)}
+                        </strong>
+                      </Typography>
+                      <Typography variant="body2">
+                        Alíquota Total:{" "}
+                        <strong>
+                          {(
+                            (resultadoPJ.totalPJ / resultadoPJ.renda) *
+                            100
+                          ).toFixed(2)}
+                          %
+                        </strong>
+                      </Typography>
+                    </Paper>
+                  </Grid>
+
+                  {/* Recomendação */}
+                  <Grid item xs={12} md={4}>
+                    <Paper
+                      sx={{
+                        p: 2,
+                        backgroundColor:
+                          resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
+                            ? colors.blueAccent[800]
+                            : colors.greenAccent[800],
+                        border: `3px solid ${resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
+                          ? colors.blueAccent[500]
+                          : colors.greenAccent[500]
+                          }`,
+                        textAlign: "center",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center"
+                      }}
+                    >
+                      <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        sx={{ mb: 1 }}
+                      >
+                        Recomendação
+                      </Typography>
+                      <Typography variant="body1" sx={{ mb: 1 }}>
+                        {resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
+                          ? `Pessoa Física (PF) é mais vantajosa!`
+                          : `Pessoa Jurídica (PJ) é mais vantajosa!`}
+                      </Typography>
+                      <Typography variant="body2">
+                        Economia de:{" "}
+                        <strong>
+                          {formatMoney(
+                            Math.abs(
+                              resultadoPF.rendaLiquida - resultadoPJ.rendaLiquida
+                            )
+                          )}
+                        </strong>{" "}
+                        por mês
+                      </Typography>
+                    </Paper>
+                  </Grid>
                 </Box>
 
                 {/* Terceira linha: Observações */}

@@ -1,9 +1,8 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import Topbar from "../Components/Topbar";
 import Footer from "../Components/Footer";
 
-const TopbarLayout = () => {
+const PageLayout = () => {
   return (
     <div
       style={{
@@ -21,4 +20,4 @@ const TopbarLayout = () => {
   );
 };
 
-export default TopbarLayout;
+export default PageLayout;

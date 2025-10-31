@@ -1,18 +1,9 @@
-import React from "react";
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import Backdrop from "@mui/material/Backdrop";
-import { useTheme } from "@mui/material/styles";
+import { useState} from "react";
+import { Box, Button, Modal, Typography, Backdrop, Link, Paper, Grow, useTheme } from "@mui/material"
 import { tokens } from "../../Tema";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import ModalTabelaTributacao from "./ModalTabelaTributacao";
 import GoBack from "../GoBack";
-import Grow from "@mui/material/Grow";
 import HelpIcon from '@mui/icons-material/Help';
 
 
@@ -76,7 +67,7 @@ const ModalExplicacoes = () => {
           },
         }}
       >
-        Como são feitos os cálculos?
+        Como são feitos os cálculos
       </Button>
 
       <Modal

@@ -1,10 +1,5 @@
-import React, { useContext } from "react";
-import { useTheme } from "@mui/material/styles";
-import { tokens, ColorModeContext } from "../../Tema";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
+import { useTheme, Box, Typography, Paper, Stack } from "@mui/material";
+import { tokens } from "../../Tema";
 import TabelaTributacao from "../../Components/TabelaTributacao";
 
 const Explicacao = () => {

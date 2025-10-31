@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
-import { tokens } from "../Tema";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useTheme, Box, Typography, Alert, Collapse, Skeleton, TextField, Paper } from "@mui/material"
+import { tokens } from "../Tema";
 import EmailInput from "../Components/Inputs/EmailInput";
-import TextField from "@mui/material/TextField";
 import ButtonUsage from "../Components/ButtonUsage";
 import EmailIcon from '@mui/icons-material/Email';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import { Alert, Collapse, Skeleton } from "@mui/material";
 
 const Contatos = () => {
     const theme = useTheme();

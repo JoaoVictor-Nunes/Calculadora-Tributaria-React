@@ -1,19 +1,12 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
-import EmailInput from "../../Components/Inputs/EmailInput";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { Alert, Collapse } from "@mui/material";
-import Link from "@mui/material/Link";
 import { useNavigate } from "react-router-dom";
+import { Box, Typography, Alert, Collapse, Link, useTheme, IconButton } from "@mui/material";
+import { tokens, ColorModeContext } from "../../Tema";
 import ButtonUsage from "../../Components/ButtonUsage";
-import { useTheme } from "@mui/material/styles";
-import { tokens } from "../../Tema";
-import { IconButton } from "@mui/material";
+import EmailInput from "../../Components/Inputs/EmailInput";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import { useContext } from "react";
-import { ColorModeContext } from "../../Tema";
 import Footer from "../../Components/Footer";
 
 const Esqueci = () => {

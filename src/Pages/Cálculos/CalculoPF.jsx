@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   TextField,
@@ -7,11 +7,12 @@ import {
   Paper,
   Grid,
   useTheme,
+  FormControlLabel,
+  Checkbox
 } from "@mui/material";
-import { tokens } from "../Tema"; // ajuste o caminho conforme seu projeto
-import ModalRendaMensal from "../Components/Modals/ModalRendaMensal";
-import ModalCustosMensais from "../Components/Modals/ModalCustosMensais";
-import { FormControlLabel, Checkbox } from "@mui/material";
+import { tokens } from "../../Tema";
+import ModalRendaMensal from "../../Components/Modals/ModalRendaMensal";
+import ModalCustosMensais from "../../Components/Modals/ModalCustosMensais";
 
 const CalculoPF = () => {
   const theme = useTheme();

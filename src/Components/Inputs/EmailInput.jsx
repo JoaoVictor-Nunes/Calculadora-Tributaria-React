@@ -1,8 +1,6 @@
-import React from "react";
-import TextField from "@mui/material/TextField";
+import { TextField, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
-import Typography from "@mui/material/Typography";
 
 const EmailInput = ({ register, errors }) => {
   const theme = useTheme();

@@ -1,14 +1,8 @@
-import React, { useState } from "react";
-import { useTheme } from "@mui/material/styles";
-import { tokens } from "../Tema";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import ModalRendaMensal from "../Components/Modals/ModalRendaMensal";
-import ModalCustosMensais from "../Components/Modals/ModalCustosMensais";
+import { useState } from "react";
+import { useTheme, Box, Typography, TextField, Button, Paper, Grid } from "@mui/material";
+import { tokens } from "../../Tema";
+import ModalRendaMensal from "../../Components/Modals/ModalRendaMensal";
+import ModalCustosMensais from "../../Components/Modals/ModalCustosMensais";
 
 const CalculoPJ = () => {
   const theme = useTheme();

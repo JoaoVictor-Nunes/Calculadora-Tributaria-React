@@ -1,21 +1,13 @@
-import React from "react";
-import { Box, Typography, Stack, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useTheme } from "@mui/material/styles";
-import { tokens } from "../../Tema";
-import { getButtonStyles } from "../../utils/formStyles";
+import { Box, Typography, Stack } from "@mui/material";
 import ModalCalculoPF from "../../Components/Modals/ModalCalculoPF";
 import ModalCalculoPJ from "../../Components/Modals/ModalCalculoPJ";
 import ModalExplicacoes from "../../Components/Modals/ModalExplicacoes";
 import useUserStore from "../../store/useUserStore";
-import CalculateIcon from "@mui/icons-material/Calculate";
 import ModalComparacao from "../../Components/Modals/ModalComparacao";
 
 const Home = () => {
   const userName = useUserStore((state) => state.userName);
-  const navigate = useNavigate();
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+
 
   return (
     <Box
@@ -33,7 +25,7 @@ const Home = () => {
         fontWeight="bold"
         gutterBottom
       >
-        Bem-vindo, {userName || "visitante"}, à sua Calculadora de Tributação
+        Bem-vindo(a), {userName || "visitante"}, à sua Calculadora de Tributação
       </Typography>
 
       <Typography variant="body1" sx={{ mb: 4 }}>
@@ -42,33 +34,6 @@ const Home = () => {
 
       {/* Botão Principal - Nova Calculadora Completa */}
       <Box sx={{ mb: 5 }}>
-        {/* <Button
-          size="large"
-          startIcon={<CalculateIcon />}
-          onClick={() => navigate("/calculadora")}
-          sx={{
-            // ...getButtonStyles(theme, "primary"),
-            // px: 4,
-             fontSize: "1.1rem",
-            color: colors.grey[900],
-            backgroundColor: colors.redAccent[500],
-            px: 4,
-            py: 1,
-            // Transições para o efeito hover
-            transition: "all 0.3s ease-in-out",
-            transitionDelay: "30ms",
-            // Estilo normal
-            transform: "translateY(0) scale(1)",
-            // Efeito hover
-            '&:hover': {
-              backgroundColor: colors.redAccent[600],
-              transform: "translateY(-4px) scale(1.02)",
-              boxShadow: `0 10px 25px -5px rgba(0, 0, 0, 0.3)`,
-            },
-          }}
-        >
-          Acessar Calculadora Completa
-        </Button> */}
         < ModalComparacao />
         <Typography
           sx={{

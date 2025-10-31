@@ -1,6 +1,4 @@
-import { Button } from "@mui/material";
-import React from "react";
-import { useTheme } from "@mui/material/styles";
+import { Button, useTheme } from "@mui/material";
 import { tokens } from "../Tema";
 
 const ButtonUsage = ({ children, ...props }) => {

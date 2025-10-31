@@ -1,16 +1,8 @@
-import React from "react";
 import { useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import CalculoPJ from "../../Pages/CalculoPJ";
-import Backdrop from '@mui/material/Backdrop';
-import { useTheme } from "@mui/material/styles";
+import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow } from "@mui/material"
+import CalculoPJ from "../../Pages/Cálculos/CalculoPJ";
 import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
-import Grow from "@mui/material/Grow";
-import { useNavigate } from "react-router-dom"; // Importação faltando
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
 const ModalCalculoPJ = () => {
@@ -19,7 +11,6 @@ const ModalCalculoPJ = () => {
     const [open, setOpen] = useState(false);
     const [transformOrigin, setTransformOrigin] = useState('center center');
 
-    const navigate = useNavigate(); // Agora está importado
 
     const handleOpen = (event) => {
         const rect = event.currentTarget.getBoundingClientRect();
@@ -56,8 +47,6 @@ const ModalCalculoPJ = () => {
                     fontSize: "1.1rem",
                     px: 2,
                     py: 1,
-                    // width: "300px",
-                    // height: "80px",
                     // Transições para o efeito hover
                     transition: "all 0.3s ease-in-out",
                     transitionDelay: "30ms",
@@ -71,7 +60,7 @@ const ModalCalculoPJ = () => {
                     },
                 }}
             >
-                Pessoa Jurídica (PJ) {/* Texto corrigido */}
+                Pessoa Jurídica (PJ)
             </Button>
 
             <Modal

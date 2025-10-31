@@ -1,16 +1,8 @@
-import React from "react";
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import CalculoPF from "../../Pages/CalculoPF";
-import Backdrop from '@mui/material/Backdrop';
-import { useTheme } from "@mui/material/styles";
+import { useState} from "react";
+import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow } from "@mui/material"
+import CalculoPF from "../../Pages/Cálculos/CalculoPF";
 import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
-import Grow from "@mui/material/Grow";
-import { useNavigate } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
 
 const ModalCalculoPJ = () => {
@@ -19,7 +11,6 @@ const ModalCalculoPJ = () => {
     const [open, setOpen] = useState(false);
     const [transformOrigin, setTransformOrigin] = useState('center center');
 
-    const navigate = useNavigate();
 
     const handleOpen = (event) => {
         const rect = event.currentTarget.getBoundingClientRect();
