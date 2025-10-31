@@ -2,14 +2,6 @@ import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../Tema";
 import { useForm } from "react-hook-form";
-// import {
-//   getInputStyles,
-//   getSelectStyles,
-//   getPaperStyles,
-//   getButtonStyles,
-//   getTabsStyles,
-// } from "../utils/formStyles";
-// import { getAppColors } from "../utils/themeColors";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -872,18 +864,14 @@ const CalculadoraTributaria = () => {
                 {/* Segunda linha: Comparação PF, PJ e Recomendação */}
                 <Box sx={{
                   display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
                   justifyContent: "center",
                   width: "100%",
-                  maxWidth: "900px",
                   gap: 3,
                   mb: 3
                 }}>
-                  <Grid container spacing={3} sx={{ width: "100%" }}>
 
                     {/* Pessoa Física */}
-                    <Grid item xs={12} md={4}>
+                    
                       <Paper
                         sx={{
                           p: 2,
@@ -917,7 +905,7 @@ const CalculadoraTributaria = () => {
                           <strong>{resultadoPF.aliquotaEfetiva.toFixed(2)}%</strong>
                         </Typography>
                       </Paper>
-                    </Grid>
+                    {/* </Grid> */}
 
                     {/* Pessoa Jurídica */}
                     <Grid item xs={12} md={4}>
@@ -1007,7 +995,6 @@ const CalculadoraTributaria = () => {
                         </Typography>
                       </Paper>
                     </Grid>
-                  </Grid>
                 </Box>
 
                 {/* Terceira linha: Observações */}

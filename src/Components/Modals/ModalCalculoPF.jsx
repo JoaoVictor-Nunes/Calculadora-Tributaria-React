@@ -11,6 +11,7 @@ import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
 import Grow from "@mui/material/Grow";
 import { useNavigate } from "react-router-dom";
+import PersonIcon from '@mui/icons-material/Person';
 
 const ModalCalculoPJ = () => {
     const theme = useTheme();
@@ -48,6 +49,7 @@ const ModalCalculoPJ = () => {
             <Button
                 onClick={handleOpen}
                 size="large"
+                startIcon={<PersonIcon />}
                 sx={{
                     color: colors.grey[900],
                     backgroundColor: colors.redAccent[500],

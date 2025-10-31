@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import ModalTabelaTributacao from "./ModalTabelaTributacao";
 import GoBack from "../GoBack";
 import Grow from "@mui/material/Grow";
+import HelpIcon from '@mui/icons-material/Help';
+
 
 const ModalExplicacoes = () => {
   const theme = useTheme();
@@ -52,6 +54,7 @@ const ModalExplicacoes = () => {
       <Button
         onClick={handleOpen}
         size="large"
+        startIcon={<HelpIcon />}
         sx={{
           color: colors.grey[900],
           backgroundColor: colors.redAccent[500],

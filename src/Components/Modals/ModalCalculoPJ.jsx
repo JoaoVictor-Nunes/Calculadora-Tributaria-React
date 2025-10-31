@@ -11,6 +11,7 @@ import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
 import Grow from "@mui/material/Grow";
 import { useNavigate } from "react-router-dom"; // Importação faltando
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
 const ModalCalculoPJ = () => {
     const theme = useTheme();
@@ -48,6 +49,7 @@ const ModalCalculoPJ = () => {
             <Button
                 onClick={handleOpen}
                 size="large"
+                startIcon={<AccountBalanceIcon />}
                sx={{
                     color: colors.grey[900],
                     backgroundColor: colors.redAccent[500],

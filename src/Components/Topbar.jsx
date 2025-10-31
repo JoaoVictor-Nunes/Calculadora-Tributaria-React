@@ -112,7 +112,7 @@ function Topbar(props) {
         onClose={handleCloseMenu}
       >
         <MenuItem onClick={() => handleNavigate("/calculadora")}>
-          Calculadora Completa (PF x PJ)
+          Comparação (PF x PJ)
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => handleNavigate("/calculopf")}>
@@ -208,7 +208,7 @@ function Topbar(props) {
                       onClose={handleCloseMenu}
                     >
                       <MenuItem onClick={() => handleNavigate("/calculadora")}>
-                        Calculadora Completa (PF x PJ)
+                        Comparação (PF x PJ)
                       </MenuItem>
                       <Divider />
                       <MenuItem onClick={() => handleNavigate("/calculopf")}>
