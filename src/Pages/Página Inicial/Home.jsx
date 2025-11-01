@@ -12,15 +12,14 @@ const Home = () => {
   return (
     <Box
       sx={{
-        maxWidth: "900px",
+        // maxWidth: "900px",
         mx: "auto", // margin inline auto
         px: 4,
-        py: 8,
         textAlign: "center",
       }}
     >
       <Typography
-        variant="h4"
+        variant="h3"
         component="h1"
         fontWeight="bold"
         gutterBottom
@@ -28,23 +27,23 @@ const Home = () => {
         Bem-vindo(a), {userName || "visitante"}, à sua Calculadora de Tributação
       </Typography>
 
-      <Typography variant="body1" sx={{ mb: 4 }}>
+      <Typography variant="body1" sx={{ mb: 4, fontSize: "18px" }}>
         Compare a tributação entre Pessoa Física e Pessoa Jurídica para profissionais de psicologia
       </Typography>
 
-      {/* Botão Principal - Nova Calculadora Completa */}
       <Box sx={{ mb: 5 }}>
         < ModalComparacao />
         <Typography
           sx={{
-            mt: 1,
+            mt: 3,
+            fontSize: "18px" 
           }}
         >
           Calcule e compare PF x PJ em uma única página
         </Typography>
       </Box>
 
-      <Typography variant="body1" sx={{ mb: 2}}>
+      <Typography variant="body1" sx={{ mb: 2, fontSize: "18px" }}>
         Ou escolha uma modalidade específica:
       </Typography>
       <Stack
@@ -55,14 +54,14 @@ const Home = () => {
       >
         <Stack
           direction="row"
-          spacing={2}
+          spacing={4}
           alignItems="center"
           justifyContent="center"
         >
           <ModalCalculoPF />
           <ModalCalculoPJ />
         </Stack>
-        <Typography sx={{ pt: 5 }}>
+        <Typography sx={{ pt: 5, fontSize: "18px" }}>
           Dúvidas sobre os cálculos?
         </Typography>
         <ModalExplicacoes />

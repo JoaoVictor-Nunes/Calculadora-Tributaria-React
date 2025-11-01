@@ -14,16 +14,13 @@ import {
   Select,
   Link
 } from "@mui/material";
-import { tokens, ColorModeContext } from "../../Tema";
+import { LightModeOutlined, DarkModeOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import EmailInput from "../../Components/Inputs/EmailInput";
 import PasswordInput from "../../Components/Inputs/PasswordInput";
 import ButtonUsage from "../../Components/ButtonUsage";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import useUserStore from "../../store/useUserStore";
 import Footer from "../../Components/Footer";
+import useUserStore from "../../store/useUserStore";
+import { tokens, ColorModeContext } from "../../Tema";
 
 const Register = () => {
   const theme = useTheme();
@@ -84,7 +81,7 @@ const Register = () => {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
-        paddingTop: "100px"
+        paddingTop: "25px",
       }}
     >
       {/* Botão de alternar tema */}
@@ -99,9 +96,9 @@ const Register = () => {
         }}
       >
         {theme.palette.mode === "dark" ? (
-          <LightModeOutlinedIcon />
+          <LightModeOutlined />
         ) : (
-          <DarkModeOutlinedIcon />
+          <DarkModeOutlined />
         )}
       </IconButton>
 
@@ -111,7 +108,7 @@ const Register = () => {
           my: "auto",
           px: 4,
           py: 5,
-          // width: { xs: '92vw', sm: 480, md: 600 },
+          marginBottom: "25px",
           backgroundColor: colors.primary[500],
           borderRadius: 2,
           borderColor: "#878787",

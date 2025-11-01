@@ -2,12 +2,11 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, Alert, Collapse, Link, useTheme, IconButton } from "@mui/material";
-import { tokens, ColorModeContext } from "../../Tema";
+import { LightModeOutlined, DarkModeOutlined } from "@mui/icons-material";
 import ButtonUsage from "../../Components/ButtonUsage";
 import EmailInput from "../../Components/Inputs/EmailInput";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import Footer from "../../Components/Footer";
+import { tokens, ColorModeContext } from "../../Tema";
 
 const Esqueci = () => {
   const theme = useTheme();
@@ -50,9 +49,9 @@ const Esqueci = () => {
         }}
       >
         {theme.palette.mode === "dark" ? (
-          <LightModeOutlinedIcon />
+          <LightModeOutlined />
         ) : (
-          <DarkModeOutlinedIcon />
+          <DarkModeOutlined />
         )}
       </IconButton>
       <Box

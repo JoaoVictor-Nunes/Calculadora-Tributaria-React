@@ -1,15 +1,22 @@
 import { useState } from "react";
-import { TextField, Typography, IconButton, InputAdornment, useTheme } from "@mui/material"
+import {
+  TextField,
+  Typography,
+  IconButton,
+  InputAdornment,
+  useTheme,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { tokens } from "../../Tema";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const PasswordInput = ({ register, errors }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [show, setShow] = useState(false);
 
-  const errorMessage = errors.password ? errors.password.message : "Mensagem de erro";
+  const errorMessage = errors.password
+    ? errors.password.message
+    : "Mensagem de erro";
 
   return (
     <div>
@@ -20,41 +27,46 @@ const PasswordInput = ({ register, errors }) => {
         type={show ? "text" : "password"}
         fullWidth
         slotProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={() => setShow(!show)} edge="end">
-                {show ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShow(!show)} edge="end">
+                  {show ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
         sx={{
           width: "100%",
-          '& .MuiOutlinedInput-root': {
+          "& .MuiOutlinedInput-root": {
             backgroundColor: colors.primary[500],
-            '& fieldset': {
+            "& fieldset": {
               borderColor: colors.grey[300],
             },
-            '&:hover fieldset': {
+            "&:hover fieldset": {
               borderColor: colors.blueAccent[500],
             },
-            '&.Mui-focused fieldset': {
+            "&.Mui-focused fieldset": {
               borderColor: colors.blueAccent[500],
             },
           },
-          '& .MuiInputLabel-root': {
+          "& .MuiInputLabel-root": {
             color: colors.grey[300],
-            '&.Mui-focused': {
+            "&.Mui-focused": {
               color: colors.blueAccent[500],
             },
           },
-          '& .MuiOutlinedInput-input': {
+          "& .MuiOutlinedInput-input": {
             color: colors.grey[100],
           },
         }}
         {...register("password", {
           required: "Senha é obrigatória",
-          minLength: { value: 6, message: "Senha deve ter ao menos 6 caracteres" },
+          minLength: {
+            value: 6,
+            message: "Senha deve ter ao menos 6 caracteres",
+          },
         })}
       />
       <Typography
@@ -66,7 +78,7 @@ const PasswordInput = ({ register, errors }) => {
           visibility: errors.password ? "visible" : "hidden",
           marginTop: "4px",
           display: "block",
-          fontSize: "12px"
+          fontSize: "12px",
         }}
       >
         {errorMessage}

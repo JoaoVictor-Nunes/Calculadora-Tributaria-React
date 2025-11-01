@@ -318,7 +318,7 @@ const Contatos = () => {
                         <Skeleton variant="rectangular"
                             sx={{
                                 width: "100%",
-                                height: 530,
+                                height: 470,
                                 borderRadius: 2,
                             }} />
                     )}

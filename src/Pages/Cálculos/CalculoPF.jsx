@@ -8,11 +8,12 @@ import {
   Grid,
   useTheme,
   FormControlLabel,
-  Checkbox
+  InputAdornment,
+  Checkbox,
 } from "@mui/material";
 import { tokens } from "../../Tema";
-import ModalRendaMensal from "../../Components/Modals/ModalRendaMensal";
-import ModalCustosMensais from "../../Components/Modals/ModalCustosMensais";
+import CustosTooltip from "../../Components/CustosTooltip";
+import RendaTooltip from "../../Components/RendaTooltip";
 
 const CalculoPF = () => {
   const theme = useTheme();
@@ -109,6 +110,22 @@ const CalculoPF = () => {
                 onChange={handleChange}
                 fullWidth
                 variant="outlined"
+                slotProps={{
+                  htmlInput: {
+                    min: 0,
+                    step: "0.01",
+                  },
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <RendaTooltip />
+                      </InputAdornment>
+                    ),
+                  },
+                }}
                 sx={{
                   marginBottom: 1,
                   "& .MuiOutlinedInput-root": {
@@ -126,7 +143,6 @@ const CalculoPF = () => {
                   "& .MuiOutlinedInput-input": { color: colors.grey[100] },
                 }}
               />
-              <ModalRendaMensal />
             </Box>
           </Grid>
 
@@ -149,6 +165,23 @@ const CalculoPF = () => {
                 fullWidth
                 variant="outlined"
                 placeholder="Despesas dedutíveis mensais"
+                slotProps={{
+                  htmlInput: {
+                    min: 0,
+                    step: "0.01",
+                  },
+
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CustosTooltip />
+                      </InputAdornment>
+                    ),
+                  },
+                }}
                 sx={{
                   marginBottom: 1,
                   "& .MuiOutlinedInput-root": {
@@ -166,7 +199,6 @@ const CalculoPF = () => {
                   "& .MuiOutlinedInput-input": { color: colors.grey[100] },
                 }}
               />
-              <ModalCustosMensais />
             </Box>
           </Grid>
 
@@ -268,32 +300,30 @@ const CalculoPF = () => {
                     minimumFractionDigits: 2,
                   })}
                 </Typography>
-                
               </Grid>
             </Grid>
-             
           </Paper>
         )}
-     <FormControlLabel
-        label="Deseja receber os resultados via email?"
-        control={
-          <Checkbox
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              color: colors.grey[300],
-              "&.Mui-checked": {
-                color: colors.blueAccent[500],
-              },
-            }}
-          />
-        }
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: colors.grey[100],
-          },
-        }}
-      />
+        <FormControlLabel
+          label="Deseja receber os resultados via email?"
+          control={
+            <Checkbox
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                color: colors.grey[300],
+                "&.Mui-checked": {
+                  color: colors.blueAccent[500],
+                },
+              }}
+            />
+          }
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              color: colors.grey[100],
+            },
+          }}
+        />
       </Paper>
     </Box>
   );

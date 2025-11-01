@@ -2,13 +2,12 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useTheme, Link, Box, Typography, IconButton, Checkbox, FormControlLabel } from "@mui/material";
+import { LightModeOutlined, DarkModeOutlined } from "@mui/icons-material";
 import PasswordInput from "../../Components/Inputs/PasswordInput";
 import EmailInput from "../../Components/Inputs/EmailInput";
 import ButtonUsage from "../../Components/ButtonUsage";
-import { tokens, ColorModeContext } from "../../Tema";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import Footer from "../../Components/Footer";
+import { tokens, ColorModeContext } from "../../Tema";
 
 const Login = () => {
   const theme = useTheme();
@@ -38,8 +37,7 @@ const Login = () => {
   };
 
   return (
-    // Box para armazenar o conteúdo da página
-    <Box
+        <Box
 
     // estilização da página
       sx={{
@@ -48,7 +46,7 @@ const Login = () => {
         alignItems: "center",
         justifyContent: "center",
         minHeight: "100vh",
-        paddingTop: "100px",
+        paddingTop: "25px",
       }}
     >
       {/* Botão de alternar tema */}
@@ -64,9 +62,9 @@ const Login = () => {
         }}
       >
         {theme.palette.mode === "dark" ? ( 
-          <LightModeOutlinedIcon /> // se o tema for "escuro" aparece o sol
+          <LightModeOutlined /> // se o tema for "escuro" aparece o sol
         ) : (
-          <DarkModeOutlinedIcon /> // se o tema for "claro" aparece a lua
+          <DarkModeOutlined /> // se o tema for "claro" aparece a lua
         )}
       </IconButton>
 
