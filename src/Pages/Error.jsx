@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
+// Página de erro 404 para rotas não encontradas
 const Error = () => {
     return (
         <Box>

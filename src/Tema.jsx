@@ -1,7 +1,6 @@
 import * as React from "react";
 import { createTheme } from "@mui/material/styles";
 import  useThemeStore  from "./store/useThemeStore";
-
 export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {

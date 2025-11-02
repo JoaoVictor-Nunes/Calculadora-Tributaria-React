@@ -14,6 +14,7 @@ const Login = () => {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
 
+  // Configuração do formulário com react-hook-form
   const {
     register,
     handleSubmit,
@@ -28,10 +29,12 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  // Watch dos campos para validação do botão
   const watchedFields = watch();
   const areAllFieldsFilled = watchedFields.email && watchedFields.password;
   const isButtonDisabled = !areAllFieldsFilled;
 
+  // Handler de submit do formulário
   const onSubmit = (data) => {
     console.log("Dados enviados: ", data);
     navigate("/home");
@@ -39,8 +42,7 @@ const Login = () => {
 
   return (
     <Box
-
-      // estilização da página
+      // ESTILIZAÇÃO DA PÁGINA
       sx={{
         display: "flex",
         flexDirection: "column",

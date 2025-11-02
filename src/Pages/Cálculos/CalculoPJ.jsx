@@ -20,6 +20,7 @@ import {
 import RendaTooltip from "../../Components/RendaTooltip";
 import { tokens } from "../../Tema";
 
+// Componente de cálculo de tributação para Pessoa Jurídica (PJ)
 const CalculoPJ = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -27,6 +28,7 @@ const CalculoPJ = () => {
 
   const navigate = useNavigate();
 
+  // Configuração do formulário com react-hook-form
   const {
     register,
     handleSubmit,
@@ -35,7 +37,7 @@ const CalculoPJ = () => {
   } = useForm({
     defaultValues: {
       rendaMensal: "",
-      salarioMinimo: "1518.0", // Mudei de custosMensais para salarioMinimo
+      salarioMinimo: "1518.0", // Valor mínimo para pró-labore
       enviarEmail: false,
       emailUsuario: "",
     }
@@ -45,24 +47,28 @@ const CalculoPJ = () => {
   const watchedFields = watch();
   const areAllFieldsFilled =
     watchedFields.rendaMensal &&
-    watchedFields.salarioMinimo; // Mudei para salarioMinimo
+    watchedFields.salarioMinimo;
 
   const isButtonDisabled = !areAllFieldsFilled;
 
+  // Estados de resultados e alertas
   const [resultado, setResultado] = useState(null);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("success");
 
+  // Função para exibir alertas de feedback ao usuário
   const showAlert = (message, severity) => {
     setAlertMessage(message);
     setAlertSeverity(severity);
     setAlertVisible(true);
+    // Auto-esconde o alerta após 2 segundos
     setTimeout(() => {
       setAlertVisible(false);
     }, 2000);
   };
 
+  // Função para formatar valores monetários em Real brasileiro
   const formatMoney = (value) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -70,18 +76,19 @@ const CalculoPJ = () => {
     }).format(value);
   };
 
+  // Função para simular envio de e-mail com resultados
   const enviarEmail = (resultadoPJ) => {
     const emailUsuario = watch("emailUsuario");
     console.log("Enviando email...", { resultadoPJ, email: emailUsuario });
     showAlert("E-mail enviado com sucesso!", "success");
   };
 
-  // Função principal de cálculo - agora recebe os dados do react-hook-form
+  // Função principal de cálculo de tributação para Pessoa Jurídica
   const calcularPJ = (data) => {
     const renda = parseFloat(data.rendaMensal) || 0;
     const salarioMinimo = parseFloat(data.salarioMinimo) || 1518.0;
 
-    // Validação adicional
+    // Validação adicional do limite de renda
     if (renda > LIMITE_RENDA) {
       showAlert(
         `A Renda Mensal não pode exceder ${formatMoney(LIMITE_RENDA)}`,
@@ -90,43 +97,48 @@ const CalculoPJ = () => {
       return;
     }
 
-    // Pró-labore: maior entre 28% da renda e salário mínimo
+    // Pró-labore: maior valor entre 28% da renda ou salário mínimo vigente
     const proLabore = Math.max(renda * 0.28, salarioMinimo);
 
-    // Simples Nacional (exemplo): 6% sobre a renda mensal
+    // Simples Nacional (Anexo III): 6% sobre a renda mensal total
     const simples = renda * 0.06;
 
-    // INSS sobre pró-labore (exemplo): 11%
+    // INSS sobre pró-labore: 11% do valor do pró-labore
     const inss = proLabore * 0.11;
 
-    // Total PJ (simples + INSS)
+    // Total de tributos PJ (Simples Nacional + INSS)
     const totalPJ = simples + inss;
 
+    // Armazena resultados no estado
     setResultado({
       renda,
       proLabore,
       simples,
       inss,
       totalPJ,
-      rendaLiquidaPJ: renda - totalPJ,
+      rendaLiquidaPJ: renda - totalPJ, // Renda líquida após todos os tributos
     });
     showAlert("Cálculo realizado com sucesso!", "success");
   };
 
+  // Handler de envio de email com validações
   const handleEnviarEmail = () => {
     const emailValue = watch("emailUsuario");
 
+    // Validação de email preenchido
     if (!emailValue || emailValue.trim() === "") {
       showAlert("Por favor, informe seu e-mail", "error");
       return;
     }
 
+    // Validação de formato de email
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     if (!emailRegex.test(emailValue)) {
       showAlert("Por favor, informe um e-mail válido", "error");
       return;
     }
 
+    // Validação de existência de resultados
     if (resultado) {
       enviarEmail(resultado);
     } else {

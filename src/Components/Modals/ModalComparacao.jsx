@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import {
     Box,
     Modal,
@@ -30,11 +29,15 @@ import CalculateIcon from "@mui/icons-material/Calculate";
 const ModalComparacao = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    
+    // CONTROLE DE ESTADO DO MODAL
     const [open, setOpen] = useState(false);
     const [transformOrigin, setTransformOrigin] = useState("center center");
 
+    // HANDLERS DE ABERTURA/FECHAMENTO DO MODAL
     const handleOpen = (event) => {
         const rect = event.currentTarget.getBoundingClientRect();
+        // CALCULA ORIGEM DA ANIMAÇÃO BASEADA NA POSIÇÃO DO BOTÃO
         const origin = `${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px`;
         setTransformOrigin(origin);
         setOpen(true);
@@ -42,6 +45,7 @@ const ModalComparacao = () => {
 
     const handleClose = () => setOpen(false);
 
+    // ESTILOS DO MODAL
     const style = {
         width: { xs: "90vw", md: 800 },
         bgcolor: colors.primary[500],
@@ -56,6 +60,7 @@ const ModalComparacao = () => {
         position: "relative",
     };
 
+    // GERENCIAMENTO DO FORMULÁRIO COM REACT-HOOK-FORM
     const {
         register,
         handleSubmit,
@@ -71,16 +76,17 @@ const ModalComparacao = () => {
         }
     });
 
-    const navigate = useNavigate();
-
+    // OBSERVAÇÃO DOS CAMPOS PARA VALIDAÇÃO EM TEMPO REAL
     const watchedFields = watch();
     const areAllFieldsFilled =
         watchedFields.rendaMensal &&
         watchedFields.custosMensais &&
         watchedFields.profissao;
 
+    // CONTROLE DE ESTADO DO BOTÃO DE CÁLCULO
     const isButtonDisabled = !areAllFieldsFilled;
 
+    // 📊 ESTADOS PARA RESULTADOS E FEEDBACK
     const [resultadoPF, setResultadoPF] = useState(null);
     const [resultadoPJ, setResultadoPJ] = useState(null);
     const [mostrarResultados, setMostrarResultados] = useState(false);
@@ -88,9 +94,11 @@ const ModalComparacao = () => {
     const [alertMessage, setAlertMessage] = useState("");
     const [alertSeverity, setAlertSeverity] = useState("success");
 
+    // CONSTANTES PARA CÁLCULOS TRIBUTÁRIOS
     const SALARIO_MINIMO = 1518.0;
     const LIMITE_RENDA = 15000.0;
 
+    // FUNÇÃO DE FORMATAÇÃO MONETÁRIA
     const formatMoney = (value) => {
         return new Intl.NumberFormat("pt-BR", {
             style: "currency",
@@ -98,6 +106,7 @@ const ModalComparacao = () => {
         }).format(value);
     };
 
+    // SISTEMA DE ALERTAS TEMPORÁRIOS
     const showAlert = (message, severity = "success") => {
         setAlertMessage(message);
         setAlertSeverity(severity);
@@ -107,8 +116,7 @@ const ModalComparacao = () => {
         }, 3000);
     };
 
-    // Função para enviar e-mail (simulação)
-    // Função para enviar e-mail (simulação)
+    // FUNÇÃO DE ENVIO DE EMAIL (SIMULAÇÃO)
     const enviarEmail = (pf, pj) => {
         const emailUsuario = watch("emailUsuario");
         console.log("Enviando e-mail de:", emailUsuario);
@@ -117,7 +125,8 @@ const ModalComparacao = () => {
 
         showAlert("Resultados enviados para seu email.", "success");
     };
-    // Cálculo de Pessoa Física
+
+    // CÁLCULO DE PESSOA FÍSICA (IMPOSTO DE RENDA)
     const calcularPF = (renda, custos) => {
         const baseCalculo = renda - custos;
         let imposto = 0;
@@ -125,6 +134,7 @@ const ModalComparacao = () => {
         let parcelaADeduzir = 0;
         let faixa = "";
 
+        // TABELA PROGRESSIVA DO IRPF 2024
         if (baseCalculo <= 2428.8) {
             imposto = 0;
             aliquota = 0;
@@ -168,13 +178,14 @@ const ModalComparacao = () => {
         };
     };
 
-    // Cálculo de Pessoa Jurídica
+    // CÁLCULO DE PESSOA JURÍDICA (SIMPLES NACIONAL)
     const calcularPJ = (renda) => {
-        const simplesNacional = renda * 0.06;
-        const proLabore28 = renda * 0.28;
-        const proLabore = Math.max(proLabore28, SALARIO_MINIMO);
-        const inss = proLabore * 0.11;
+        const simplesNacional = renda * 0.06; // 6% do Simples Nacional
+        const proLabore28 = renda * 0.28; // 28% para pró-labore
+        const proLabore = Math.max(proLabore28, SALARIO_MINIMO); // Mínimo é salário mínimo
+        const inss = proLabore * 0.11; // 11% de INSS sobre pró-labore
 
+        // CÁLCULO DO IR SOBRE PRÓ-LABORE (mesma tabela da PF)
         let irProLabore = 0;
         if (proLabore <= 2428.8) {
             irProLabore = 0;
@@ -203,10 +214,12 @@ const ModalComparacao = () => {
         };
     };
 
+    // FUNÇÃO PRINCIPAL DE CÁLCULO
     const calcular = (data) => {
         const renda = parseFloat(data.rendaMensal) || 0;
         const custos = parseFloat(data.custosMensais) || 0;
 
+        // VALIDAÇÃO DE LIMITE DE RENDA
         if (renda > LIMITE_RENDA) {
             showAlert(
                 `A Renda Mensal não pode exceder ${formatMoney(LIMITE_RENDA)}`,
@@ -215,9 +228,11 @@ const ModalComparacao = () => {
             return;
         }
 
+        // EXECUTA CÁLCULOS PF E PJ
         const pf = calcularPF(renda, custos);
         const pj = calcularPJ(renda);
 
+        // ARMAZENA RESULTADOS E MOSTRA UI
         setResultadoPF(pf);
         setResultadoPJ(pj);
         setMostrarResultados(true);
@@ -226,6 +241,7 @@ const ModalComparacao = () => {
 
     return (
         <div>
+            {/* BOTÃO QUE ABRE O MODAL COMPARATIVO */}
             <Button
                 onClick={handleOpen}
                 size="large"
@@ -248,6 +264,8 @@ const ModalComparacao = () => {
             >
                 Calculadora Comparativa
             </Button>
+            
+            {/* MODAL PRINCIPAL */}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -278,6 +296,8 @@ const ModalComparacao = () => {
                         >
                             Calculadora Comparativa
                         </Typography>
+                        
+                        {/* BOTÃO FECHAR MODAl */}
                         <IconButton
                             onClick={handleClose}
                             sx={{
@@ -293,8 +313,9 @@ const ModalComparacao = () => {
                         >
                             <GoBack />
                         </IconButton>
+                        
                         <Box sx={{ maxWidth: 800, mx: "auto", p: 2 }}>
-                            {/* Formulário Simplificado */}
+                            {/* FORMULÁRIO DE DADOS */}
                             <Paper sx={{ p: 3, backgroundColor: colors.primary[500], mb: 2 }}>
                                 <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
                                     Insira seus dados para comparação
@@ -310,7 +331,7 @@ const ModalComparacao = () => {
                                             flexWrap: { xs: "wrap", md: "nowrap" },
                                         }}
                                     >
-
+                                        {/* CAMPO RENDA MENSAL */}
                                         <TextField
                                             label="Renda Mensal"
                                             type="number"
@@ -353,6 +374,7 @@ const ModalComparacao = () => {
                                             }}
                                         />
 
+                                        {/* CAMPO CUSTOS MENSais */}
                                         <TextField
                                             label="Custos Mensais"
                                             type="number"
@@ -394,6 +416,7 @@ const ModalComparacao = () => {
                                             }}
                                         />
 
+                                        {/* CAMPO PROFISSÃO */}
                                         <FormControl sx={{ flex: 1, minWidth: 200 }}>
                                             <InputLabel
                                                 sx={{
@@ -402,7 +425,7 @@ const ModalComparacao = () => {
                                                         color: colors.blueAccent[500],
                                                     },
                                                     "&.MuiInputLabel-shrink": {
-                                                        color: colors.blueAccent[500], // Cor quando o label sobe (após seleção)
+                                                        color: colors.blueAccent[500],
                                                     },
                                                 }}
                                             >
@@ -439,6 +462,7 @@ const ModalComparacao = () => {
                                         </FormControl>
                                     </Box>
 
+                                    {/* BOTÃO CALCULAR COMPARAÇÃO */}
                                     <Button
                                         type="submit"
                                         variant="contained"
@@ -457,7 +481,7 @@ const ModalComparacao = () => {
                                 </Box>
                             </Paper>
 
-                            {/* Resultados */}
+                            {/* SEÇÃO DE RESULTADOS (APÓS CÁLCULO) */}
                             {mostrarResultados && resultadoPF && resultadoPJ && (
                                 <Box>
                                     <Paper sx={{ p: 3, backgroundColor: colors.primary[500] }}>
@@ -465,10 +489,10 @@ const ModalComparacao = () => {
                                             Comparação PF x PJ
                                         </Typography>
 
-
+                                        {/* GRID DE COMPARAÇÃO VISUAL */}
                                         <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
                                             <Grid container spacing={2} sx={{ maxWidth: 600, justifyContent: "center" }}>
-                                                {/* Pessoa Física */}
+                                                {/* CARTA PESSOA FÍSICA */}
                                                 <Grid item xs={12} sm={6}>
                                                     <Paper
                                                         sx={{
@@ -505,7 +529,7 @@ const ModalComparacao = () => {
                                                     </Paper>
                                                 </Grid>
 
-                                                {/* Pessoa Jurídica */}
+                                                {/* CARTA PESSOA JURÍDICA */}
                                                 <Grid item xs={12} sm={6}>
                                                     <Paper
                                                         sx={{
@@ -550,7 +574,7 @@ const ModalComparacao = () => {
                                             </Grid>
                                         </Box>
 
-                                        {/* Recomendação */}
+                                        {/* SEÇÃO DE RECOMENDAÇÃO */}
                                         <Box sx={{ display: "flex", justifyContent: "center" }}>
                                             <Grid container justifyContent="center">
                                                 <Grid item xs={12} md={8} lg={6}>
@@ -593,6 +617,8 @@ const ModalComparacao = () => {
                                             </Grid>
                                         </Box>
                                     </Paper>
+                                    
+                                    {/* SEÇÃO DE ENVIO POR EMAIL */}
                                     <Box
                                         sx={{
                                             display: "flex",
@@ -606,7 +632,7 @@ const ModalComparacao = () => {
                                             borderRadius: 2,
                                         }}
                                     >
-                                        {/* Checkbox */}
+                                        {/* CHECKBOX ENVIAR EMAIL */}
                                         <Box sx={{ flexShrink: 0 }}>
                                             <FormControlLabel
                                                 control={
@@ -625,7 +651,7 @@ const ModalComparacao = () => {
                                             />
                                         </Box>
 
-                                        {/* Email Input e Button */}
+                                        {/* FORMULÁRIO DE EMAIL (APARECE COM ANIMAÇÃO) */}
                                         <Grow in={watch("enviarEmail")}>
                                             <Box
                                                 sx={{
@@ -645,6 +671,7 @@ const ModalComparacao = () => {
                                                         width: "100%",
                                                     }}
                                                 >
+                                                    {/* CAMPO EMAIL */}
                                                     <TextField
                                                         label="E-mail"
                                                         size="small"
@@ -681,6 +708,8 @@ const ModalComparacao = () => {
                                                             "& .MuiOutlinedInput-input": { color: colors.grey[100] },
                                                         }}
                                                     />
+                                                    
+                                                    {/* BOTÃO ENVIAR RESULTADOS */}
                                                     <Button
                                                         onClick={() => {
                                                             const emailValue = watch("emailUsuario");
@@ -730,7 +759,7 @@ const ModalComparacao = () => {
                                 </Box>
                             )}
 
-                            {/* Alert */}
+                            {/* ALERTA DE FEEDBACK */}
                             <Collapse in={alertVisible} sx={{ mt: 2 }}>
                                 <Alert severity={alertSeverity} onClose={() => setAlertVisible(false)}>
                                     {alertMessage}

@@ -21,6 +21,7 @@ import { tokens } from "../../Tema";
 import CustosTooltip from "../../Components/CustosTooltip";
 import RendaTooltip from "../../Components/RendaTooltip";
 
+// Componente de cálculo de tributação para Pessoa Física (IRPF)
 const CalculoPF = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -28,6 +29,7 @@ const CalculoPF = () => {
 
   const navigate = useNavigate();
 
+  // Configuração do formulário com react-hook-form
   const {
     register,
     handleSubmit,
@@ -50,11 +52,13 @@ const CalculoPF = () => {
 
   const isButtonDisabled = !areAllFieldsFilled;
 
+  // Estados de resultados e alertas
   const [resultado, setResultado] = useState(null);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("success");
 
+  // Função para formatar valores monetários em Real brasileiro
   const formatMoney = (value) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -62,26 +66,30 @@ const CalculoPF = () => {
     }).format(value);
   };
 
+  // Função para exibir alertas de feedback ao usuário
   const showAlert = (message, severity) => {
     setAlertMessage(message);
     setAlertSeverity(severity);
     setAlertVisible(true);
+    // Auto-esconde o alerta após 2 segundos
     setTimeout(() => {
       setAlertVisible(false);
     }, 2000);
   };
 
+  // Função para simular envio de e-mail com resultados
   const enviarEmail = (resultadoPF) => {
     const emailUsuario = watch("emailUsuario");
     console.log("Enviando email...", { resultadoPF, email: emailUsuario });
     showAlert("E-mail enviado com sucesso!", "success");
   };
 
+  // Função principal de cálculo do Imposto de Renda para Pessoa Física
   const calcularIRPF = (data) => {
     const rendaMensal = parseFloat(data.rendaMensal) || 0;
     const custosMensais = parseFloat(data.custosMensais) || 0;
 
-    // Validação adicional
+    // Validação adicional do limite de renda
     if (rendaMensal > LIMITE_RENDA) {
       showAlert(
         `A Renda Mensal não pode exceder ${formatMoney(LIMITE_RENDA)}`,
@@ -90,22 +98,22 @@ const CalculoPF = () => {
       return;
     }
 
-    // Base de cálculo (conforme PDF)
+    // Base de cálculo = Renda bruta - despesas dedutíveis
     const baseCalculo = rendaMensal - custosMensais;
 
-    // Tabela IRPF mensal (PDF)
+    // Tabela Progressiva do IRPF mensal 2025
     const faixas = [
-      { limite: 2428.8, aliquota: 0, deducao: 0 },
-      { limite: 2826.65, aliquota: 0.075, deducao: 182.16 },
-      { limite: 3751.05, aliquota: 0.15, deducao: 394.16 },
-      { limite: 4664.68, aliquota: 0.225, deducao: 675.49 },
-      { limite: Infinity, aliquota: 0.275, deducao: 908.73 },
+      { limite: 2428.8, aliquota: 0, deducao: 0 }, // ISENTO
+      { limite: 2826.65, aliquota: 0.075, deducao: 182.16 }, // 7,5%
+      { limite: 3751.05, aliquota: 0.15, deducao: 394.16 }, // 15%
+      { limite: 4664.68, aliquota: 0.225, deducao: 675.49 }, // 22,5%
+      { limite: Infinity, aliquota: 0.275, deducao: 908.73 }, // 27,5%
     ];
 
     let aliquota = 0;
     let deducao = 0;
 
-    // Identifica a faixa correta
+    // Identifica a faixa de tributação baseada no valor da base de cálculo
     for (let faixa of faixas) {
       if (baseCalculo <= faixa.limite) {
         aliquota = faixa.aliquota;
@@ -114,35 +122,40 @@ const CalculoPF = () => {
       }
     }
 
-    // Cálculo do IR (após aplicar a alíquota e dedução)
+    // Cálculo do imposto: (Base × Alíquota) - Parcela a Deduzir
     let imposto = baseCalculo * aliquota - deducao;
-    if (imposto < 0) imposto = 0;
+    if (imposto < 0) imposto = 0; // Garante que imposto nunca seja negativo
 
+    // Armazena resultados no estado
     setResultado({
       rendaMensal,
       custosMensais,
       baseCalculo,
-      aliquota: aliquota * 100,
+      aliquota: aliquota * 100, // Converte para porcentagem
       deducao,
       imposto,
     });
     showAlert("Cálculo realizado com sucesso!", "success");
   };
 
+  // Handler de envio de email com validações
   const handleEnviarEmail = () => {
     const emailValue = watch("emailUsuario");
 
+    // Validação de email preenchido
     if (!emailValue || emailValue.trim() === "") {
       showAlert("Por favor, informe seu e-mail", "error");
       return;
     }
 
+    // Validação de formato de email
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     if (!emailRegex.test(emailValue)) {
       showAlert("Por favor, informe um e-mail válido", "error");
       return;
     }
 
+    // Validação de existência de resultados
     if (resultado) {
       enviarEmail(resultado);
     } else {

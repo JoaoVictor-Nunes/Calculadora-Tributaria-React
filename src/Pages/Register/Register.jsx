@@ -27,9 +27,11 @@ const Register = () => {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
 
+  // ESTADOS LOCAIS DO COMPONENTE
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
+  // CONFIGURAÇÃO DO REACT-HOOK-FORM
   const {
     register,
     handleSubmit,
@@ -47,14 +49,16 @@ const Register = () => {
   });
 
   const navigate = useNavigate();
+  
+  // OBSERVAÇÃO DE CAMPOS ESPECÍFICOS
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
   const setUserName = useUserStore((state) => state.setUserName);
 
-  // Observar todos os campos
+  // OBSERVAÇÃO DE TODOS OS CAMPOS PARA VALIDAÇÃO
   const watchedFields = watch();
 
-  // Verificar se todos os campos obrigatórios estão preenchidos
+  // VERIFICAÇÃO DE CAMPOS OBRIGATÓRIOS
   const areAllFieldsFilled =
     watchedFields.name &&
     watchedFields.profissao &&
@@ -62,21 +66,27 @@ const Register = () => {
     watchedFields.password &&
     watchedFields.confirmPassword;
 
+  // CONTROLE DE ESTADO DO BOTÃO
   const isButtonDisabled = !areAllFieldsFilled;
 
+  // MENSAGENS DE ERRO CONDICIONAIS
   const errorName = errors.name ? errors.name.message : "Mensagem de erro";
   const errorProfissao = errors.profissao ? errors.profissao.message : "Mensagem de erro";
 
+  // HANDLER PARA MUDANÇA DE PROFISSÃO
   const handleProfissaoChange = (event) => {
     setValue("profissao", event.target.value, { shouldValidate: true });
   };
 
+  // SUBMISSÃO DO FORMULÁRIO
   const onSubmit = (data) => {
+    // VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA
     if (data.password !== data.confirmPassword) {
       setConfirmPasswordError("As senhas não coincidem!");
       return;
     }
 
+    // PROCESSAMENTO DOS DADOS
     setConfirmPasswordError("");
     console.log("Dados enviados: ", data);
     setUserName(data.name);
@@ -94,7 +104,7 @@ const Register = () => {
         paddingTop: "25px",
       }}
     >
-      {/* Botão de alternar tema */}
+      {/* BOTÃO DE ALTERNAR TEMA */}
       <IconButton
         onClick={colorMode.toggleColorMode}
         sx={{
@@ -106,12 +116,13 @@ const Register = () => {
         }}
       >
         {theme.palette.mode === "dark" ? (
-          <LightModeOutlined />
+          <LightModeOutlined /> // ☀️ Ícone de sol no modo escuro
         ) : (
-          <DarkModeOutlined />
+          <DarkModeOutlined /> // 🌙 Ícone de lua no modo claro
         )}
       </IconButton>
 
+      {/* CONTAINER PRINCIPAL DO FORMULÁRIO */}
       <Box
         sx={{
           mx: "auto",
@@ -126,6 +137,7 @@ const Register = () => {
           boxShadow: 3,
         }}
       >
+        {/* TÍTULO DA PÁGINA */}
         <Typography
           variant="h1"
           sx={{
@@ -138,9 +150,10 @@ const Register = () => {
           Registrar
         </Typography>
 
+        {/* FORMULÁRIO DE REGISTRO */}
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
 
-          {/* Campo Nome */}
+          {/* CAMPO NOME COMPLETO */}
           <Box>
             <TextField
               label="Nome"
@@ -172,6 +185,7 @@ const Register = () => {
               }}
               {...register("name", { required: "Nome é obrigatório" })}
             />
+            {/* MENSAGEM DE ERRO DO NOME */}
             <Typography
               variant="caption"
               sx={{
@@ -187,6 +201,7 @@ const Register = () => {
             </Typography>
           </Box>
 
+          {/* CAMPO PROFISSÃO (SELECT) */}
           <Box>
             <FormControl fullWidth size="small">
               <InputLabel
@@ -237,6 +252,7 @@ const Register = () => {
                 <MenuItem value="Psicólogo">Psicólogo(a)</MenuItem>
               </Select>
             </FormControl>
+            {/* MENSAGEM DE ERRO DA PROFISSÃO */}
             <Typography
               variant="caption"
               sx={{
@@ -252,10 +268,13 @@ const Register = () => {
             </Typography>
           </Box>
 
+          {/* COMPONENTE DE EMAIL REUTILIZÁVEL */}
           <EmailInput register={register} errors={errors} />
+          
+          {/* COMPONENTE DE SENHA REUTILIZÁVEL */}
           <PasswordInput register={register} errors={errors} />
 
-          {/* Campo Confirmar Senha */}
+          {/* CAMPO CONFIRMAR SENHA */}
           <Box>
             <TextField
               label="Confirme a Senha"
@@ -264,7 +283,6 @@ const Register = () => {
               type={showPassword ? 'text' : 'password'}
               slotProps={{
                 input: {
-
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
@@ -307,6 +325,7 @@ const Register = () => {
                 required: "Confirmação obrigatória",
               })}
             />
+            {/* MENSAGEM DE ERRO DA CONFIRMAÇÃO DE SENHA */}
             <Typography
               variant="caption"
               sx={{
@@ -322,10 +341,12 @@ const Register = () => {
             </Typography>
           </Box>
 
+          {/* BOTÃO DE REGISTRO */}
           <ButtonUsage type="submit" disabled={isButtonDisabled}>
             Registrar
           </ButtonUsage>
 
+          {/* LINK PARA LOGIN (USUÁRIOS EXISTENTES) */}
           <Box sx={{
             display: "flex",
             justifyContent: "center",
@@ -353,6 +374,8 @@ const Register = () => {
           </Box>
         </Box>
       </Box>
+      
+      {/* FOOTER DA PÁGINA */}
       <Footer />
     </Box>
   );

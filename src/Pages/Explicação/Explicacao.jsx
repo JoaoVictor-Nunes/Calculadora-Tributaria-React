@@ -2,6 +2,7 @@ import { useTheme, Box, Typography, Paper, Stack } from "@mui/material";
 import { tokens } from "../../Tema";
 import TabelaTributacao from "../../Components/TabelaTributacao";
 
+// Página de explicações sobre tributação e como funcionam os cálculos
 const Explicacao = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

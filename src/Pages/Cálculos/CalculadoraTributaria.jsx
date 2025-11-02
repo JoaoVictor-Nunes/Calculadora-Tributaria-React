@@ -28,10 +28,12 @@ import Info from "@mui/icons-material/Info";
 import RendaTooltip from "../../Components/RendaTooltip";
 import CustosTooltip from "../../Components/CustosTooltip";
 
+// Componente de calculadora comparativa de tributação (PF x PJ)
 const CalculadoraTributaria = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  // Configuração do formulário com react-hook-form
   const {
     register,
     handleSubmit,
@@ -56,7 +58,7 @@ const CalculadoraTributaria = () => {
 
   const isButtonDisabled = !areAllFieldsFilled;
 
-  // Estado para controlar a aba ativa
+  // Estado para controlar a aba ativa das tabs de resultados
   const [tabValue, setTabValue] = useState(0);
 
   // Estados de resultados
@@ -64,20 +66,21 @@ const CalculadoraTributaria = () => {
   const [resultadoPJ, setResultadoPJ] = useState(null);
   const [mostrarResultados, setMostrarResultados] = useState(false);
 
-  // Estados de alerta
+  // Estados de alerta para feedback ao usuário
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("success");
 
-  // Constantes
+  // Constantes de limites e valores de referência
   const SALARIO_MINIMO = 1518.0;
   const LIMITE_RENDA = 15000.0;
 
+  // Handler de mudança de aba (PF, PJ ou Comparação)
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
-  // Função para formatar valores monetários
+  // Função para formatar valores monetários em Real brasileiro
   const formatMoney = (value) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -85,25 +88,27 @@ const CalculadoraTributaria = () => {
     }).format(value);
   };
 
-  // Função para mostrar alerta
+  // Função para exibir alertas de feedback ao usuário
   const showAlert = (message, severity = "success") => {
     setAlertMessage(message);
     setAlertSeverity(severity);
     setAlertVisible(true);
+    // Auto-esconde o alerta após 3 segundos
     setTimeout(() => {
       setAlertVisible(false);
     }, 3000);
   };
 
-  // Cálculo de Pessoa Física
+  // Cálculo de tributação para Pessoa Física (IRPF)
   const calcularPF = (renda, custos) => {
+    // Base de cálculo = Renda bruta - despesas dedutíveis
     const baseCalculo = renda - custos;
     let imposto = 0;
     let aliquota = 0;
     let parcelaADeduzir = 0;
     let faixa = "";
 
-    // Tabela Progressiva Mensal
+    // Tabela Progressiva do IRPF mensal 2025
     if (baseCalculo <= 2428.8) {
       imposto = 0;
       aliquota = 0;
@@ -125,15 +130,18 @@ const CalculadoraTributaria = () => {
       imposto = baseCalculo * 0.225 - parcelaADeduzir;
       faixa = "De R$ 3.751,06 até R$ 4.664,68";
     } else {
+      // Faixa 27,5%
       aliquota = 27.5;
       parcelaADeduzir = 908.73;
       imposto = baseCalculo * 0.275 - parcelaADeduzir;
       faixa = "Acima de R$ 4.664,68";
     }
 
+    // Calcula renda líquida e alíquota efetiva
     const rendaLiquida = renda - imposto;
     const aliquotaEfetiva = renda > 0 ? (imposto / renda) * 100 : 0;
 
+    // Retorna todos os dados calculados
     return {
       renda,
       custos,
@@ -141,25 +149,25 @@ const CalculadoraTributaria = () => {
       faixa,
       aliquota,
       parcelaADeduzir,
-      imposto: Math.max(0, imposto),
+      imposto: Math.max(0, imposto), // Garante que imposto nunca seja negativo
       rendaLiquida,
       aliquotaEfetiva,
     };
   };
 
-  // Cálculo de Pessoa Jurídica
+  // Cálculo de tributação para Pessoa Jurídica (PJ)
   const calcularPJ = (renda) => {
-    // Simples Nacional - 6%
+    // Simples Nacional (Anexo III): 6% sobre a renda mensal
     const simplesNacional = renda * 0.06;
 
-    // Pró-labore: maior entre 28% da renda ou salário mínimo
+    // Pró-labore: maior valor entre 28% da renda ou salário mínimo vigente
     const proLabore28 = renda * 0.28;
     const proLabore = Math.max(proLabore28, SALARIO_MINIMO);
 
-    // INSS sobre pró-labore - 11%
+    // INSS sobre pró-labore: 11% do valor do pró-labore
     const inss = proLabore * 0.11;
 
-    // IR sobre pró-labore (aplicar tabela PF)
+    // IR sobre pró-labore aplica a mesma tabela progressiva da PF
     let irProLabore = 0;
     if (proLabore <= 2428.8) {
       irProLabore = 0;
@@ -173,12 +181,13 @@ const CalculadoraTributaria = () => {
       irProLabore = proLabore * 0.275 - 908.73;
     }
 
-    irProLabore = Math.max(0, irProLabore);
+    irProLabore = Math.max(0, irProLabore); // Garante que IR nunca seja negativo
 
-    // Total PJ
+    // Total de tributos PJ (Simples Nacional + INSS + IR)
     const totalPJ = simplesNacional + inss + irProLabore;
     const rendaLiquida = renda - totalPJ;
 
+    // Retorna todos os dados calculados
     return {
       renda,
       proLabore,
@@ -190,11 +199,12 @@ const CalculadoraTributaria = () => {
     };
   };
 
-  // Função principal de cálculo
+  // Função principal de cálculo que executa PF e PJ e exibe resultados
   const calcular = (data) => {
     const renda = parseFloat(data.rendaMensal) || 0;
     const custos = parseFloat(data.custosMensais) || 0;
 
+    // Validação adicional do limite de renda
     if (renda > LIMITE_RENDA) {
       showAlert(
         `A Renda Mensal não pode exceder ${formatMoney(LIMITE_RENDA)}`,
@@ -203,17 +213,18 @@ const CalculadoraTributaria = () => {
       return;
     }
 
-    // Calcular ambos
+    // Executa cálculos para Pessoa Física e Jurídica
     const pf = calcularPF(renda, custos);
     const pj = calcularPJ(renda);
 
+    // Armazena resultados no estado e exibe na interface
     setResultadoPF(pf);
     setResultadoPJ(pj);
     setMostrarResultados(true);
     showAlert("Cálculos realizados com sucesso!", "success");
   };
 
-  // Função para enviar e-mail (simulação)
+  // Função para simular envio de e-mail com resultados de PF e PJ
   const enviarEmail = (pf, pj) => {
     const emailUsuario = watch("emailUsuario");
     console.log("Enviando e-mail de:", emailUsuario);
@@ -978,8 +989,7 @@ const CalculadoraTributaria = () => {
                           </li>
                           <li>Consulte um contador para análise personalizada</li>
                           <li>
-                            Para dúvidas, entre em contato com o NAF:{" "}
-                            {EMAIL_NAF} {/* CORRIGIDO: use a constante */}
+                            Para dúvidas, entre em contato com o NAF: naf01.dl@unichristus.edu.br
                           </li>
                         </Typography>
                       </Box>

@@ -46,7 +46,7 @@ const ModalTabelaTributacao = () => {
   return (
     <div>
       <Link
-        onClick={handleOpen} // Corrigido: "onCLick" para "onClick"
+        onClick={handleOpen} 
         sx={{
           color: colors.blueAccent[500],
           "&:hover": { color: colors.blueAccent[600] },

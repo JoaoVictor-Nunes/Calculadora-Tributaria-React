@@ -9,38 +9,42 @@ const Footer = () => {
   return (
     <Box
       component="footer"
+      // ESTILIZAÇÃO DO FOOTER
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        p: 2,
-        gap: 1,
-        borderTop: "1px solid gray",
+        display: "flex", // Layout flex
+        flexDirection: "column", // Direção vertical
+        justifyContent: "center", // Centraliza verticalmente
+        alignItems: "center", // Centraliza horizontalmente
+        width: "100%", // Ocupa toda a largura
+        p: 2, // Padding de 2
+        gap: 1, // Espaçamento entre elementos
+        borderTop: "1px solid gray", // Borda superior cinza
         mt: "auto", // Importante para funcionar com flexbox
       }}
     >
+      {/* COPYRIGHT */}
       <Typography
         variant="body2"
         sx={{
-          color: colors.grey[100],
+          color: colors.grey[100], // Texto claro
           display: "flex",
           alignItems: "center",
-          gap: 1,
+          gap: 1, // Espaçamento entre símbolo e texto
         }}
       >
         {"© "}
         NAF - Núcleo de Apoio Fiscal da Unichristus {new Date().getFullYear()}
         {"."}
       </Typography>
+      
+      {/* E-MAIL DE CONTATO */}
       <Typography
         variant="body1"
         sx={{
-          color: colors.grey[100],
+          color: colors.grey[100], // Texto claro
           display: "flex",
           alignItems: "center",
-          gap: 1,
+          gap: 1, // Espaçamento entre ícone e texto
         }}
       >
         <EmailIcon />

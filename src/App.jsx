@@ -20,9 +20,13 @@ import Error from "./Pages/Error";
 import CircularProgress from '@mui/material/CircularProgress';
 
 function App() {
+  // Hook personalizado para obter tema e função de alternância de modo
   const [theme, colorMode] = useMode();
+  
+  // Estado para controlar carregamento inicial da aplicação
   const [isLoading, setIsLoading] = React.useState(true);
 
+  // Effect para garantir que o tema foi carregado antes de renderizar
   React.useEffect(() => {
     // Pequeno atraso para garantir que o tema foi carregado
     const timer = setTimeout(() => {
@@ -31,6 +35,7 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Exibe loading enquanto inicializa
   if (isLoading) {
     return (
       <Box sx={{ display: "flex" }}>
@@ -40,7 +45,6 @@ function App() {
   }
 
   return (
-
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -58,17 +62,13 @@ function App() {
                   <Route path="/calculadora" element={<CalculadoraTributaria />} />
                   <Route path="/calculopf" element={<CalculoPF />} />
                   <Route path="/calculopj" element={<CalculoPJ />} />
-                  <Route path="/detalhes" element={<Explicacao />} />
+                  <Route path="/tributacao" element={<Explicacao />} />
                   <Route path="/contatos" element={<Contatos />} />
-
                 </Route>
-
               </Routes>
-
             </main>
           </div>
         </BrowserRouter>
-
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

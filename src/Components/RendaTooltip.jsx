@@ -2,6 +2,7 @@ import { Tooltip, IconButton, useTheme } from "@mui/material";
 import Info from "@mui/icons-material/Info";
 import { tokens } from "../Tema";
 
+// Componente de tooltip explicativo sobre Renda Mensal
 const RendaTooltip = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -10,13 +11,14 @@ const RendaTooltip = () => {
       title="É o valor que você espera receber por mês com o seu trabalho. No caso da psicologia, pode ser o total recebido das consultas, atendimentos ou serviços prestados, antes de descontar as despesas."
       arrow
       placement="right"
+      // ESTILIZAÇÃO DO TOOLTIP
       sx={{
         "& .MuiTooltip-tooltip": {
-          fontSize: "0.875rem",
-          maxWidth: 350,
-          backgroundColor: colors.primary[400],
-          color: colors.grey[100],
-          padding: 2,
+          fontSize: "0.875rem", // Tamanho de fonte
+          maxWidth: 350, // Largura máxima
+          backgroundColor: colors.primary[400], // Fundo
+          color: colors.grey[100], // Texto
+          padding: 2, // Padding interno
         },
       }}
     >

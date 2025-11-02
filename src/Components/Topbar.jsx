@@ -24,8 +24,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../Assets/NAF.png";
 
+// Largura do drawer lateral
 const drawerWidth = 240;
-const navItems = ["Home", "Detalhes", "Contatos", "Cálculo", "Sair"];
+// Itens do menu de navegação
+const navItems = ["Página Inicial", "Tributação", "Contatos", "Cálculo", "Sair"];
 
 function Topbar(props) {
   const theme = useTheme();
@@ -33,34 +35,44 @@ function Topbar(props) {
   const colorMode = useContext(ColorModeContext);
 
   const { window } = props;
+  // Estado para controlar abertura/fechamento do drawer mobile
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  // Estado para controlar menu dropdown de cálculo
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
 
+  // Alterna estado do drawer mobile
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
+  // Abre menu dropdown de cálculo
   const handleCalculoClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Fecha menu dropdown
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
 
+  // Navega para path e fecha menu
   const handleNavigate = (path) => {
     handleCloseMenu();
     navigate(path);
   };
 
+  // Manipula clique nos itens do menu
   const handleItemClick = (item, event) => {
     if (item === "Cálculo") {
-      handleCalculoClick(event);
+      handleCalculoClick(event); // Abre dropdown
     } else if (item === "Sair") {
-      navigate("/login");
-    } else {
-      navigate(`/${item.toLowerCase()}`);
+      navigate("/login"); // Redireciona para login
+    }else if (item === "Tributação") {
+      navigate("/tributacao")
+    }
+    else {
+      navigate(`/${item.toLowerCase()}`); // Navega para página
     }
   };
 
@@ -246,6 +258,64 @@ function Topbar(props) {
                       },
                     }}
                     onClick={() => navigate("/login")}
+                  >
+                    {item}
+                  </Button>
+                );
+              } else if (item === "Tributação") {
+                return (
+                  <Button
+                    key={item}
+                    sx={{
+                      position: "relative",
+                      color: colors.grey[100],
+                      "&:hover": {
+                        backgroundColor: colors.primary[300],
+                      },
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        left: 0,
+                        bottom: 0,
+                        width: 0,
+                        height: "2px",
+                        backgroundColor: "#2563eb",
+                        transition: "width 0.3s ease",
+                      },
+                      "&:hover::after": {
+                        width: "100%",
+                      },
+                    }}
+                    onClick={() => navigate("/tributacao")}
+                  >
+                    {item}
+                  </Button>
+                );
+              } else if (item === "Página Inicial") {
+                return (
+                  <Button
+                    key={item}
+                    sx={{
+                      position: "relative",
+                      color: colors.grey[100],
+                      "&:hover": {
+                        backgroundColor: colors.primary[300],
+                      },
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        left: 0,
+                        bottom: 0,
+                        width: 0,
+                        height: "2px",
+                        backgroundColor: "#2563eb",
+                        transition: "width 0.3s ease",
+                      },
+                      "&:hover::after": {
+                        width: "100%",
+                      },
+                    }}
+                    onClick={() => navigate("/Home")}
                   >
                     {item}
                   </Button>

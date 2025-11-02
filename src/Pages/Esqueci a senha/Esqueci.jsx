@@ -13,22 +13,26 @@ const Esqueci = () => {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
 
-
+  // Configuração do formulário com react-hook-form
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
+  
+  // Estado para controlar visibilidade do alerta de sucesso
   const [alertVisible, setAlertVisible] = React.useState(false);
 
   const navigate = useNavigate();
 
-    const watchedFields = watch();
+  // Watch dos campos para validação do botão
+  const watchedFields = watch();
 
-  const areAllFieldsFilled =
-    watchedFields.email
-
+  // Verifica se o campo obrigatório está preenchido
+  const areAllFieldsFilled = watchedFields.email
   const isButtonDisabled = !areAllFieldsFilled;
 
+  // Handler de submit do formulário
   const onSubmit = (data) => {
     console.log("Email para recuperação:", data);
     setAlertVisible(true);
+    // Auto-esconde o alerta após 2 segundos
     setTimeout(() => {
       setAlertVisible(false);
     }, 2000);
@@ -36,6 +40,7 @@ const Esqueci = () => {
 
   return (
     <Box
+      // ESTILIZAÇÃO DA PÁGINA
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -45,6 +50,7 @@ const Esqueci = () => {
         paddingTop: "100px"
       }}
     >
+      {/* Botão de alternar tema */}
       <IconButton
         onClick={colorMode.toggleColorMode}
         sx={{
@@ -61,6 +67,8 @@ const Esqueci = () => {
           <DarkModeOutlined />
         )}
       </IconButton>
+      
+      {/* Container do formulário */}
       <Box
         sx={{
           mx: "auto",
@@ -72,10 +80,9 @@ const Esqueci = () => {
           borderColor: "#878787",
           borderWidth: 1,
           boxShadow: 3,
-          // width: { xs: "92vw", sm: 480, md: 600 }, // altera o tamanho horizontal da box
-
         }}
       >
+        {/* TÍTULO DA PÁGINA */}
         <Typography
           variant="h1"
           sx={{
@@ -88,6 +95,7 @@ const Esqueci = () => {
           Recuperar senha
         </Typography>
 
+        {/* FORMULÁRIO DE RECUPERAÇÃO */}
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <EmailInput register={register} errors={errors} />
 
