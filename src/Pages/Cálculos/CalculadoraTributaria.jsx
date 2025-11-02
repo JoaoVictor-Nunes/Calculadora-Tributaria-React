@@ -555,7 +555,7 @@ const CalculadoraTributaria = () => {
               >
                 <Grid container spacing={2}>
                   {/* Primeira linha - Dados da tributação */}
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Box sx={{
                       display: "flex",
                       flexDirection: "row",
@@ -681,7 +681,7 @@ const CalculadoraTributaria = () => {
               >
                 <Grid container spacing={4}>
                   {/* Renda Mensal */}
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Typography variant="body2" fontWeight="600">
                       Renda Mensal:
                     </Typography>
@@ -690,7 +690,7 @@ const CalculadoraTributaria = () => {
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={12} sm={6}>
+                  <Grid size={{ xs: 12, sm: 6 }}>
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
                       <Typography variant="body2" fontWeight="600">
                         Pró-labore:
@@ -723,7 +723,7 @@ const CalculadoraTributaria = () => {
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={12} sm={6}>
+                  <Grid size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" fontWeight="600">
                       Simples Nacional (6%):
                     </Typography>
@@ -732,7 +732,7 @@ const CalculadoraTributaria = () => {
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={12} sm={6}>
+                  <Grid size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" fontWeight="600">
                       INSS (11% sobre pró-labore):
                     </Typography>
@@ -741,7 +741,7 @@ const CalculadoraTributaria = () => {
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={12} sm={6}>
+                  <Grid size={{ xs: 12, sm: 6 }}>
                     <Typography variant="body2" fontWeight="600">
                       IR sobre pró-labore:
                     </Typography>
@@ -759,7 +759,7 @@ const CalculadoraTributaria = () => {
                   justifyContent: "center",
                   alignItems: "center"
                 }}>
-                  <Grid item xs={12} sm={6}>
+                  <Grid size={{ xs: 12, sm: 6 }}>
                     <Typography
                       variant="body2"
                       fontWeight="600"
@@ -772,7 +772,7 @@ const CalculadoraTributaria = () => {
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={12} sm={6}>
+                  <Grid size={{ xs: 12, sm: 6 }}>
                     <Typography
                       variant="body2"
                       fontWeight="600"
@@ -792,8 +792,6 @@ const CalculadoraTributaria = () => {
               </Box>
             </Paper>
           )}
-
-
 
           {/* Conteúdo da aba Comparação */}
           {
@@ -826,7 +824,7 @@ const CalculadoraTributaria = () => {
                   >
                     <Grid container spacing={2} sx={{ mb: 3, width: "100%" }}>
                       {/* Pessoa Física */}
-                      <Grid item xs={12} md={4}>
+                      <Grid size={{ xs: 12, md: 4 }}>
                         <Paper
                           sx={{
                             p: 2,
@@ -863,7 +861,7 @@ const CalculadoraTributaria = () => {
                       </Grid>
 
                       {/* Pessoa Jurídica */}
-                      <Grid item xs={12} md={4}>
+                      <Grid size={{ xs: 12, md: 4 }}>
                         <Paper
                           sx={{
                             p: 2,
@@ -906,9 +904,7 @@ const CalculadoraTributaria = () => {
                       </Grid>
 
                       {/* Recomendação */}
-
-
-                      <Grid item xs={12} md={4}>
+                      <Grid size={{ xs: 12, md: 4 }}>
                         <Paper
                           sx={{
                             p: 2,

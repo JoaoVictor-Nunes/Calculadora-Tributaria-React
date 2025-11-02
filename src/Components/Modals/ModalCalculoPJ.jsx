@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow } from "@mui/material"
+import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow, IconButton } from "@mui/material"
 import CalculoPJ from "../../Pages/Cálculos/CalculoPJ";
 import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
@@ -110,7 +110,7 @@ const ModalCalculoPJ = () => {
                         </Typography>
                         
                         {/* BOTÃO FECHAR MODAL */}
-                        <Button
+                        <IconButton
                             onClick={handleClose}
                             sx={{
                                 position: "absolute",
@@ -124,7 +124,7 @@ const ModalCalculoPJ = () => {
                             }}
                         >
                             <GoBack /> {/* Componente de ícone de voltar/fechar */}
-                        </Button>
+                        </IconButton>
                         
                         {/* COMPONENTE DE CÁLCULO PJ */}
                         <CalculoPJ />

@@ -29,7 +29,7 @@ import CalculateIcon from "@mui/icons-material/Calculate";
 const ModalComparacao = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    
+
     // CONTROLE DE ESTADO DO MODAL
     const [open, setOpen] = useState(false);
     const [transformOrigin, setTransformOrigin] = useState("center center");
@@ -264,7 +264,7 @@ const ModalComparacao = () => {
             >
                 Calculadora Comparativa
             </Button>
-            
+
             {/* MODAL PRINCIPAL */}
             <Modal
                 open={open}
@@ -296,7 +296,7 @@ const ModalComparacao = () => {
                         >
                             Calculadora Comparativa
                         </Typography>
-                        
+
                         {/* BOTÃO FECHAR MODAl */}
                         <IconButton
                             onClick={handleClose}
@@ -313,7 +313,7 @@ const ModalComparacao = () => {
                         >
                             <GoBack />
                         </IconButton>
-                        
+
                         <Box sx={{ maxWidth: 800, mx: "auto", p: 2 }}>
                             {/* FORMULÁRIO DE DADOS */}
                             <Paper sx={{ p: 3, backgroundColor: colors.primary[500], mb: 2 }}>
@@ -493,7 +493,7 @@ const ModalComparacao = () => {
                                         <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
                                             <Grid container spacing={2} sx={{ maxWidth: 600, justifyContent: "center" }}>
                                                 {/* CARTA PESSOA FÍSICA */}
-                                                <Grid item xs={12} sm={6}>
+                                                <Grid size={{ xs: 12, sm: 6 }}>
                                                     <Paper
                                                         sx={{
                                                             p: 2,
@@ -530,7 +530,7 @@ const ModalComparacao = () => {
                                                 </Grid>
 
                                                 {/* CARTA PESSOA JURÍDICA */}
-                                                <Grid item xs={12} sm={6}>
+                                                <Grid size={{ xs: 12, sm: 6 }}>
                                                     <Paper
                                                         sx={{
                                                             p: 2,
@@ -577,7 +577,7 @@ const ModalComparacao = () => {
                                         {/* SEÇÃO DE RECOMENDAÇÃO */}
                                         <Box sx={{ display: "flex", justifyContent: "center" }}>
                                             <Grid container justifyContent="center">
-                                                <Grid item xs={12} md={8} lg={6}>
+                                                <Grid size={{ xs: 12, md: 8, lg: 6 }}>
                                                     <Paper
                                                         sx={{
                                                             p: 2,
@@ -617,7 +617,7 @@ const ModalComparacao = () => {
                                             </Grid>
                                         </Box>
                                     </Paper>
-                                    
+
                                     {/* SEÇÃO DE ENVIO POR EMAIL */}
                                     <Box
                                         sx={{
@@ -708,7 +708,7 @@ const ModalComparacao = () => {
                                                             "& .MuiOutlinedInput-input": { color: colors.grey[100] },
                                                         }}
                                                     />
-                                                    
+
                                                     {/* BOTÃO ENVIAR RESULTADOS */}
                                                     <Button
                                                         onClick={() => {

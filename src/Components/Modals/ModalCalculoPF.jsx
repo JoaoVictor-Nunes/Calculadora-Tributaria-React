@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow } from "@mui/material"
+import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow, IconButton } from "@mui/material"
 import CalculoPF from "../../Pages/Cálculos/CalculoPF";
 import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
@@ -22,7 +22,6 @@ const ModalCalculoPF = () => {
         setTransformOrigin(origin);
         setOpen(true);
     };
-
 
     // HANDLER PARA FECHAR O MODAL
     const handleClose = () => setOpen(false);
@@ -111,7 +110,7 @@ const ModalCalculoPF = () => {
                         </Typography>
                         
                         {/* BOTÃO FECHAR MODAL */}
-                        <Button
+                        <IconButton
                             onClick={handleClose}
                             sx={{
                                 position: "absolute",
@@ -125,7 +124,7 @@ const ModalCalculoPF = () => {
                             }}
                         >
                             <GoBack /> {/* Componente de ícone de voltar/fechar */}
-                        </Button>
+                        </IconButton>
                         
                         {/* COMPONENTE DE CÁLCULO PF */}
                         <CalculoPF />

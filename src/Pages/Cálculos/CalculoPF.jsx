@@ -355,7 +355,8 @@ const CalculoPF = () => {
             </Typography>
 
             <Grid container spacing={1}>
-              <Grid item xs={12} sm={6}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" fontWeight="600">
                   Renda Mensal:
                 </Typography>
@@ -364,7 +365,8 @@ const CalculoPF = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" fontWeight="600">
                   Custos Mensais:
                 </Typography>
@@ -373,7 +375,8 @@ const CalculoPF = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" fontWeight="600">
                   Base de Cálculo:
                 </Typography>
@@ -382,14 +385,16 @@ const CalculoPF = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" fontWeight="600">
                   Alíquota:
                 </Typography>
                 <Typography variant="body2">{resultado.aliquota}%</Typography>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" fontWeight="600">
                   Parcela Dedutível:
                 </Typography>
@@ -398,7 +403,8 @@ const CalculoPF = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} por size={{xs: 12}} */}
+              <Grid size={{ xs: 12 }}>
                 <Typography variant="body2" fontWeight="600" color="error.main">
                   Imposto Devido:
                 </Typography>

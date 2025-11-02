@@ -324,7 +324,8 @@ const CalculoPJ = () => {
             </Typography>
 
             <Grid container spacing={1}>
-              <Grid item xs={12} sm={6}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" fontWeight="600">
                   Renda Mensal:
                 </Typography>
@@ -333,7 +334,8 @@ const CalculoPJ = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" fontWeight="600">
                   Pró-labore:
                 </Typography>
@@ -342,7 +344,8 @@ const CalculoPJ = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" fontWeight="600">
                   Simples Nacional (6%):
                 </Typography>
@@ -351,7 +354,8 @@ const CalculoPJ = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" fontWeight="600">
                   INSS (11% sobre pró-labore):
                 </Typography>
@@ -360,7 +364,8 @@ const CalculoPJ = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} por size={{xs: 12}} */}
+              <Grid size={{ xs: 12 }}>
                 <Typography variant="body2" fontWeight="600">
                   Total PJ (Simples + INSS):
                 </Typography>
@@ -373,7 +378,8 @@ const CalculoPJ = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12}>
+              {/* CORREÇÃO AQUI: Substituído item xs={12} por size={{xs: 12}} */}
+              <Grid size={{ xs: 12 }}>
                 <Typography
                   variant="body2"
                   fontWeight="600"
@@ -542,7 +548,7 @@ const CalculoPJ = () => {
           </Alert>
         </Collapse>
       </Box>
-      
+
       <Box marginTop={3}>
         <Typography variant="body1" sx={{ color: colors.grey[100] }}>
           Para fazer a comparação entre PF e PJ, acesse <Link sx={{
