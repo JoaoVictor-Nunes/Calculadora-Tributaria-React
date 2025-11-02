@@ -8,14 +8,13 @@ const GoBack = () => {
       const colors = tokens(theme.palette.mode);
     return (
         <div>
-            <IconButton >
+
                 < CloseIcon sx={{
                     color: colors.grey[100],
                     "&: hover": {
                         color:colors.redAccent[100],
                     }
                 }}/>
-            </IconButton>
         </div>
     )
 }

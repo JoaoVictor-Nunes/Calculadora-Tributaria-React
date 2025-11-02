@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { tokens } from "../../Tema";
 import { useForm } from "react-hook-form";
 import {
@@ -17,12 +17,12 @@ import {
   FormControlLabel,
   InputLabel,
   Checkbox,
-  Tooltip,
-  IconButton,
   InputAdornment,
   Alert,
   Collapse,
   Grow,
+  Tooltip,
+  IconButton
 } from "@mui/material";
 import Info from "@mui/icons-material/Info";
 import RendaTooltip from "../../Components/RendaTooltip";
@@ -33,53 +33,31 @@ const CalculadoraTributaria = () => {
   const colors = tokens(theme.palette.mode);
 
   const {
-    handleSubmit,
     register,
-    formState: { errors },
-    setValue,
+    handleSubmit,
     watch,
-  } = useForm();
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      rendaMensal: "",
+      custosMensais: "",
+      profissao: "",
+      enviarEmail: false,
+      emailUsuario: "",
+    }
+  });
+
+  // Watch dos campos para validação do botão
+  const watchedFields = watch();
+  const areAllFieldsFilled =
+    watchedFields.rendaMensal &&
+    watchedFields.custosMensais &&
+    watchedFields.profissao;
+
+  const isButtonDisabled = !areAllFieldsFilled;
 
   // Estado para controlar a aba ativa
   const [tabValue, setTabValue] = useState(0);
-
-  // Estilos dos alertas
-  const getAlertStyles = (severity) => {
-    if (severity === "success") {
-      return {
-        mb: 3,
-        backgroundColor: colors.greenAccent[100],
-        color: colors.greenAccent[900],
-        "& .MuiAlert-icon": {
-          color: colors.greenAccent[500],
-        },
-      };
-    } else {
-      return {
-        mb: 3,
-        backgroundColor: colors.redAccent[100],
-        color: colors.redAccent[900],
-        "& .MuiAlert-icon": {
-          color: colors.redAccent[500],
-        },
-      };
-    }
-  };
-
-  // Estados do formulário
-  const [formData, setFormData] = useState({
-    rendaMensal: "",
-    custosMensais: "",
-    profissao: "",
-    enviarEmail: false,
-    emailUsuario: "",
-    emailNAF: "naf01.dl@unichristus.edu.br",
-  });
-
-  // Adicione useEffect para sincronizar com formData
-  React.useEffect(() => {
-    setValue("profissao", formData.profissao);
-  }, [formData.profissao, setValue]);
 
   // Estados de resultados
   const [resultadoPF, setResultadoPF] = useState(null);
@@ -91,15 +69,6 @@ const CalculadoraTributaria = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("success");
 
-  //enviar email
-  const onSubmit = (data) => {
-    console.log("Email do usuário:", data);
-    setAlertVisible(true);
-    setTimeout(() => {
-      setAlertVisible(false);
-    }, 2000);
-  };
-
   // Constantes
   const SALARIO_MINIMO = 1518.0;
   const LIMITE_RENDA = 15000.0;
@@ -108,58 +77,12 @@ const CalculadoraTributaria = () => {
     setTabValue(newValue);
   };
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
   // Função para formatar valores monetários
   const formatMoney = (value) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
       currency: "BRL",
     }).format(value);
-  };
-
-  // Validação do formulário
-  const validarFormulario = () => {
-    const renda = parseFloat(formData.rendaMensal) || 0;
-    const custos = parseFloat(formData.custosMensais) || 0;
-
-    if (!formData.rendaMensal || renda <= 0) {
-      showAlert("Por favor, informe a Renda Mensal", "error");
-      return false;
-    }
-
-    if (renda > LIMITE_RENDA) {
-      showAlert(
-        `A Renda Mensal não pode exceder ${formatMoney(LIMITE_RENDA)}`,
-        "error"
-      );
-      return false;
-    }
-
-    if (!formData.custosMensais || custos < 0) {
-      showAlert("Por favor, informe os Custos Mensais", "error");
-      return false;
-    }
-
-    if (!formData.profissao) {
-      showAlert("Por favor, selecione a Profissão", "error");
-      return false;
-    }
-
-    if (formData.enviarEmail && !formData.emailUsuario) {
-      showAlert(
-        "Por favor, informe seu e-mail para receber os cálculos",
-        "error"
-      );
-      return false;
-    }
-
-    return true;
   };
 
   // Função para mostrar alerta
@@ -268,13 +191,17 @@ const CalculadoraTributaria = () => {
   };
 
   // Função principal de cálculo
-  const calcular = () => {
-    if (!validarFormulario()) {
+  const calcular = (data) => {
+    const renda = parseFloat(data.rendaMensal) || 0;
+    const custos = parseFloat(data.custosMensais) || 0;
+
+    if (renda > LIMITE_RENDA) {
+      showAlert(
+        `A Renda Mensal não pode exceder ${formatMoney(LIMITE_RENDA)}`,
+        "error"
+      );
       return;
     }
-
-    const renda = parseFloat(formData.rendaMensal);
-    const custos = parseFloat(formData.custosMensais);
 
     // Calcular ambos
     const pf = calcularPF(renda, custos);
@@ -283,13 +210,13 @@ const CalculadoraTributaria = () => {
     setResultadoPF(pf);
     setResultadoPJ(pj);
     setMostrarResultados(true);
+    showAlert("Cálculos realizados com sucesso!", "success");
   };
 
   // Função para enviar e-mail (simulação)
   const enviarEmail = (pf, pj) => {
-    // alerta mensagem
-    console.log("Enviando e-mail de:", formData.emailUsuario);
-    console.log("Enviando e-mail para NAF:", formData.emailNAF);
+    const emailUsuario = watch("emailUsuario");
+    console.log("Enviando e-mail de:", emailUsuario);
     console.log("Resultados PF:", pf);
     console.log("Resultados PJ:", pj);
 
@@ -327,20 +254,8 @@ const CalculadoraTributaria = () => {
         Para Profissionais de Psicologia - Comparação PF x PJ
       </Typography>
 
-      {/* Alert de feedback */}
-      <Collapse in={alertVisible}>
-        <Alert
-          severity={alertSeverity}
-          onClose={() => setAlertVisible(false)}
-          sx={getAlertStyles(alertSeverity)}
-        >
-          {alertMessage}
-        </Alert>
-      </Collapse>
-
       {/* Formulário */}
       <Paper
-        onSubmit={handleSubmit(onSubmit)}
         sx={{
           p: 3,
           backgroundColor: colors.primary[500],
@@ -348,8 +263,9 @@ const CalculadoraTributaria = () => {
           borderColor: "#878787",
         }}
       >
-
         <Box
+          component="form"
+          onSubmit={handleSubmit(calcular)}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -361,21 +277,26 @@ const CalculadoraTributaria = () => {
             sx={{
               display: "flex",
               gap: 3,
-              alignItems: "flex-start", // Alinha no topo
+              alignItems: "flex-start",
               justifyContent: "space-between",
-              flexWrap: { xs: "wrap", md: "nowrap" }, // Quebra em mobile
+              flexWrap: { xs: "wrap", md: "nowrap" },
             }}
           >
             {/* Renda Mensal */}
             <Box sx={{ flex: 1, minWidth: { xs: "100%", md: "auto" } }}>
               <TextField
                 label="Renda Mensal"
-                name="rendaMensal"
                 type="number"
-                value={formData.rendaMensal}
-                onChange={handleChange}
                 fullWidth
                 required
+                {...register("rendaMensal", {
+                  required: "Renda mensal é obrigatória!",
+                  min: { value: 0, message: "Renda não pode ser negativa" },
+                  max: { value: LIMITE_RENDA, message: `Renda não pode exceder ${formatMoney(LIMITE_RENDA)}` },
+                  valueAsNumber: true
+                })}
+                error={!!errors.rendaMensal}
+                helperText={errors.rendaMensal?.message || `Limite máximo: ${formatMoney(LIMITE_RENDA)}`}
                 slotProps={{
                   htmlInput: {
                     min: 0,
@@ -408,13 +329,13 @@ const CalculadoraTributaria = () => {
                   },
                   "& .MuiOutlinedInput-input": { color: colors.grey[100] },
                   "& .MuiFormHelperText-root": {
-                    color:
-                      theme.palette.mode === "dark"
+                    color: errors.rendaMensal
+                      ? colors.redAccent[400]
+                      : theme.palette.mode === "dark"
                         ? colors.grey[500]
                         : colors.grey[600],
                   },
                 }}
-                helperText={`Limite máximo: ${formatMoney(LIMITE_RENDA)}`}
               />
             </Box>
 
@@ -422,18 +343,21 @@ const CalculadoraTributaria = () => {
             <Box sx={{ flex: 1, minWidth: { xs: "100%", md: "auto" } }}>
               <TextField
                 label="Total de Custos Mensais"
-                name="custosMensais"
                 type="number"
-                value={formData.custosMensais}
-                onChange={handleChange}
                 fullWidth
                 required
+                {...register("custosMensais", {
+                  required: "Custos mensais são obrigatórios!",
+                  min: { value: 0, message: "Custos não podem ser negativos" },
+                  valueAsNumber: true
+                })}
+                error={!!errors.custosMensais}
+                helperText={errors.custosMensais?.message}
                 slotProps={{
                   htmlInput: {
                     min: 0,
                     step: "0.01",
                   },
-
                   input: {
                     startAdornment: (
                       <InputAdornment position="start">R$</InputAdornment>
@@ -460,8 +384,9 @@ const CalculadoraTributaria = () => {
                   },
                   "& .MuiOutlinedInput-input": { color: colors.grey[100] },
                   "& .MuiFormHelperText-root": {
-                    color:
-                      theme.palette.mode === "dark"
+                    color: errors.custosMensais
+                      ? colors.redAccent[400]
+                      : theme.palette.mode === "dark"
                         ? colors.grey[500]
                         : colors.grey[600],
                   },
@@ -491,15 +416,17 @@ const CalculadoraTributaria = () => {
                 </InputLabel>
                 <Select
                   labelId="profissao-label"
-                  name="profissao"
-                  value={formData.profissao}
-                  onChange={handleChange}
                   label="Profissão"
+                  {...register("profissao", {
+                    required: "Profissão é obrigatória!"
+                  })}
+                  error={!!errors.profissao}
+                  defaultValue=""
                   sx={{
                     minHeight: "56px",
-                    backgroundColor: colors.primary[500], // ← CORRIGIDO: mesma cor do TextField
+                    backgroundColor: colors.primary[500],
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: colors.grey[300],
+                      borderColor: errors.profissao ? colors.redAccent[400] : colors.grey[300],
                     },
                     "&:hover .MuiOutlinedInput-notchedOutline": {
                       borderColor: colors.blueAccent[500],
@@ -525,20 +452,25 @@ const CalculadoraTributaria = () => {
           {/* Terceira linha: Botão Calcular */}
           <Box>
             <Button
+              type="submit"
               fullWidth
               variant="contained"
-              onClick={calcular}
               size="large"
+              disabled={isButtonDisabled}
               sx={{
-                backgroundColor: colors.redAccent[500],
+                backgroundColor: isButtonDisabled
+                  ? colors.grey[600]
+                  : colors.redAccent[500],
                 color: colors.grey[900],
                 fontWeight: "bold",
                 py: 1.5,
                 "&:hover": {
-                  backgroundColor: colors.redAccent[600],
+                  backgroundColor: isButtonDisabled
+                    ? colors.grey[600]
+                    : colors.redAccent[600],
                   color: colors.grey[900],
-                  transform: "translateY(-2px)",
-                  boxShadow: 3,
+                  transform: isButtonDisabled ? "none" : "translateY(-2px)",
+                  boxShadow: isButtonDisabled ? "none" : 3,
                 },
                 transition: "all 0.3s ease",
                 maxWidth: "400px",
@@ -559,7 +491,7 @@ const CalculadoraTributaria = () => {
             variant="h4"
             fontWeight="bold"
             align="center"
-            sx={{ mb: 3 }}
+            sx={{ m: 3 }}
           >
             Comparação de Resultados
           </Typography>
@@ -602,99 +534,117 @@ const CalculadoraTributaria = () => {
               >
                 Resultado Pessoa Física (IRPF)
               </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <Grid container spacing={2}>
+                  {/* Primeira linha - Dados da tributação */}
+                  <Grid item xs={12}>
+                    <Box sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      justifyContent: "center",
+                      paddingBottom: 2,
+                      alignItems: "center"
+                    }}>
+                      <Box sx={{ minWidth: 120 }}>
+                        <Typography variant="body2" fontWeight="600">
+                          Renda Mensal:
+                        </Typography>
+                        <Typography variant="body1">
+                          {formatMoney(resultadoPF.renda)}
+                        </Typography>
+                      </Box>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    Renda Mensal:
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatMoney(resultadoPF.renda)}
-                  </Typography>
-                </Grid>
+                      <Box sx={{ minWidth: 120 }}>
+                        <Typography variant="body2" fontWeight="600">
+                          Custos Mensais:
+                        </Typography>
+                        <Typography variant="body1">
+                          {formatMoney(resultadoPF.custos)}
+                        </Typography>
+                      </Box>
 
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    Custos Mensais:
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatMoney(resultadoPF.custos)}
-                  </Typography>
-                </Grid>
+                      <Box sx={{ minWidth: 120 }}>
+                        <Typography variant="body2" fontWeight="600">
+                          Base de Cálculo:
+                        </Typography>
+                        <Typography variant="body1">
+                          {formatMoney(resultadoPF.baseCalculo)}
+                        </Typography>
+                      </Box>
 
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    Base de Cálculo:
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatMoney(resultadoPF.baseCalculo)}
-                  </Typography>
-                </Grid>
+                      <Box sx={{ minWidth: 120 }}>
+                        <Typography variant="body2" fontWeight="600">
+                          Faixa de Tributação:
+                        </Typography>
+                        <Typography variant="body1">{resultadoPF.faixa}</Typography>
+                      </Box>
 
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    Faixa de Tributação:
-                  </Typography>
-                  <Typography variant="body1">{resultadoPF.faixa}</Typography>
-                </Grid>
+                      <Box sx={{ minWidth: 120 }}>
+                        <Typography variant="body2" fontWeight="600">
+                          Alíquota:
+                        </Typography>
+                        <Typography variant="body1">
+                          {resultadoPF.aliquota}%
+                        </Typography>
+                      </Box>
 
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    Alíquota:
-                  </Typography>
-                  <Typography variant="body1">
-                    {resultadoPF.aliquota}%
-                  </Typography>
-                </Grid>
+                      <Box sx={{ minWidth: 120 }}>
+                        <Typography variant="body2" fontWeight="600">
+                          Parcela a Deduzir:
+                        </Typography>
+                        <Typography variant="body1">
+                          {formatMoney(resultadoPF.parcelaADeduzir)}
+                        </Typography>
+                      </Box>
 
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    Parcela a Deduzir:
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatMoney(resultadoPF.parcelaADeduzir)}
-                  </Typography>
-                </Grid>
+                      <Box sx={{ minWidth: 120 }}>
+                        <Typography variant="body2" fontWeight="600">
+                          Alíquota Efetiva:
+                        </Typography>
+                        <Typography variant="body1">
+                          {resultadoPF.aliquotaEfetiva.toFixed(2)}%
+                        </Typography>
+                      </Box>
+                    </Box>
 
-                <Grid item xs={12} sm={6}>
-                  <Typography
-                    variant="body2"
-                    fontWeight="600"
-                    color="error.main"
-                  >
-                    Imposto de Renda (IR):
-                  </Typography>
-                  <Typography variant="h6" fontWeight="bold" color="error.main">
-                    {formatMoney(resultadoPF.imposto)}
-                  </Typography>
-                </Grid>
+                    {/* Segunda linha */}
+                    <Box sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      gap: 3,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}>
+                      <Box sx={{ minWidth: 120 }}>
+                        <Typography variant="body2" fontWeight="600" color="error.main">
+                          Imposto de Renda (IR):
+                        </Typography>
+                        <Typography variant="h6" fontWeight="bold" color="error.main">
+                          {formatMoney(resultadoPF.imposto)}
+                        </Typography>
+                      </Box>
 
-                <Grid item xs={12} sm={6}>
-                  <Typography
-                    variant="body2"
-                    fontWeight="600"
-                    color="success.main"
-                  >
-                    Renda Líquida:
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    fontWeight="bold"
-                    color="success.main"
-                  >
-                    {formatMoney(resultadoPF.rendaLiquida)}
-                  </Typography>
+                      <Box sx={{ minWidth: 120 }}>
+                        <Typography variant="body2" fontWeight="600" color="success.main">
+                          Renda Líquida:
+                        </Typography>
+                        <Typography variant="h6" fontWeight="bold" color="success.main">
+                          {formatMoney(resultadoPF.rendaLiquida)}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Grid>
                 </Grid>
-
-                <Grid item xs={12}>
-                  <Typography variant="body2" fontWeight="600">
-                    Alíquota Efetiva:
-                  </Typography>
-                  <Typography variant="body1">
-                    {resultadoPF.aliquotaEfetiva.toFixed(2)}%
-                  </Typography>
-                </Grid>
-              </Grid>
+              </Box>
             </Paper>
           )}
 
@@ -709,298 +659,338 @@ const CalculadoraTributaria = () => {
                 Resultado Pessoa Jurídica (PJ)
               </Typography>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    Renda Mensal:
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatMoney(resultadoPJ.renda)}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    Pró-labore:
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatMoney(resultadoPJ.proLabore)}
-                  </Typography>
-                  <Typography variant="caption" color={colors.grey[400]}>
-                    Maior entre 28% da renda (
-                    {formatMoney(resultadoPJ.renda * 0.28)}) ou salário mínimo (
-                    {formatMoney(SALARIO_MINIMO)})
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    Simples Nacional (6%):
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatMoney(resultadoPJ.simplesNacional)}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    INSS (11% sobre pró-labore):
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatMoney(resultadoPJ.inss)}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="body2" fontWeight="600">
-                    IR sobre pró-labore:
-                  </Typography>
-                  <Typography variant="body1">
-                    {formatMoney(resultadoPJ.irProLabore)}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Typography
-                    variant="body2"
-                    fontWeight="600"
-                    color="error.main"
-                  >
-                    Total de Tributos:
-                  </Typography>
-                  <Typography variant="h6" fontWeight="bold" color="error.main">
-                    {formatMoney(resultadoPJ.totalPJ)}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Typography
-                    variant="body2"
-                    fontWeight="600"
-                    color="success.main"
-                  >
-                    Renda Líquida:
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    fontWeight="bold"
-                    color="success.main"
-                  >
-                    {formatMoney(resultadoPJ.rendaLiquida)}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Paper>
-          )}
-          {/* Conteúdo da aba Comparação */}
-          {tabValue === 2 && (
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Paper
+              <Box
                 sx={{
-                  p: 3,
-                  backgroundColor: colors.primary[500],
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  width: "100%",
+                  justifyContent: "center",
+                  gap: 3
                 }}
               >
-                {/* Primeira linha: Título */}
-                <Box sx={{ width: "100%", textAlign: "center", mb: 3 }}>
-                  <Typography variant="h5" fontWeight="bold">
-                    Comparação PF x PJ
-                  </Typography>
-                </Box>
+                <Grid container spacing={4}>
+                  {/* Renda Mensal */}
+                  <Grid item xs={12}>
+                    <Typography variant="body2" fontWeight="600">
+                      Renda Mensal:
+                    </Typography>
+                    <Typography variant="body1">
+                      {formatMoney(resultadoPJ.renda)}
+                    </Typography>
+                  </Grid>
 
-                {/* Segunda linha: Comparação PF, PJ e Recomendação */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                    gap: 3,
-                    mb: 3,
-                  }}
-                >
-                  {/* Pessoa Física */}
+                  <Grid item xs={12} sm={6}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
+                      <Typography variant="body2" fontWeight="600">
+                        Pró-labore:
+                      </Typography>
+                      <Tooltip
+                        title={
+                          <span>
+                            Maior entre 28% da renda ({formatMoney(resultadoPJ.renda * 0.28)}) ou salário mínimo ({formatMoney(SALARIO_MINIMO)})
+                          </span>
+                        }
+                        arrow
+                        placement="right"
+                        sx={{
+                          "& .MuiTooltip-tooltip": {
+                            fontSize: "0.875rem",
+                            maxWidth: 350,
+                            backgroundColor: colors.primary[400],
+                            color: colors.grey[100],
+                            padding: 2,
+                          },
+                        }}
+                      >
+                        <IconButton size="small" sx={{ padding: 0 }}>
+                          <Info fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                    <Typography variant="body1">
+                      {formatMoney(resultadoPJ.proLabore)}
+                    </Typography>
+                  </Grid>
 
-                  <Paper
-                    sx={{
-                      p: 2,
-                      backgroundColor: colors.primary[200],
-                      border: `2px solid ${colors.blueAccent[500]}`,
-                      textAlign: "center",
-                      height: "100%",
-                    }}
-                  >
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" fontWeight="600">
+                      Simples Nacional (6%):
+                    </Typography>
+                    <Typography variant="body1">
+                      {formatMoney(resultadoPJ.simplesNacional)}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" fontWeight="600">
+                      INSS (11% sobre pró-labore):
+                    </Typography>
+                    <Typography variant="body1">
+                      {formatMoney(resultadoPJ.inss)}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" fontWeight="600">
+                      IR sobre pró-labore:
+                    </Typography>
+                    <Typography variant="body1">
+                      {formatMoney(resultadoPJ.irProLabore)}
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Box sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  gap: 3,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}>
+                  <Grid item xs={12} sm={6}>
+                    <Typography
+                      variant="body2"
+                      fontWeight="600"
+                      color="error.main"
+                    >
+                      Total de Tributos:
+                    </Typography>
+                    <Typography variant="h6" fontWeight="bold" color="error.main">
+                      {formatMoney(resultadoPJ.totalPJ)}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Typography
+                      variant="body2"
+                      fontWeight="600"
+                      color="success.main"
+                    >
+                      Renda Líquida:
+                    </Typography>
                     <Typography
                       variant="h6"
                       fontWeight="bold"
-                      sx={{ mb: 2, color: colors.blueAccent[400] }}
+                      color="success.main"
                     >
-                      Pessoa Física (PF)
+                      {formatMoney(resultadoPJ.rendaLiquida)}
                     </Typography>
-                    <Typography variant="body2" sx={{ mb: 1 }}>
-                      Tributos Totais:{" "}
-                      <strong style={{ color: colors.redAccent[400] }}>
-                        {formatMoney(resultadoPF.imposto)}
-                      </strong>
-                    </Typography>
-                    <Typography variant="body2" sx={{ mb: 1 }}>
-                      Renda Líquida:{" "}
-                      <strong style={{ color: colors.greenAccent[400] }}>
-                        {formatMoney(resultadoPF.rendaLiquida)}
-                      </strong>
-                    </Typography>
-                    <Typography variant="body2">
-                      Alíquota Efetiva:{" "}
-                      <strong>{resultadoPF.aliquotaEfetiva.toFixed(2)}%</strong>
-                    </Typography>
-                  </Paper>
-                  {/* </Grid> */}
+                  </Grid>
+                </Box>
+              </Box>
+            </Paper>
+          )}
 
-                  {/* Pessoa Jurídica */}
-                  <Grid item xs={12} md={4}>
+
+
+          {/* Conteúdo da aba Comparação */}
+          {
+            tabValue === 2 && (
+              <Box>
+                <Paper
+                  sx={{
+                    p: 3,
+                    backgroundColor: colors.primary[500],
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  {/* Primeira linha: Título */}
+                  <Box sx={{ width: "100%", textAlign: "center", mb: 3 }}>
+                    <Typography variant="h5" fontWeight="bold">
+                      Comparação PF x PJ
+                    </Typography>
+                  </Box>
+
+                  {/* Segunda linha: Comparação PF, PJ e Recomendação */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Grid container spacing={2} sx={{ mb: 3, width: "100%" }}>
+                      {/* Pessoa Física */}
+                      <Grid item xs={12} md={4}>
+                        <Paper
+                          sx={{
+                            p: 2,
+                            backgroundColor: colors.primary[200],
+                            border: `2px solid ${colors.blueAccent[500]}`,
+                            textAlign: "center",
+                            height: "100%",
+                          }}
+                        >
+                          <Typography
+                            variant="h6"
+                            fontWeight="bold"
+                            sx={{ mb: 2, color: colors.blueAccent[400] }}
+                          >
+                            Pessoa Física (PF)
+                          </Typography>
+                          <Typography variant="body2" sx={{ mb: 1 }}>
+                            Tributos Totais:{" "}
+                            <strong style={{ color: colors.redAccent[400] }}>
+                              {formatMoney(resultadoPF.imposto)}
+                            </strong>
+                          </Typography>
+                          <Typography variant="body2" sx={{ mb: 1 }}>
+                            Renda Líquida:{" "}
+                            <strong style={{ color: colors.greenAccent[400] }}>
+                              {formatMoney(resultadoPF.rendaLiquida)}
+                            </strong>
+                          </Typography>
+                          <Typography variant="body2">
+                            Alíquota Efetiva:{" "}
+                            <strong>{resultadoPF.aliquotaEfetiva.toFixed(2)}%</strong>
+                          </Typography>
+                        </Paper>
+                      </Grid>
+
+                      {/* Pessoa Jurídica */}
+                      <Grid item xs={12} md={4}>
+                        <Paper
+                          sx={{
+                            p: 2,
+                            backgroundColor: colors.primary[200],
+                            border: `2px solid ${colors.greenAccent[500]}`,
+                            textAlign: "center",
+                            height: "100%",
+                          }}
+                        >
+                          <Typography
+                            variant="h6"
+                            fontWeight="bold"
+                            sx={{ mb: 2, color: colors.greenAccent[400] }}
+                          >
+                            Pessoa Jurídica (PJ)
+                          </Typography>
+                          <Typography variant="body2" sx={{ mb: 1 }}>
+                            Tributos Totais:{" "}
+                            <strong style={{ color: colors.redAccent[400] }}>
+                              {formatMoney(resultadoPJ.totalPJ)}
+                            </strong>
+                          </Typography>
+                          <Typography variant="body2" sx={{ mb: 1 }}>
+                            Renda Líquida:{" "}
+                            <strong style={{ color: colors.greenAccent[400] }}>
+                              {formatMoney(resultadoPJ.rendaLiquida)}
+                            </strong>
+                          </Typography>
+                          <Typography variant="body2">
+                            Alíquota Total:{" "}
+                            <strong>
+                              {(
+                                (resultadoPJ.totalPJ / resultadoPJ.renda) *
+                                100
+                              ).toFixed(2)}
+                              %
+                            </strong>
+                          </Typography>
+                        </Paper>
+                      </Grid>
+
+                      {/* Recomendação */}
+
+
+                      <Grid item xs={12} md={4}>
+                        <Paper
+                          sx={{
+                            p: 2,
+                            backgroundColor:
+                              resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
+                                ? colors.blueAccent[800]
+                                : colors.greenAccent[800],
+                            border: `3px solid ${resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
+                              ? colors.blueAccent[500]
+                              : colors.greenAccent[500]
+                              }`,
+                            textAlign: "center",
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
+                            Recomendação
+                          </Typography>
+                          <Typography variant="body1" sx={{ mb: 1 }}>
+                            {resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
+                              ? `Pessoa Física (PF) é mais vantajosa!`
+                              : `Pessoa Jurídica (PJ) é mais vantajosa!`}
+                          </Typography>
+                          <Typography variant="body2">
+                            Economia de:{" "}
+                            <strong>
+                              {formatMoney(
+                                Math.abs(
+                                  resultadoPF.rendaLiquida -
+                                  resultadoPJ.rendaLiquida
+                                )
+                              )}
+                            </strong>{" "}
+                            por mês
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                  {/* Terceira linha: Observações */}
+                  <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
                     <Paper
                       sx={{
                         p: 2,
                         backgroundColor: colors.primary[200],
-                        border: `2px solid ${colors.greenAccent[500]}`,
+                        border: "1px solid grey",
+                        width: "100%",
+                        maxWidth: "800px",
                         textAlign: "center",
-                        height: "100%",
                       }}
                     >
-                      <Typography
-                        variant="h6"
-                        fontWeight="bold"
-                        sx={{ mb: 2, color: colors.greenAccent[400] }}
-                      >
-                        Pessoa Jurídica (PJ)
-                      </Typography>
-                      <Typography variant="body2" sx={{ mb: 1 }}>
-                        Tributos Totais:{" "}
-                        <strong style={{ color: colors.redAccent[400] }}>
-                          {formatMoney(resultadoPJ.totalPJ)}
-                        </strong>
-                      </Typography>
-                      <Typography variant="body2" sx={{ mb: 1 }}>
-                        Renda Líquida:{" "}
-                        <strong style={{ color: colors.greenAccent[400] }}>
-                          {formatMoney(resultadoPJ.rendaLiquida)}
-                        </strong>
-                      </Typography>
-                      <Typography variant="body2">
-                        Alíquota Total:{" "}
-                        <strong>
-                          {(
-                            (resultadoPJ.totalPJ / resultadoPJ.renda) *
-                            100
-                          ).toFixed(2)}
-                          %
-                        </strong>
-                      </Typography>
-                    </Paper>
-                  </Grid>
-
-                  {/* Recomendação */}
-                  <Grid item xs={12} md={4}>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        backgroundColor:
-                          resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
-                            ? colors.blueAccent[800]
-                            : colors.greenAccent[800],
-                        border: `3px solid ${
-                          resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
-                            ? colors.blueAccent[500]
-                            : colors.greenAccent[500]
-                        }`,
-                        textAlign: "center",
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
-                        Recomendação
-                      </Typography>
-                      <Typography variant="body1" sx={{ mb: 1 }}>
-                        {resultadoPF.rendaLiquida > resultadoPJ.rendaLiquida
-                          ? `Pessoa Física (PF) é mais vantajosa!`
-                          : `Pessoa Jurídica (PJ) é mais vantajosa!`}
-                      </Typography>
-                      <Typography variant="body2">
-                        Economia de:{" "}
-                        <strong>
-                          {formatMoney(
-                            Math.abs(
-                              resultadoPF.rendaLiquida -
-                                resultadoPJ.rendaLiquida
-                            )
-                          )}
-                        </strong>{" "}
-                        por mês
-                      </Typography>
-                    </Paper>
-                  </Grid>
-                </Box>
-
-                {/* Terceira linha: Observações */}
-                <Box
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Paper
-                    sx={{
-                      p: 2,
-                      backgroundColor: colors.primary[200],
-                      border: "1px solid grey",
-                      width: "100%",
-                      maxWidth: "800px",
-                      textAlign: "center",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      fontWeight="bold"
-                      sx={{ mb: 1 }}
-                    >
-                      Observações Importantes:
-                    </Typography>
-                    <Box sx={{ display: "flex", justifyContent: "center" }}>
                       <Typography
                         variant="body2"
-                        component="ul"
-                        sx={{
-                          textAlign: "left",
-                          pl: 2,
-                          margin: 0,
-                        }}
+                        fontWeight="bold"
+                        sx={{ mb: 1 }}
                       >
-                        <li>
-                          Os cálculos são baseados na legislação atual (2025)
-                        </li>
-                        <li>
-                          Pessoa Jurídica terá custos adicionais de
-                          contabilidade
-                        </li>
-                        <li>Consulte um contador para análise personalizada</li>
-                        <li>
-                          Para dúvidas, entre em contato com o NAF:{" "}
-                          {formData.emailNAF}
-                        </li>
+                        Observações Importantes:
                       </Typography>
-                    </Box>
-                  </Paper>
-                </Box>
-              </Paper>
-            </Box>
-          )}
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <Typography
+                          variant="body2"
+                          component="ul"
+                          sx={{
+                            textAlign: "left",
+                            pl: 2,
+                            margin: 0,
+                          }}
+                        >
+                          <li>
+                            Os cálculos são baseados na legislação atual (2025)
+                          </li>
+                          <li>
+                            Pessoa Jurídica terá custos adicionais de
+                            contabilidade
+                          </li>
+                          <li>Consulte um contador para análise personalizada</li>
+                          <li>
+                            Para dúvidas, entre em contato com o NAF:{" "}
+                            {EMAIL_NAF} {/* CORRIGIDO: use a constante */}
+                          </li>
+                        </Typography>
+                      </Box>
+                    </Paper>
+                  </Box>
+                </Paper>
+              </Box>
+            )
+          }
+
+          {/* Seção de email */}
           <Box
             sx={{
               display: "flex",
@@ -1014,14 +1004,12 @@ const CalculadoraTributaria = () => {
               borderRadius: 2,
             }}
           >
-            {/* Checkbox - Largura automática */}
+            {/* Checkbox */}
             <Box sx={{ flexShrink: 0 }}>
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="enviarEmail"
-                    checked={formData.enviarEmail}
-                    onChange={handleChange}
+                    {...register("enviarEmail")}
                     sx={{
                       color: colors.grey[300],
                       "&.Mui-checked": {
@@ -1035,19 +1023,18 @@ const CalculadoraTributaria = () => {
               />
             </Box>
 
-            {/* Email Input e Button - aparecem condicionalmente */}
-            <Grow in={formData.enviarEmail}>
+            {/* Email Input e Button */}
+            <Grow in={watch("enviarEmail")}>
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "column", // Mudei para column
+                  flexDirection: "column",
                   gap: 1,
                   alignItems: "center",
                   flex: 2,
                   minWidth: { xs: "100%", md: "auto" },
                 }}
               >
-                {/* Linha com TextField e Button */}
                 <Box
                   sx={{
                     display: "flex",
@@ -1058,16 +1045,26 @@ const CalculadoraTributaria = () => {
                 >
                   <TextField
                     label="E-mail"
-                    name="emailUsuario"
                     size="small"
                     type="email"
-                    defaultValue={formData.emailUsuario}
-                    required={formData.enviarEmail}
+                    fullWidth
+                    {...register("emailUsuario", {
+                      required: watch("enviarEmail") ? "E-mail é obrigatório" : false,
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "E-mail inválido"
+                      }
+                    })}
+                    error={!!errors.emailUsuario}
                     sx={{
                       flex: 2,
                       "& .MuiOutlinedInput-root": {
                         backgroundColor: colors.primary[500],
-                        "& fieldset": { borderColor: colors.grey[300] },
+                        "& fieldset": {
+                          borderColor: errors.emailUsuario
+                            ? colors.redAccent[400]
+                            : colors.grey[300]
+                        },
                         "&:hover fieldset": {
                           borderColor: colors.blueAccent[500],
                         },
@@ -1081,47 +1078,22 @@ const CalculadoraTributaria = () => {
                       },
                       "& .MuiOutlinedInput-input": { color: colors.grey[100] },
                     }}
-                    {...register("email", {
-                      required: "Email é obrigatório!",
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "E-mail inválido",
-                      },
-                      onChange: (e) => {
-                        setFormData({
-                          ...formData,
-                          emailUsuario: e.target.value,
-                        });
-                      },
-                    })}
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
                   />
                   <Button
                     onClick={() => {
-                      const emailValue =
-                        watch("email") || formData.emailUsuario;
+                      const emailValue = watch("emailUsuario");
                       if (!emailValue || emailValue.trim() === "") {
                         showAlert("Por favor, informe seu e-mail", "error");
                         return;
                       }
-                      const emailRegex =
-                        /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-                      if (!emailRegex.test(emailValue)) {
-                        showAlert(
-                          "Por favor, informe um e-mail válido",
-                          "error"
-                        );
+                      if (errors.emailUsuario) {
+                        showAlert("Por favor, informe um e-mail válido", "error");
                         return;
                       }
                       if (resultadoPF && resultadoPJ) {
-                        setFormData({ ...formData, emailUsuario: emailValue });
                         enviarEmail(resultadoPF, resultadoPJ);
                       } else {
-                        showAlert(
-                          "Por favor, calcule os resultados primeiro",
-                          "error"
-                        );
+                        showAlert("Por favor, calcule os resultados primeiro", "error");
                       }
                     }}
                     sx={{
@@ -1150,42 +1122,40 @@ const CalculadoraTributaria = () => {
                     Enviar resultados
                   </Button>
                 </Box>
-
-                {/* Alert */}
-                <Collapse
-                  in={alertVisible}
-                  sx={{ width: "100%", maxWidth: "400px" }}
-                >
-                  <Alert
-                    severity={alertSeverity}
-                    onClose={() => setAlertVisible(false)}
-                    sx={{
-                      mt: 1,
-                      backgroundColor:
-                        alertSeverity === "success"
-                          ? colors.greenAccent[100]
-                          : colors.redAccent[100],
-                      color:
-                        alertSeverity === "success"
-                          ? colors.greenAccent[900]
-                          : colors.redAccent[900],
-                      "& .MuiAlert-icon": {
-                        color:
-                          alertSeverity === "success"
-                            ? colors.greenAccent[500]
-                            : colors.redAccent[500],
-                      },
-                    }}
-                  >
-                    {alertMessage}
-                  </Alert>
-                </Collapse>
               </Box>
             </Grow>
           </Box>
-        </Box>
+        </Box >
       )}
-    </Box>
+
+      {/* ALERT */}
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+        <Collapse in={alertVisible} sx={{ width: "100%", maxWidth: "400px" }}>
+          <Alert
+            severity={alertSeverity}
+            onClose={() => setAlertVisible(false)}
+            sx={{
+              backgroundColor:
+                alertSeverity === "success"
+                  ? colors.greenAccent[100]
+                  : colors.redAccent[100],
+              color:
+                alertSeverity === "success"
+                  ? colors.greenAccent[900]
+                  : colors.redAccent[900],
+              "& .MuiAlert-icon": {
+                color:
+                  alertSeverity === "success"
+                    ? colors.greenAccent[500]
+                    : colors.redAccent[500],
+              },
+            }}
+          >
+            {alertMessage}
+          </Alert>
+        </Collapse>
+      </Box>
+    </Box >
   );
 };
 

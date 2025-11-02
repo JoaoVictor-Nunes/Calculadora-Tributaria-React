@@ -28,15 +28,24 @@ const Register = () => {
   const colorMode = useContext(ColorModeContext);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [profissao, setProfissao] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
-  const handleChange = (event) => {
-    setProfissao(event.target.value);
-    setValue("profissao", event.target.value);
-  };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors }
+  } = useForm({
+    defaultValues: {
+      name: "",
+      profissao: "",
+      email: "",
+      password: "",
+      confirmPassword: ""
+    }
+  });
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
@@ -53,20 +62,21 @@ const Register = () => {
     watchedFields.password &&
     watchedFields.confirmPassword;
 
-  // Botão habilitado apenas se todos os campos estiverem preenchidos
   const isButtonDisabled = !areAllFieldsFilled;
 
   const errorName = errors.name ? errors.name.message : "Mensagem de erro";
   const errorProfissao = errors.profissao ? errors.profissao.message : "Mensagem de erro";
 
+  const handleProfissaoChange = (event) => {
+    setValue("profissao", event.target.value, { shouldValidate: true });
+  };
+
   const onSubmit = (data) => {
-    // Verificar se as senhas coincidem
     if (data.password !== data.confirmPassword) {
       setConfirmPasswordError("As senhas não coincidem!");
-      return; // Não prossegue se as senhas não coincidem
+      return;
     }
 
-    // Se chegou aqui, as senhas coincidem - limpa o erro
     setConfirmPasswordError("");
     console.log("Dados enviados: ", data);
     setUserName(data.name);
@@ -127,7 +137,10 @@ const Register = () => {
         >
           Registrar
         </Typography>
+
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+
+          {/* Campo Nome */}
           <Box>
             <TextField
               label="Nome"
@@ -177,7 +190,7 @@ const Register = () => {
           <Box>
             <FormControl fullWidth size="small">
               <InputLabel
-                id="profissao"
+                id="profissao-label"
                 sx={{
                   color: colors.grey[300],
                   '&.Mui-focused': {
@@ -188,10 +201,11 @@ const Register = () => {
                 Profissão
               </InputLabel>
               <Select
-                labelId="profissao"
+                labelId="profissao-label"
                 id="profissao"
                 label="Profissão"
-                onChange={handleChange}
+                value={watch("profissao") || ""}
+                onChange={handleProfissaoChange}
                 sx={{
                   "& .MuiOutlinedInput-notchedOutline": {
                     borderColor: colors.grey[300],
@@ -219,7 +233,6 @@ const Register = () => {
                     minHeight: "auto",
                   },
                 }}
-                {...register("profissao", { required: "Profissão é obrigatória" })}
               >
                 <MenuItem value="Psicólogo">Psicólogo(a)</MenuItem>
               </Select>
@@ -239,34 +252,32 @@ const Register = () => {
             </Typography>
           </Box>
 
-          <EmailInput
-            register={register}
-            errors={errors}
-          />
+          <EmailInput register={register} errors={errors} />
+          <PasswordInput register={register} errors={errors} />
 
-          <PasswordInput
-            register={register}
-            errors={errors}
-          />
-
+          {/* Campo Confirmar Senha */}
           <Box>
             <TextField
               label="Confirme a Senha"
               variant="outlined"
               size="small"
               type={showPassword ? 'text' : 'password'}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label={showPassword ? 'Esconder senha' : 'Mostrar senha'}
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
+              slotProps={{
+                input: {
+
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={showPassword ? 'Esconder senha' : 'Mostrar senha'}
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                        sx={{ color: colors.grey[300] }}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }
               }}
               sx={{
                 width: "100%",
@@ -289,7 +300,7 @@ const Register = () => {
                   },
                 },
                 '& .MuiOutlinedInput-input': {
-                  color: "colors.grey[900]",
+                  color: colors.grey[100],
                 },
               }}
               {...register("confirmPassword", {
@@ -311,10 +322,7 @@ const Register = () => {
             </Typography>
           </Box>
 
-          <ButtonUsage
-            type="submit"
-            disabled={isButtonDisabled}
-          >
+          <ButtonUsage type="submit" disabled={isButtonDisabled}>
             Registrar
           </ButtonUsage>
 
@@ -323,8 +331,7 @@ const Register = () => {
             justifyContent: "center",
             mt: 2,
             gap: 1
-          }}
-          >
+          }}>
             <Typography variant="body2" sx={{ color: colors.grey[100] }}>
               Já possui uma conta?
             </Typography>
@@ -346,7 +353,7 @@ const Register = () => {
           </Box>
         </Box>
       </Box>
-      < Footer />
+      <Footer />
     </Box>
   );
 };

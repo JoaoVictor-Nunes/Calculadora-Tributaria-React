@@ -1,16 +1,20 @@
 import { Button, useTheme } from "@mui/material";
 import { tokens } from "../Tema";
 
-const ButtonUsage = ({ children, ...props }) => {
+const ButtonUsage = ({ children, disabled = false, ...props }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-
+    
     return (
         <Button
             {...props}
+            disabled={disabled} 
+            variant="contained"
             sx={{
                 width: "100%",
-                backgroundColor: colors.redAccent[500],
+                backgroundColor: disabled 
+                    ? colors.grey[600] 
+                    : colors.redAccent[500],
                 color: colors.grey[900],
                 paddingTop: "0.375rem",
                 paddingBottom: "0.375rem",
@@ -21,10 +25,10 @@ const ButtonUsage = ({ children, ...props }) => {
                 textTransform: "none",
                 fontSize: "1rem",
                 "&:hover": {
-                    backgroundColor: colors.redAccent[600],
-                    color: colors.grey[900],
-                    transform: "translateY(-1px)",
-                    boxShadow: `0 4px 8px ${colors.blueAccent[500]}40`,
+                    backgroundColor: disabled 
+                      ? colors.grey[600] 
+                      : colors.blueAccent[600],
+                    transform: disabled ? "none" : "translateY(-1px)",
                 },
                 "&:active": {
                     transform: "translateY(0)",

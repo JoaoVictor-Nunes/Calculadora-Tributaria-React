@@ -12,7 +12,6 @@ const Home = () => {
   return (
     <Box
       sx={{
-        // maxWidth: "900px",
         mx: "auto", // margin inline auto
         px: 4,
         textAlign: "center",

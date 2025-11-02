@@ -14,10 +14,17 @@ const Esqueci = () => {
   const colorMode = useContext(ColorModeContext);
 
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, watch, handleSubmit, formState: { errors } } = useForm();
   const [alertVisible, setAlertVisible] = React.useState(false);
 
   const navigate = useNavigate();
+
+    const watchedFields = watch();
+
+  const areAllFieldsFilled =
+    watchedFields.email
+
+  const isButtonDisabled = !areAllFieldsFilled;
 
   const onSubmit = (data) => {
     console.log("Email para recuperação:", data);
@@ -84,7 +91,7 @@ const Esqueci = () => {
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <EmailInput register={register} errors={errors} />
 
-          <ButtonUsage type="submit" sx={{ mt: 3 }}>
+          <ButtonUsage type="submit" disabled={isButtonDisabled} sx={{ mt: 3 }}>
             Enviar link
           </ButtonUsage>
         </Box>

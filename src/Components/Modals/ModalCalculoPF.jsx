@@ -1,5 +1,6 @@
-import { useState} from "react";
-import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow } from "@mui/material"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow, Link } from "@mui/material"
 import CalculoPF from "../../Pages/Cálculos/CalculoPF";
 import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
@@ -18,6 +19,8 @@ const ModalCalculoPJ = () => {
         setTransformOrigin(origin);
         setOpen(true);
     };
+
+    const navigate = useNavigate();
 
     const handleClose = () => setOpen(false);
 

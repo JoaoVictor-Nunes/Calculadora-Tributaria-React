@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 import { Box, Button, Modal, Typography, Backdrop, Link, Paper, Grow, useTheme } from "@mui/material"
 import { tokens } from "../../Tema";
 import { useNavigate } from "react-router-dom";
@@ -17,9 +17,8 @@ const ModalExplicacoes = () => {
 
   const handleOpen = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
-    const origin = `${rect.left + rect.width / 2}px ${
-      rect.top + rect.height / 2
-    }px`;
+    const origin = `${rect.left + rect.width / 2}px ${rect.top + rect.height / 2
+      }px`;
     setTransformOrigin(origin);
     setOpen(true);
   };
@@ -149,7 +148,7 @@ const ModalExplicacoes = () => {
                       </Typography>
                     </Box>
                     <Box component="li">
-                      <Typography
+                      <Box
                         sx={{
                           display: "flex",
                           alignItems: "center",
@@ -157,14 +156,14 @@ const ModalExplicacoes = () => {
                           gap: 0.5,
                         }}
                       >
-                        <Box component="span" fontWeight="bold">
+                        <Typography component="span" fontWeight="bold">
                           Consulta na
-                        </Box>
+                        </Typography>
                         <ModalTabelaTributacao />
-                        <Box component="span">
+                        <Typography component="span">
                           para identificar a faixa correspondente
-                        </Box>
-                      </Typography>
+                        </Typography>
+                      </Box>
                     </Box>
                     <Box component="li">
                       <Typography>

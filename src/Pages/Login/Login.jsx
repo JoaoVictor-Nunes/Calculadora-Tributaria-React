@@ -19,17 +19,18 @@ const Login = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: ""
+    }
+  });
+
   const navigate = useNavigate();
 
   const watchedFields = watch();
-
-  const areAllFieldsFilled =
-    watchedFields.email &&
-    watchedFields.password;
-
+  const areAllFieldsFilled = watchedFields.email && watchedFields.password;
   const isButtonDisabled = !areAllFieldsFilled;
-
 
   const onSubmit = (data) => {
     console.log("Dados enviados: ", data);
@@ -37,9 +38,9 @@ const Login = () => {
   };
 
   return (
-        <Box
+    <Box
 
-    // estilização da página
+      // estilização da página
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -61,7 +62,7 @@ const Login = () => {
           color: colors.grey[100],
         }}
       >
-        {theme.palette.mode === "dark" ? ( 
+        {theme.palette.mode === "dark" ? (
           <LightModeOutlined /> // se o tema for "escuro" aparece o sol
         ) : (
           <DarkModeOutlined /> // se o tema for "claro" aparece a lua
@@ -80,7 +81,6 @@ const Login = () => {
           borderColor: "#878787", // borda cinza
           borderWidth: 1, // coloca a grossura da borda
           boxShadow: 3, // adiciona uma sombra na box 
-          // width: { xs: "92vw", sm: 480, md: 600 }, // altera o tamanho horizontal da box
         }}
       >
         {/*Cria o título de login do form*/}
@@ -101,10 +101,10 @@ const Login = () => {
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
-          sx={{ 
-            display: "flex", 
-            flexDirection: "column", 
-            gap: 2 
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2
           }}
         >
           <EmailInput register={register} errors={errors} />

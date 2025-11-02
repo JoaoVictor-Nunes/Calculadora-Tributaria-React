@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow } from "@mui/material"
+import { useNavigate } from "react-router-dom";
+import { Box, Button, Modal, Typography, Backdrop, useTheme, Grow, Link } from "@mui/material"
 import CalculoPJ from "../../Pages/Cálculos/CalculoPJ";
 import { tokens } from "../../Tema";
 import GoBack from "../GoBack";
@@ -21,6 +22,8 @@ const ModalCalculoPJ = () => {
 
     const handleClose = () => setOpen(false);
 
+    const navigate = useNavigate();
+
     const style = {
         width: { xs: "90vw", md: 800 },
         bgcolor: colors.primary[500],
@@ -41,7 +44,7 @@ const ModalCalculoPJ = () => {
                 onClick={handleOpen}
                 size="large"
                 startIcon={<AccountBalanceIcon />}
-               sx={{
+                sx={{
                     color: colors.grey[900],
                     backgroundColor: colors.redAccent[500],
                     fontSize: "1.1rem",
@@ -113,7 +116,6 @@ const ModalCalculoPJ = () => {
                         >
                             <GoBack />
                         </Button>
-                        {/* Removi a Typography extra que envolvia o CalculoPJ */}
                         <CalculoPJ />
                     </Box>
                 </Grow>
