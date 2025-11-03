@@ -1145,10 +1145,7 @@ const CalculadoraTributaria = () => {
                 alertSeverity === "success"
                   ? colors.greenAccent[100]
                   : colors.redAccent[100],
-              color:
-                alertSeverity === "success"
-                  ? colors.greenAccent[900]
-                  : colors.redAccent[900],
+                color: colors.grey[900],
               "& .MuiAlert-icon": {
                 color:
                   alertSeverity === "success"

@@ -15,7 +15,7 @@ import {
   Alert,
   FormControlLabel,
   Checkbox,
-  Link
+  Link,
 } from "@mui/material";
 import RendaTooltip from "../../Components/RendaTooltip";
 import { tokens } from "../../Tema";
@@ -40,14 +40,13 @@ const CalculoPJ = () => {
       salarioMinimo: "1518.0", // Valor mínimo para pró-labore
       enviarEmail: false,
       emailUsuario: "",
-    }
+    },
   });
 
   // Watch dos campos para validação do botão
   const watchedFields = watch();
   const areAllFieldsFilled =
-    watchedFields.rendaMensal &&
-    watchedFields.salarioMinimo;
+    watchedFields.rendaMensal && watchedFields.salarioMinimo;
 
   const isButtonDisabled = !areAllFieldsFilled;
 
@@ -153,12 +152,14 @@ const CalculoPJ = () => {
       </Typography>
 
       {/* Formulário com handleSubmit integrado */}
-      <Paper sx={{
-        p: 3,
-        backgroundColor: colors.primary[500],
-        border: "1px solid",
-        borderColor: "#878787",
-      }}>
+      <Paper
+        sx={{
+          p: 3,
+          backgroundColor: colors.primary[500],
+          border: "1px solid",
+          borderColor: "#878787",
+        }}
+      >
         <Box component="form" onSubmit={handleSubmit(calcularPJ)}>
           <Box
             sx={{
@@ -186,11 +187,19 @@ const CalculoPJ = () => {
                   {...register("rendaMensal", {
                     required: "Renda mensal é obrigatória!",
                     min: { value: 0, message: "Renda não pode ser negativa" },
-                    max: { value: LIMITE_RENDA, message: `Renda não pode exceder ${formatMoney(LIMITE_RENDA)}` },
-                    valueAsNumber: true
+                    max: {
+                      value: LIMITE_RENDA,
+                      message: `Renda não pode exceder ${formatMoney(
+                        LIMITE_RENDA
+                      )}`,
+                    },
+                    valueAsNumber: true,
                   })}
                   error={!!errors.rendaMensal}
-                  helperText={errors.rendaMensal?.message || `Limite máximo: ${formatMoney(LIMITE_RENDA)}`}
+                  helperText={
+                    errors.rendaMensal?.message ||
+                    `Limite máximo: ${formatMoney(LIMITE_RENDA)}`
+                  }
                   slotProps={{
                     htmlInput: {
                       min: 0,
@@ -212,7 +221,9 @@ const CalculoPJ = () => {
                     "& .MuiOutlinedInput-root": {
                       backgroundColor: colors.primary[500],
                       "& fieldset": { borderColor: colors.grey[300] },
-                      "&:hover fieldset": { borderColor: colors.blueAccent[500] },
+                      "&:hover fieldset": {
+                        borderColor: colors.blueAccent[500],
+                      },
                       "&.Mui-focused fieldset": {
                         borderColor: colors.blueAccent[500],
                       },
@@ -226,14 +237,14 @@ const CalculoPJ = () => {
                       color: errors.rendaMensal
                         ? colors.redAccent[400]
                         : theme.palette.mode === "dark"
-                          ? colors.grey[500]
-                          : colors.grey[600],
+                        ? colors.grey[500]
+                        : colors.grey[600],
                     },
                   }}
                 />
               </Box>
 
-              {/* Salário Mínimo (em vez de Custos Mensais) */}
+              {/* Salário Mínimo */}
               <Box sx={{ flex: 1, minWidth: { xs: "100%", md: "auto" } }}>
                 <TextField
                   label="Salário Mínimo (pró-labore)"
@@ -243,7 +254,7 @@ const CalculoPJ = () => {
                   {...register("salarioMinimo", {
                     required: "Salário mínimo é obrigatório!",
                     min: { value: 0, message: "Salário não pode ser negativo" },
-                    valueAsNumber: true
+                    valueAsNumber: true,
                   })}
                   error={!!errors.salarioMinimo}
                   helperText={errors.salarioMinimo?.message}
@@ -262,7 +273,9 @@ const CalculoPJ = () => {
                     "& .MuiOutlinedInput-root": {
                       backgroundColor: colors.primary[500],
                       "& fieldset": { borderColor: colors.grey[300] },
-                      "&:hover fieldset": { borderColor: colors.blueAccent[500] },
+                      "&:hover fieldset": {
+                        borderColor: colors.blueAccent[500],
+                      },
                       "&.Mui-focused fieldset": {
                         borderColor: colors.blueAccent[500],
                       },
@@ -276,15 +289,15 @@ const CalculoPJ = () => {
                       color: errors.salarioMinimo
                         ? colors.redAccent[400]
                         : theme.palette.mode === "dark"
-                          ? colors.grey[500]
-                          : colors.grey[600],
+                        ? colors.grey[500]
+                        : colors.grey[600],
                     },
                   }}
                 />
               </Box>
             </Box>
 
-            {/* Botão Calcular - agora é type="submit" */}
+            {/* Botão Calcular */}
             <Box>
               <Button
                 type="submit"
@@ -323,79 +336,86 @@ const CalculoPJ = () => {
               Resultado PJ:
             </Typography>
 
-            <Grid container spacing={1}>
-              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" fontWeight="600">
-                  Renda Mensal:
-                </Typography>
-                <Typography variant="body2">
-                  {formatMoney(resultado.renda)}
-                </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 3,
+              }}
+            >
+              {/* Primeira Linha */}
+              <Grid container spacing={2} justifyContent="center">
+                <Grid size={{ xs: 12, sm: 3 }} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" fontWeight="600">
+                    Renda Mensal:
+                  </Typography>
+                  <Typography variant="body2">
+                    {formatMoney(resultado.renda)}
+                  </Typography>
+                </Grid>
+
+                <Grid size={{ xs: 12, sm: 3 }} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" fontWeight="600">
+                    Pró-labore:
+                  </Typography>
+                  <Typography variant="body2">
+                    {formatMoney(resultado.proLabore)}
+                  </Typography>
+                </Grid>
+
+                <Grid size={{ xs: 12, sm: 3 }} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" fontWeight="600">
+                    Simples Nacional (6%):
+                  </Typography>
+                  <Typography variant="body2">
+                    {formatMoney(resultado.simples)}
+                  </Typography>
+                </Grid>
+
+                <Grid size={{ xs: 12, sm: 3 }} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" fontWeight="600">
+                    INSS (11% sobre pró-labore):
+                  </Typography>
+                  <Typography variant="body2">
+                    {formatMoney(resultado.inss)}
+                  </Typography>
+                </Grid>
               </Grid>
 
-              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" fontWeight="600">
-                  Pró-labore:
-                </Typography>
-                <Typography variant="body2">
-                  {formatMoney(resultado.proLabore)}
-                </Typography>
-              </Grid>
+              {/* Segunda Linha */}
+              <Grid container spacing={2} justifyContent="center" sx={{gap: 5}}>
+                <Grid size={{ xs: 12, sm: 3 }} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" fontWeight="600">
+                    Total PJ (Simples + INSS):
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    color="error.main"
+                  >
+                    {formatMoney(resultado.totalPJ)}
+                  </Typography>
+                </Grid>
 
-              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" fontWeight="600">
-                  Simples Nacional (6%):
-                </Typography>
-                <Typography variant="body2">
-                  {formatMoney(resultado.simples)}
-                </Typography>
+                <Grid size={{ xs: 12, sm: 3 }} sx={{ textAlign: "center" }}>
+                  <Typography
+                    variant="body2"
+                    fontWeight="600"
+                    color="success.main"
+                  >
+                    Renda Líquida aproximada:
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    color="success.main"
+                  >
+                    {formatMoney(resultado.rendaLiquidaPJ)}
+                  </Typography>
+                </Grid>
               </Grid>
-
-              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" fontWeight="600">
-                  INSS (11% sobre pró-labore):
-                </Typography>
-                <Typography variant="body2">
-                  {formatMoney(resultado.inss)}
-                </Typography>
-              </Grid>
-
-              {/* CORREÇÃO AQUI: Substituído item xs={12} por size={{xs: 12}} */}
-              <Grid size={{ xs: 12 }}>
-                <Typography variant="body2" fontWeight="600">
-                  Total PJ (Simples + INSS):
-                </Typography>
-                <Typography
-                  variant="body1"
-                  fontWeight="bold"
-                  color="error.main"
-                >
-                  {formatMoney(resultado.totalPJ)}
-                </Typography>
-              </Grid>
-
-              {/* CORREÇÃO AQUI: Substituído item xs={12} por size={{xs: 12}} */}
-              <Grid size={{ xs: 12 }}>
-                <Typography
-                  variant="body2"
-                  fontWeight="600"
-                  color="success.main"
-                >
-                  Renda Líquida aproximada:
-                </Typography>
-                <Typography
-                  variant="body1"
-                  fontWeight="bold"
-                  color="success.main"
-                >
-                  {formatMoney(resultado.rendaLiquidaPJ)}
-                </Typography>
-              </Grid>
-            </Grid>
+            </Box>
           </Paper>
         )}
       </Paper>
@@ -458,11 +478,13 @@ const CalculoPJ = () => {
                   type="email"
                   fullWidth
                   {...register("emailUsuario", {
-                    required: watch("enviarEmail") ? "E-mail é obrigatório" : false,
+                    required: watch("enviarEmail")
+                      ? "E-mail é obrigatório"
+                      : false,
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "E-mail inválido"
-                    }
+                      message: "E-mail inválido",
+                    },
                   })}
                   error={!!errors.emailUsuario}
                   sx={{
@@ -472,7 +494,7 @@ const CalculoPJ = () => {
                       "& fieldset": {
                         borderColor: errors.emailUsuario
                           ? colors.redAccent[400]
-                          : colors.grey[300]
+                          : colors.grey[300],
                       },
                       "&:hover fieldset": {
                         borderColor: colors.blueAccent[500],
@@ -532,10 +554,7 @@ const CalculoPJ = () => {
                 alertSeverity === "success"
                   ? colors.greenAccent[100]
                   : colors.redAccent[100],
-              color:
-                alertSeverity === "success"
-                  ? colors.greenAccent[900]
-                  : colors.redAccent[900],
+                color: colors.grey[900],
               "& .MuiAlert-icon": {
                 color:
                   alertSeverity === "success"
@@ -551,15 +570,21 @@ const CalculoPJ = () => {
 
       <Box marginTop={3}>
         <Typography variant="body1" sx={{ color: colors.grey[100] }}>
-          Para fazer a comparação entre PF e PJ, acesse <Link sx={{
-            color: colors.blueAccent[500],
-            "&:hover": {
-              color: colors.blueAccent[600],
-            }, cursor: "pointer"
-          }} onClick={() => navigate("/calculadora")}>Calculadora Comparativa</Link>
+          Para fazer a comparação entre PF e PJ, acesse{" "}
+          <Link
+            sx={{
+              color: colors.blueAccent[500],
+              "&:hover": {
+                color: colors.blueAccent[600],
+              },
+              cursor: "pointer",
+            }}
+            onClick={() => navigate("/calculadora")}
+          >
+            Calculadora Comparativa
+          </Link>
         </Typography>
       </Box>
-
     </Box>
   );
 };

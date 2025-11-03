@@ -78,7 +78,7 @@ const Contatos = () => {
                 minHeight: "25vh",
             }}>
             {/* CABEÇALHO DA PÁGINA */}
-            <Typography variant="h1" align="center" sx={{ p: 1, mt: 2, fontWeight: "bold" }}>
+            <Typography variant="h1" align="center" sx={{  fontWeight: "bold" }}>
                 Nos contate!
             </Typography>
 

@@ -15,7 +15,7 @@ import {
   Alert,
   FormControlLabel,
   Checkbox,
-  Link
+  Link,
 } from "@mui/material";
 import { tokens } from "../../Tema";
 import CustosTooltip from "../../Components/CustosTooltip";
@@ -41,14 +41,13 @@ const CalculoPF = () => {
       custosMensais: "",
       enviarEmail: false,
       emailUsuario: "",
-    }
+    },
   });
 
   // Watch dos campos para validação do botão
   const watchedFields = watch();
   const areAllFieldsFilled =
-    watchedFields.rendaMensal &&
-    watchedFields.custosMensais;
+    watchedFields.rendaMensal && watchedFields.custosMensais;
 
   const isButtonDisabled = !areAllFieldsFilled;
 
@@ -205,11 +204,19 @@ const CalculoPF = () => {
                   {...register("rendaMensal", {
                     required: "Renda mensal é obrigatória!",
                     min: { value: 0, message: "Renda não pode ser negativa" },
-                    max: { value: LIMITE_RENDA, message: `Renda não pode exceder ${formatMoney(LIMITE_RENDA)}` },
-                    valueAsNumber: true
+                    max: {
+                      value: LIMITE_RENDA,
+                      message: `Renda não pode exceder ${formatMoney(
+                        LIMITE_RENDA
+                      )}`,
+                    },
+                    valueAsNumber: true,
                   })}
                   error={!!errors.rendaMensal}
-                  helperText={errors.rendaMensal?.message || `Limite máximo: ${formatMoney(LIMITE_RENDA)}`}
+                  helperText={
+                    errors.rendaMensal?.message ||
+                    `Limite máximo: ${formatMoney(LIMITE_RENDA)}`
+                  }
                   slotProps={{
                     htmlInput: {
                       min: 0,
@@ -231,7 +238,9 @@ const CalculoPF = () => {
                     "& .MuiOutlinedInput-root": {
                       backgroundColor: colors.primary[500],
                       "& fieldset": { borderColor: colors.grey[300] },
-                      "&:hover fieldset": { borderColor: colors.blueAccent[500] },
+                      "&:hover fieldset": {
+                        borderColor: colors.blueAccent[500],
+                      },
                       "&.Mui-focused fieldset": {
                         borderColor: colors.blueAccent[500],
                       },
@@ -245,8 +254,8 @@ const CalculoPF = () => {
                       color: errors.rendaMensal
                         ? colors.redAccent[400]
                         : theme.palette.mode === "dark"
-                          ? colors.grey[500]
-                          : colors.grey[600],
+                        ? colors.grey[500]
+                        : colors.grey[600],
                     },
                   }}
                 />
@@ -261,8 +270,11 @@ const CalculoPF = () => {
                   required
                   {...register("custosMensais", {
                     required: "Custos mensais são obrigatórios!",
-                    min: { value: 0, message: "Custos não podem ser negativos" },
-                    valueAsNumber: true
+                    min: {
+                      value: 0,
+                      message: "Custos não podem ser negativos",
+                    },
+                    valueAsNumber: true,
                   })}
                   error={!!errors.custosMensais}
                   helperText={errors.custosMensais?.message}
@@ -286,7 +298,9 @@ const CalculoPF = () => {
                     "& .MuiOutlinedInput-root": {
                       backgroundColor: colors.primary[500],
                       "& fieldset": { borderColor: colors.grey[300] },
-                      "&:hover fieldset": { borderColor: colors.blueAccent[500] },
+                      "&:hover fieldset": {
+                        borderColor: colors.blueAccent[500],
+                      },
                       "&.Mui-focused fieldset": {
                         borderColor: colors.blueAccent[500],
                       },
@@ -300,14 +314,13 @@ const CalculoPF = () => {
                       color: errors.custosMensais
                         ? colors.redAccent[400]
                         : theme.palette.mode === "dark"
-                          ? colors.grey[500]
-                          : colors.grey[600],
+                        ? colors.grey[500]
+                        : colors.grey[600],
                     },
                   }}
                 />
               </Box>
             </Box>
-
 
             {/* Botão Calcular */}
             <Box>
@@ -351,72 +364,81 @@ const CalculoPF = () => {
             sx={{ mt: 3, p: 2, backgroundColor: colors.primary[200] }}
           >
             <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
-              Resultado do Cálculo:
+              Resultado PF:
             </Typography>
 
-            <Grid container spacing={1}>
-              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" fontWeight="600">
-                  Renda Mensal:
-                </Typography>
-                <Typography variant="body2">
-                  {formatMoney(resultado.rendaMensal)}
-                </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 3,
+              }}
+            >
+              <Grid container spacing={2} justifyContent="center">
+                <Grid size={{ xs: 12, sm: 3 }} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" fontWeight="600">
+                    Renda Mensal:
+                  </Typography>
+                  <Typography variant="body2">
+                    {formatMoney(resultado.rendaMensal)}
+                  </Typography>
+                </Grid>
+
+                <Grid size={{ xs: 12, sm: 3 }} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" fontWeight="600">
+                    Custos Mensais:
+                  </Typography>
+                  <Typography variant="body2">
+                    {formatMoney(resultado.custosMensais)}
+                  </Typography>
+                </Grid>
+
+                <Grid size={{ xs: 12, sm: 3 }} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" fontWeight="600">
+                    Base de Cálculo:
+                  </Typography>
+                  <Typography variant="body2">
+                    {formatMoney(resultado.baseCalculo)}
+                  </Typography>
+                </Grid>
+
+                <Grid size={{ xs: 12, sm: 3 }} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" fontWeight="600">
+                    Alíquota:
+                  </Typography>
+                  <Typography variant="body2">{resultado.aliquota}%</Typography>
+                </Grid>
               </Grid>
 
-              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" fontWeight="600">
-                  Custos Mensais:
-                </Typography>
-                <Typography variant="body2">
-                  {formatMoney(resultado.custosMensais)}
-                </Typography>
-              </Grid>
+              <Grid container spacing={2} justifyContent="center">
+                <Grid size={{ xs: 12, sm: 6 }} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" fontWeight="600">
+                    Parcela Dedutível:
+                  </Typography>
+                  <Typography variant="body2">
+                    {formatMoney(resultado.deducao)}
+                  </Typography>
+                </Grid>
 
-              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" fontWeight="600">
-                  Base de Cálculo:
-                </Typography>
-                <Typography variant="body2">
-                  {formatMoney(resultado.baseCalculo)}
-                </Typography>
+                <Grid size={{ xs: 12, sm: 6 }} sx={{ textAlign: "center" }}>
+                  <Typography
+                    variant="body2"
+                    fontWeight="600"
+                    color="error.main"
+                  >
+                    Imposto Devido:
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    color="error.main"
+                  >
+                    {formatMoney(resultado.imposto)}
+                  </Typography>
+                </Grid>
               </Grid>
-
-              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" fontWeight="600">
-                  Alíquota:
-                </Typography>
-                <Typography variant="body2">{resultado.aliquota}%</Typography>
-              </Grid>
-
-              {/* CORREÇÃO AQUI: Substituído item xs={12} sm={6} por size={{xs: 12, sm: 6}} */}
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" fontWeight="600">
-                  Parcela Dedutível:
-                </Typography>
-                <Typography variant="body2">
-                  {formatMoney(resultado.deducao)}
-                </Typography>
-              </Grid>
-
-              {/* CORREÇÃO AQUI: Substituído item xs={12} por size={{xs: 12}} */}
-              <Grid size={{ xs: 12 }}>
-                <Typography variant="body2" fontWeight="600" color="error.main">
-                  Imposto Devido:
-                </Typography>
-                <Typography
-                  variant="body1"
-                  fontWeight="bold"
-                  color="error.main"
-                >
-                  {formatMoney(resultado.imposto)}
-                </Typography>
-              </Grid>
-            </Grid>
+            </Box>
           </Paper>
         )}
       </Paper>
@@ -479,11 +501,13 @@ const CalculoPF = () => {
                   type="email"
                   fullWidth
                   {...register("emailUsuario", {
-                    required: watch("enviarEmail") ? "E-mail é obrigatório" : false,
+                    required: watch("enviarEmail")
+                      ? "E-mail é obrigatório"
+                      : false,
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "E-mail inválido"
-                    }
+                      message: "E-mail inválido",
+                    },
                   })}
                   error={!!errors.emailUsuario}
                   sx={{
@@ -493,7 +517,7 @@ const CalculoPF = () => {
                       "& fieldset": {
                         borderColor: errors.emailUsuario
                           ? colors.redAccent[400]
-                          : colors.grey[300]
+                          : colors.grey[300],
                       },
                       "&:hover fieldset": {
                         borderColor: colors.blueAccent[500],
@@ -553,15 +577,9 @@ const CalculoPF = () => {
                 alertSeverity === "success"
                   ? colors.greenAccent[100]
                   : colors.redAccent[100],
-              color:
-                alertSeverity === "success"
-                  ? colors.greenAccent[900]
-                  : colors.redAccent[900],
+                color: colors.grey[900],
               "& .MuiAlert-icon": {
-                color:
-                  alertSeverity === "success"
-                    ? colors.greenAccent[500]
-                    : colors.redAccent[500],
+                color: colors.grey[900],
               },
             }}
           >
@@ -571,12 +589,19 @@ const CalculoPF = () => {
       </Box>
       <Box marginTop={3}>
         <Typography variant="body1" sx={{ color: colors.grey[100] }}>
-          Para fazer a comparação entre PF e PJ, acesse <Link sx={{
-            color: colors.blueAccent[500],
-            "&:hover": {
-              color: colors.blueAccent[600],
-            }, cursor: "pointer"
-          }} onClick={() => navigate("/calculadora")}>Calculadora Comparativa</Link>
+          Para fazer a comparação entre PF e PJ, acesse{" "}
+          <Link
+            sx={{
+              color: colors.blueAccent[500],
+              "&:hover": {
+                color: colors.blueAccent[600],
+              },
+              cursor: "pointer",
+            }}
+            onClick={() => navigate("/calculadora")}
+          >
+            Calculadora Comparativa
+          </Link>
         </Typography>
       </Box>
     </Box>
