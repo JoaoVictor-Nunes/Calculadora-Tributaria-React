@@ -46,7 +46,7 @@ const Contatos = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setMapLoaded(true);
-        }, 3000);
+        }, 1000);
 
         return () => clearTimeout(timer); // Cleanup do timeout
     }, []);

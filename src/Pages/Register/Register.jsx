@@ -28,7 +28,6 @@ import useUserStore from "../../store/useUserStore";
 import { tokens, ColorModeContext } from "../../Tema";
 import { userService } from "../../services/userService";
 
-
 const Register = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -87,9 +86,9 @@ const Register = () => {
 
   // MENSAGENS DE ERRO CONDICIONAIS
   const errorName = errors.name ? errors.name.message : "";
-  const errorProfissao = errors.profissao
-    ? errors.profissao.message
-    : "";
+  const errorProfissao = errors.profissao ? errors.profissao.message : "";
+
+  const hasError = !!errors.name;
 
   // HANDLER PARA MUDANÇA DE PROFISSÃO
   const handleProfissaoChange = (event) => {
@@ -98,34 +97,42 @@ const Register = () => {
 
   // SUBMISSÃO DO FORMULÁRIO
 
-const onSubmit = (data) => {
-  // VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA
-  if (data.password !== data.confirmPassword) {
-    setConfirmPasswordError("As senhas não coincidem!");
-    return;
-  }
-  
-  // VALIDAÇÃO DE EMAIL JÁ CADASTRADO
-  if (userService.checkEmailExists(data.email)) {
-    setEmailCadastradoError("E-mail já cadastrado!");
-    return;
-  }
+  const onSubmit = async (data) => {
+    // VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA
+    if (data.password !== data.confirmPassword) {
+      setConfirmPasswordError("As senhas não coincidem!");
+      return;
+    }
 
-  // PROCESSAMENTO DOS DADOS (cadastro bem-sucedido)
-  setConfirmPasswordError("");
-  setEmailCadastradoError("");
-  console.log("Dados enviados: ", data);
-  
-  // SALVAR O NOVO USUARIO NO JSON
-  userService.addUser({
-    name: data.name,
-    email: data.email,
-    password: data.password,
-    profissao: data.profissao
-  });
-  
-  setUserName(data.name);
-  navigate("/home");
+    // VERIFICAÇÃO DE EMAIL JÁ CADASTRADO
+    const emailExists = userService.checkEmailExists(data.email);
+
+    if (emailExists) {
+      setEmailCadastradoError("E-mail já cadastrado!");
+      return;
+    }
+
+    // PROCESSAMENTO DOS DADOS (cadastro bem-sucedido)
+    setConfirmPasswordError("");
+    setEmailCadastradoError("");
+
+ try {
+    const newUser = userService.addUser({
+      name: data.name,
+      profissao: data.profissao,
+      email: data.email,
+      password: data.password 
+    });
+
+    console.log("Usuário cadastrado com sucesso:", newUser);
+    
+    setUserName(data.name);
+    navigate("/home");
+    
+  } catch (error) {
+    console.error("Erro ao cadastrar usuário:", error);
+    setEmailCadastradoError("Erro ao cadastrar usuário. Tente novamente.");
+  }
 };
 
   return (
@@ -182,7 +189,7 @@ const onSubmit = (data) => {
             fontWeight: "bold",
           }}
         >
-          Registrar
+          Cadastrar
         </Typography>
 
         {/* FORMULÁRIO DE REGISTRO */}
@@ -197,26 +204,38 @@ const onSubmit = (data) => {
               label="Nome"
               variant="outlined"
               size="small"
+              error={hasError}
               sx={{
                 width: "100%",
+                // ESTILIZAÇÃO DO CONTAINER DO INPUT
                 "& .MuiOutlinedInput-root": {
                   backgroundColor: colors.primary[500],
                   "& fieldset": {
-                    borderColor: colors.grey[300],
+                    borderColor: hasError
+                      ? colors.redAccent[400]
+                      : colors.grey[300],
                   },
                   "&:hover fieldset": {
-                    borderColor: colors.blueAccent[500],
+                    borderColor: hasError
+                      ? colors.redAccent[400]
+                      : colors.blueAccent[500],
                   },
                   "&.Mui-focused fieldset": {
-                    borderColor: colors.blueAccent[500],
+                    borderColor: hasError
+                      ? colors.redAccent[400]
+                      : colors.blueAccent[500],
                   },
                 },
+                //  ESTILIZAÇÃO DO LABEL
                 "& .MuiInputLabel-root": {
-                  color: colors.grey[300],
+                  color: hasError ? colors.redAccent[400] : colors.grey[300],
                   "&.Mui-focused": {
-                    color: colors.blueAccent[500],
+                    color: hasError
+                      ? colors.redAccent[400]
+                      : colors.blueAccent[500],
                   },
                 },
+                // ESTILIZAÇÃO DO TEXTO DIGITADO
                 "& .MuiOutlinedInput-input": {
                   color: colors.grey[100],
                 },
@@ -335,7 +354,7 @@ const onSubmit = (data) => {
                         edge="end"
                         sx={{ color: colors.grey[300] }}
                       >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -389,7 +408,7 @@ const onSubmit = (data) => {
 
           {/* BOTÃO DE REGISTRO */}
           <ButtonUsage type="submit" disabled={isButtonDisabled}>
-            Registrar
+              Cadastrar
           </ButtonUsage>
 
           {/* LINK PARA LOGIN */}
