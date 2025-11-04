@@ -1,18 +1,30 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useTheme, Link, Box, Typography, IconButton, Checkbox, FormControlLabel } from "@mui/material";
+import {
+  useTheme,
+  Link,
+  Box,
+  Typography,
+  IconButton,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 import { LightModeOutlined, DarkModeOutlined } from "@mui/icons-material";
 import PasswordInput from "../../Components/Inputs/PasswordInput";
 import EmailInput from "../../Components/Inputs/EmailInput";
 import ButtonUsage from "../../Components/ButtonUsage";
 import Footer from "../../Components/Footer";
 import { tokens, ColorModeContext } from "../../Tema";
+import { userService } from "../../services/userService";
+import useUserStore from "../../store/useUserStore";
 
 const Login = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+
+  const setUserName = useUserStore((state) => state.setUserName);
 
   // Configuração do formulário com react-hook-form
   const {
@@ -23,9 +35,11 @@ const Login = () => {
   } = useForm({
     defaultValues: {
       email: "",
-      password: ""
-    }
+      password: "",
+    },
   });
+
+  const [loginError, setLoginError] = useState("");
 
   const navigate = useNavigate();
 
@@ -36,8 +50,24 @@ const Login = () => {
 
   // Handler de submit do formulário
   const onSubmit = (data) => {
-    console.log("Dados enviados: ", data);
-    navigate("/home");
+    // Limpa erros anteriores
+    setLoginError("");
+
+    // VALIDA LOGIN COM O JSON
+    const user = userService.validateLogin(data.email, data.password);
+
+    if (user) {
+      // Login bem-sucedido
+      console.log("Login bem-sucedido:", user);
+
+      setUserName(user.name);
+
+      navigate("/home");
+    } else {
+      // Login falhou
+      setLoginError("Email ou senha incorretos");
+      console.log("Login falhou - email ou senha inválidos");
+    }
   };
 
   return (
@@ -82,7 +112,7 @@ const Login = () => {
           borderRadius: 2, // arredonda a borda da box
           borderColor: "#878787", // borda cinza
           borderWidth: 1, // coloca a grossura da borda
-          boxShadow: 3, // adiciona uma sombra na box 
+          boxShadow: 3, // adiciona uma sombra na box
         }}
       >
         {/*Cria o título de login do form*/}
@@ -106,11 +136,29 @@ const Login = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            gap: 2
+            gap: 2,
           }}
         >
-          <EmailInput register={register} errors={errors} />
-          <PasswordInput register={register} errors={errors} />
+          <Box>
+            <EmailInput register={register} errors={errors} />
+
+            <PasswordInput register={register} errors={errors} />
+            {/* MENSAGEM DE ERRO DO LOGIN */}
+            <Typography
+              variant="caption"
+              sx={{
+                minHeight: "20px",
+                fontWeight: "bold",
+                color: loginError ? colors.redAccent[100] : "transparent",
+                visibility: loginError ? "visible" : "hidden",
+                marginTop: "1px",
+                display: "block",
+                textAlign: "center",
+              }}
+            >
+              {loginError}
+            </Typography>
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -164,10 +212,7 @@ const Login = () => {
               </Typography>
             </Box>
           </Box>
-          <ButtonUsage
-            type="submit"
-            disabled={isButtonDisabled}
-          >
+          <ButtonUsage type="submit" disabled={isButtonDisabled}>
             Entrar
           </ButtonUsage>
           <Box

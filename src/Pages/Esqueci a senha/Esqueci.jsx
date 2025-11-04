@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, Alert, Collapse, Link, useTheme, IconButton } from "@mui/material";
@@ -17,7 +17,7 @@ const Esqueci = () => {
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
   
   // Estado para controlar visibilidade do alerta de sucesso
-  const [alertVisible, setAlertVisible] = React.useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
 
   const navigate = useNavigate();
 

@@ -2,12 +2,13 @@ import { TextField, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../Tema";
 
-const EmailInput = ({ register, errors }) => {
+const EmailInput = ({ register, errors, customError }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   // Mostra mensagem de erro específica ou mensagem padrão invisível para manter layout
-  const errorMessage = errors.email ? errors.email.message : "Mensagem de erro";
+  const errorMessage = customError || (errors.email ? errors.email.message : "Mensagem de erro");
+  const hasError = !!customError || !!errors.email;
 
   return (
     <div>
@@ -17,30 +18,32 @@ const EmailInput = ({ register, errors }) => {
         variant="outlined"
         fullWidth
         size="small"
+        error={hasError}
         sx={{
           width: "100%",
           // ESTILIZAÇÃO DO CONTAINER DO INPUT
           '& .MuiOutlinedInput-root': {
+            backgroundColor: colors.primary[500],
             '& fieldset': {
-              borderColor: colors.grey[300], // Borda padrão cinza
+              borderColor: hasError ? colors.redAccent[400] : colors.grey[300],
             },
             '&:hover fieldset': {
-              borderColor: colors.blueAccent[500], // Borda azul no hover
+              borderColor: hasError ? colors.redAccent[400] : colors.blueAccent[500],
             },
             '&.Mui-focused fieldset': {
-              borderColor: colors.blueAccent[500], // Borda azul quando focado
+              borderColor: hasError ? colors.redAccent[400] : colors.blueAccent[500],
             },
           },
           //  ESTILIZAÇÃO DO LABEL
           '& .MuiInputLabel-root': {
-            color: colors.grey[300], // Cor padrão do label
+            color: hasError ? colors.redAccent[400] : colors.grey[300],
             '&.Mui-focused': {
-              color: colors.blueAccent[500], // Cor azul quando focado
+              color: hasError ? colors.redAccent[400] : colors.blueAccent[500],
             },
           },
           // ESTILIZAÇÃO DO TEXTO DIGITADO
           '& .MuiOutlinedInput-input': {
-            color: colors.grey[100], // Cor do texto digitado
+            color: colors.grey[100],
           },
         }}
         // REGISTRO NO REACT-HOOK-FORM COM VALIDAÇÕES
@@ -59,8 +62,8 @@ const EmailInput = ({ register, errors }) => {
         sx={{
           minHeight: "20px", // Altura mínima para manter espaço mesmo sem erro
           fontWeight: "bold",
-          color: errors.email ? colors.redAccent[100] : "transparent", // Vermelho se erro, transparente se não
-          visibility: errors.email ? "visible" : "hidden", // Visível apenas quando há erro
+          color: hasError ? colors.redAccent[100] : "transparent", // Vermelho se erro, transparente se não
+          visibility: hasError ? "visible" : "hidden", // Visível apenas quando há erro
           marginTop: "4px", // Espaço acima da mensagem
           display: "block", // Garante que ocupa toda a largura
           fontSize: "12px" // Tamanho de fonte menor para mensagens de erro

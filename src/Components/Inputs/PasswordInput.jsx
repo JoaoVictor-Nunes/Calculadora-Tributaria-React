@@ -6,13 +6,13 @@ import {
   InputAdornment,
   useTheme,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material"
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { tokens } from "../../Tema";
 
 const PasswordInput = ({ register, errors }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+
   // Estado para alternar entre mostrar/ocultar a senha
   const [show, setShow] = useState(false);
 
@@ -35,12 +35,14 @@ const PasswordInput = ({ register, errors }) => {
           input: {
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton 
+                <IconButton
                   onClick={() => setShow(!show)} // Alterna estado de visibilidade
                   edge="end"
                   aria-label={show ? "Ocultar senha" : "Mostrar senha"} // Acessibilidade
+                  sx={{ color: colors.grey[300] }}
                 >
-                  {show ? <VisibilityOff /> : <Visibility />} {/* Ícone dinâmico */}
+                  {show ? <VisibilityOff /> : <Visibility />}{" "}
+                  {/* Ícone dinâmico */}
                 </IconButton>
               </InputAdornment>
             ),
@@ -83,7 +85,7 @@ const PasswordInput = ({ register, errors }) => {
           },
         })}
       />
-      
+
       {/* MENSAGEM DE ERRO DINÂMICA */}
       <Typography
         variant="caption"

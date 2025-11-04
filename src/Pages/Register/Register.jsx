@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,15 +12,22 @@ import {
   MenuItem,
   FormControl,
   Select,
-  Link
+  Link,
 } from "@mui/material";
-import { LightModeOutlined, DarkModeOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  LightModeOutlined,
+  DarkModeOutlined,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
 import EmailInput from "../../Components/Inputs/EmailInput";
 import PasswordInput from "../../Components/Inputs/PasswordInput";
 import ButtonUsage from "../../Components/ButtonUsage";
 import Footer from "../../Components/Footer";
 import useUserStore from "../../store/useUserStore";
 import { tokens, ColorModeContext } from "../../Tema";
+import { userService } from "../../services/userService";
+
 
 const Register = () => {
   const theme = useTheme();
@@ -30,26 +37,26 @@ const Register = () => {
   // ESTADOS LOCAIS DO COMPONENTE
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
-
+  const [emailCadastradoError, setEmailCadastradoError] = useState("");
   // CONFIGURAÇÃO DO REACT-HOOK-FORM
   const {
     register,
     handleSubmit,
     watch,
     setValue,
-    formState: { errors }
+    formState: { errors },
   } = useForm({
     defaultValues: {
       name: "",
       profissao: "",
       email: "",
       password: "",
-      confirmPassword: ""
-    }
+      confirmPassword: "",
+    },
   });
 
   const navigate = useNavigate();
-  
+
   // OBSERVAÇÃO DE CAMPOS ESPECÍFICOS
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
@@ -66,12 +73,23 @@ const Register = () => {
     watchedFields.password &&
     watchedFields.confirmPassword;
 
+  const watchedEmail = watch("email");
+
+  // Use useEffect para limpar o erro quando o email mudar
+  useEffect(() => {
+    if (emailCadastradoError) {
+      setEmailCadastradoError("");
+    }
+  }, [watchedEmail]);
+
   // CONTROLE DE ESTADO DO BOTÃO
   const isButtonDisabled = !areAllFieldsFilled;
 
   // MENSAGENS DE ERRO CONDICIONAIS
   const errorName = errors.name ? errors.name.message : "Mensagem de erro";
-  const errorProfissao = errors.profissao ? errors.profissao.message : "Mensagem de erro";
+  const errorProfissao = errors.profissao
+    ? errors.profissao.message
+    : "Mensagem de erro";
 
   // HANDLER PARA MUDANÇA DE PROFISSÃO
   const handleProfissaoChange = (event) => {
@@ -79,28 +97,45 @@ const Register = () => {
   };
 
   // SUBMISSÃO DO FORMULÁRIO
-  const onSubmit = (data) => {
-    // VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA
-    if (data.password !== data.confirmPassword) {
-      setConfirmPasswordError("As senhas não coincidem!");
-      return;
-    }
 
-    // PROCESSAMENTO DOS DADOS
-    setConfirmPasswordError("");
-    console.log("Dados enviados: ", data);
-    setUserName(data.name);
-    navigate("/home");
-  };
+const onSubmit = (data) => {
+  // VALIDAÇÃO DE CONFIRMAÇÃO DE SENHA
+  if (data.password !== data.confirmPassword) {
+    setConfirmPasswordError("As senhas não coincidem!");
+    return;
+  }
+  
+  // VALIDAÇÃO DE EMAIL JÁ CADASTRADO
+  if (userService.checkEmailExists(data.email)) {
+    setEmailCadastradoError("E-mail já cadastrado!");
+    return;
+  }
+
+  // PROCESSAMENTO DOS DADOS (cadastro bem-sucedido)
+  setConfirmPasswordError("");
+  setEmailCadastradoError("");
+  console.log("Dados enviados: ", data);
+  
+  // SALVAR O NOVO USUARIO NO JSON
+  userService.addUser({
+    name: data.name,
+    email: data.email,
+    password: data.password,
+    profissao: data.profissao
+  });
+  
+  setUserName(data.name);
+  navigate("/home");
+};
 
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
         paddingTop: "25px",
       }}
     >
@@ -116,25 +151,52 @@ const Register = () => {
         }}
       >
         {theme.palette.mode === "dark" ? (
-          <LightModeOutlined /> // ☀️ Ícone de sol no modo escuro
+          <LightModeOutlined /> //  Ícone de sol no modo escuro
         ) : (
-          <DarkModeOutlined /> // 🌙 Ícone de lua no modo claro
+          <DarkModeOutlined /> //  Ícone de lua no modo claro
         )}
       </IconButton>
+      {/* <Box
+      sx={{
+          display: "block",
+          justifyContent: "center",
+          width: "100%",
+          maxWidth: 400,
+          mx: "auto",
+          mt: 2,
+          mb: 2,
+        }}
+      >
+        <Collapse in={alertVisible}>
+          <Alert
+          severity={"error"}
+          onClose={() => setAlertVisible(false)}
+          sx={{
+              backgroundColor: colors.redAccent[100],
+              color: colors.grey[900],
+              '& .MuiAlert-icon': {
+                color: colors.grey[900],
+              },
+            }}
+          >
+            E-mail já cadastrado!
+          </Alert>
+        </Collapse>
+      </Box> */}
 
       {/* CONTAINER PRINCIPAL DO FORMULÁRIO */}
       <Box
         sx={{
-          mx: "auto",
-          my: "auto",
-          px: 4,
-          py: 5,
+          mx: "auto", // centraliza a box horizontalmente
+          my: "auto", // centraliza a box verticalmente
+          px: 4, // padding na horizontal de 4
+          py: 7, // padding na vertical de 7
+          backgroundColor: colors.primary[500], // deixa o background da box com a mesma cor da página
+          borderRadius: 2, // arredonda a borda da box
+          borderColor: "#878787", // borda cinza
+          borderWidth: 1, // coloca a grossura da borda
+          boxShadow: 3, // adiciona uma sombra na box
           marginBottom: "25px",
-          backgroundColor: colors.primary[500],
-          borderRadius: 2,
-          borderColor: "#878787",
-          borderWidth: 1,
-          boxShadow: 3,
         }}
       >
         {/* TÍTULO DA PÁGINA */}
@@ -151,8 +213,11 @@ const Register = () => {
         </Typography>
 
         {/* FORMULÁRIO DE REGISTRO */}
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+        >
           {/* CAMPO NOME COMPLETO */}
           <Box>
             <TextField
@@ -161,25 +226,25 @@ const Register = () => {
               size="small"
               sx={{
                 width: "100%",
-                '& .MuiOutlinedInput-root': {
+                "& .MuiOutlinedInput-root": {
                   backgroundColor: colors.primary[500],
-                  '& fieldset': {
+                  "& fieldset": {
                     borderColor: colors.grey[300],
                   },
-                  '&:hover fieldset': {
+                  "&:hover fieldset": {
                     borderColor: colors.blueAccent[500],
                   },
-                  '&.Mui-focused fieldset': {
+                  "&.Mui-focused fieldset": {
                     borderColor: colors.blueAccent[500],
                   },
                 },
-                '& .MuiInputLabel-root': {
+                "& .MuiInputLabel-root": {
                   color: colors.grey[300],
-                  '&.Mui-focused': {
+                  "&.Mui-focused": {
                     color: colors.blueAccent[500],
                   },
                 },
-                '& .MuiOutlinedInput-input': {
+                "& .MuiOutlinedInput-input": {
                   color: colors.grey[100],
                 },
               }}
@@ -208,7 +273,7 @@ const Register = () => {
                 id="profissao-label"
                 sx={{
                   color: colors.grey[300],
-                  '&.Mui-focused': {
+                  "&.Mui-focused": {
                     color: colors.blueAccent[500],
                   },
                 }}
@@ -269,8 +334,12 @@ const Register = () => {
           </Box>
 
           {/* COMPONENTE DE EMAIL REUTILIZÁVEL */}
-          <EmailInput register={register} errors={errors} />
-          
+          <EmailInput
+            register={register}
+            errors={errors}
+            customError={emailCadastradoError}
+          />
+
           {/* COMPONENTE DE SENHA REUTILIZÁVEL */}
           <PasswordInput register={register} errors={errors} />
 
@@ -280,13 +349,15 @@ const Register = () => {
               label="Confirme a Senha"
               variant="outlined"
               size="small"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               slotProps={{
                 input: {
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                        aria-label={showPassword ? 'Esconder senha' : 'Mostrar senha'}
+                        aria-label={
+                          showPassword ? "Esconder senha" : "Mostrar senha"
+                        }
                         onClick={() => setShowPassword(!showPassword)}
                         edge="end"
                         sx={{ color: colors.grey[300] }}
@@ -295,29 +366,29 @@ const Register = () => {
                       </IconButton>
                     </InputAdornment>
                   ),
-                }
+                },
               }}
               sx={{
                 width: "100%",
-                '& .MuiOutlinedInput-root': {
+                "& .MuiOutlinedInput-root": {
                   backgroundColor: colors.primary[500],
-                  '& fieldset': {
+                  "& fieldset": {
                     borderColor: colors.grey[300],
                   },
-                  '&:hover fieldset': {
+                  "&:hover fieldset": {
                     borderColor: colors.blueAccent[500],
                   },
-                  '&.Mui-focused fieldset': {
+                  "&.Mui-focused fieldset": {
                     borderColor: colors.blueAccent[500],
                   },
                 },
-                '& .MuiInputLabel-root': {
+                "& .MuiInputLabel-root": {
                   color: colors.grey[300],
-                  '&.Mui-focused': {
+                  "&.Mui-focused": {
                     color: colors.blueAccent[500],
                   },
                 },
-                '& .MuiOutlinedInput-input': {
+                "& .MuiOutlinedInput-input": {
                   color: colors.grey[100],
                 },
               }}
@@ -331,7 +402,9 @@ const Register = () => {
               sx={{
                 minHeight: "10px",
                 fontWeight: "bold",
-                color: confirmPasswordError ? colors.redAccent[100] : "transparent",
+                color: confirmPasswordError
+                  ? colors.redAccent[100]
+                  : "transparent",
                 visibility: confirmPasswordError ? "visible" : "hidden",
                 marginTop: "1px",
                 display: "block",
@@ -346,13 +419,15 @@ const Register = () => {
             Registrar
           </ButtonUsage>
 
-          {/* LINK PARA LOGIN (USUÁRIOS EXISTENTES) */}
-          <Box sx={{
-            display: "flex",
-            justifyContent: "center",
-            mt: 2,
-            gap: 1
-          }}>
+          {/* LINK PARA LOGIN */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 2,
+              gap: 1,
+            }}
+          >
             <Typography variant="body2" sx={{ color: colors.grey[100] }}>
               Já possui uma conta?
             </Typography>
@@ -374,7 +449,7 @@ const Register = () => {
           </Box>
         </Box>
       </Box>
-      
+
       {/* FOOTER DA PÁGINA */}
       <Footer />
     </Box>
