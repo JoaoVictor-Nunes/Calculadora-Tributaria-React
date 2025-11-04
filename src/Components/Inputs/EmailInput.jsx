@@ -7,7 +7,7 @@ const EmailInput = ({ register, errors, customError }) => {
   const colors = tokens(theme.palette.mode);
 
   // Mostra mensagem de erro específica ou mensagem padrão invisível para manter layout
-  const errorMessage = customError || (errors.email ? errors.email.message : "Mensagem de erro");
+  const errorMessage = customError || (errors.email ? errors.email.message : "");
   const hasError = !!customError || !!errors.email;
 
   return (

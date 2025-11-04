@@ -19,7 +19,7 @@ const PasswordInput = ({ register, errors }) => {
   // Mostra mensagem de erro específica ou mensagem padrão invisível para manter layout
   const errorMessage = errors.password
     ? errors.password.message
-    : "Mensagem de erro";
+    : "";
 
   return (
     <div>
@@ -41,7 +41,7 @@ const PasswordInput = ({ register, errors }) => {
                   aria-label={show ? "Ocultar senha" : "Mostrar senha"} // Acessibilidade
                   sx={{ color: colors.grey[300] }}
                 >
-                  {show ? <VisibilityOff /> : <Visibility />}{" "}
+                  {show ? <Visibility /> : <VisibilityOff /> }
                   {/* Ícone dinâmico */}
                 </IconButton>
               </InputAdornment>

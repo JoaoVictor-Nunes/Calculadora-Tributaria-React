@@ -39,6 +39,7 @@ const Login = () => {
     },
   });
 
+  // estados locais da mensagem de erro
   const [loginError, setLoginError] = useState("");
 
   const navigate = useNavigate();

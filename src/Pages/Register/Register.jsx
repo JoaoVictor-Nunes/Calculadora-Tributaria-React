@@ -86,10 +86,10 @@ const Register = () => {
   const isButtonDisabled = !areAllFieldsFilled;
 
   // MENSAGENS DE ERRO CONDICIONAIS
-  const errorName = errors.name ? errors.name.message : "Mensagem de erro";
+  const errorName = errors.name ? errors.name.message : "";
   const errorProfissao = errors.profissao
     ? errors.profissao.message
-    : "Mensagem de erro";
+    : "";
 
   // HANDLER PARA MUDANÇA DE PROFISSÃO
   const handleProfissaoChange = (event) => {
@@ -156,33 +156,6 @@ const onSubmit = (data) => {
           <DarkModeOutlined /> //  Ícone de lua no modo claro
         )}
       </IconButton>
-      {/* <Box
-      sx={{
-          display: "block",
-          justifyContent: "center",
-          width: "100%",
-          maxWidth: 400,
-          mx: "auto",
-          mt: 2,
-          mb: 2,
-        }}
-      >
-        <Collapse in={alertVisible}>
-          <Alert
-          severity={"error"}
-          onClose={() => setAlertVisible(false)}
-          sx={{
-              backgroundColor: colors.redAccent[100],
-              color: colors.grey[900],
-              '& .MuiAlert-icon': {
-                color: colors.grey[900],
-              },
-            }}
-          >
-            E-mail já cadastrado!
-          </Alert>
-        </Collapse>
-      </Box> */}
 
       {/* CONTAINER PRINCIPAL DO FORMULÁRIO */}
       <Box

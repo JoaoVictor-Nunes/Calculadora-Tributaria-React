@@ -30,7 +30,7 @@ const Esqueci = () => {
 
   // Handler de submit do formulário
   const onSubmit = (data) => {
-    console.log("Email para recuperação:", data);
+    console.log("Link enviado para:", data);
     setAlertVisible(true);
     // Auto-esconde o alerta após 2 segundos
     setTimeout(() => {

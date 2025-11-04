@@ -1,30 +1,38 @@
-import usersData from '../dados/users.json';
-
 export const userService = {
-  // Verifica se email já está cadastrado
   checkEmailExists: (email) => {
-    return usersData.users.some(user => user.email === email);
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    return users.some(user => user.email === email);
   },
 
-  // Valida login
+  addUser: (userData) => {
+    try {
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const newUser = {
+        id: Date.now().toString(),
+        ...userData,
+        createdAt: new Date().toISOString()
+      };
+      
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      console.log('Usuário salvo no localStorage:', newUser);
+      return newUser;
+    } catch (error) {
+      console.error('Erro ao salvar usuário:', error);
+      throw error;
+    }
+  },
+
   validateLogin: (email, password) => {
-    return usersData.users.find(user => 
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    return users.find(user => 
       user.email === email && user.password === password
     );
   },
 
-  // Adiciona novo usuário 
-  addUser: (userData) => {
-    const newUser = {
-      id: usersData.users.length + 1,
-      ...userData
-    };
-    usersData.users.push(newUser);
-    return newUser;
-  },
-
-  // Busca usuário por email
   getUserByEmail: (email) => {
-    return usersData.users.find(user => user.email === email);
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    return users.find(user => user.email === email);
   }
 };

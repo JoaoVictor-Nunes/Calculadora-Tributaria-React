@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useMemo, createContext } from "react";
 import { createTheme } from "@mui/material/styles";
 import  useThemeStore  from "./store/useThemeStore";
 export const tokens = (mode) => ({
@@ -160,7 +160,7 @@ export const themeSettings = (mode) => {
               light: colors.grey[100],
             },
             background: {
-              default: "#F0F8EA",
+              default: colors.primary[500],
             },
           }),
     },
@@ -196,7 +196,7 @@ export const themeSettings = (mode) => {
 };
 
 // CONTEXTO
-export const ColorModeContext = React.createContext({
+export const ColorModeContext = createContext({
   toggleColorMode: () => {},
   setColorMode: (m) => {},
 });
@@ -207,9 +207,9 @@ export const useMode = () => {
   const toggleMode = useThemeStore((s) => s.toggleMode);
   const setMode = useThemeStore((s) => s.setMode);
 
-  const theme = React.useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
-  const colorMode = React.useMemo(
+  const colorMode = useMemo(
     () => ({
       toggleColorMode: toggleMode,
       setColorMode: setMode,

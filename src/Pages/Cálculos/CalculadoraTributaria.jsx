@@ -227,7 +227,7 @@ const CalculadoraTributaria = () => {
   // Função para simular envio de e-mail com resultados de PF e PJ
   const enviarEmail = (pf, pj) => {
     const emailUsuario = watch("emailUsuario");
-    console.log("Enviando e-mail de:", emailUsuario);
+    console.log("Enviando e-mail para", emailUsuario);
     console.log("Resultados PF:", pf);
     console.log("Resultados PJ:", pj);
 
@@ -276,6 +276,7 @@ const CalculadoraTributaria = () => {
       >
         <Box
           component="form"
+          onSubmit={handleSubmit(calcular)} 
           sx={{
             display: "flex",
             flexDirection: "column",
