@@ -76,10 +76,8 @@ const Register = () => {
 
   // Use useEffect para limpar o erro quando o email mudar
   useEffect(() => {
-    if (emailCadastradoError) {
-      setEmailCadastradoError("");
-    }
-  }, [watchedEmail]);
+      setEmailCadastradoError("");  
+  }, []);
 
   // CONTROLE DE ESTADO DO BOTÃO
   const isButtonDisabled = !areAllFieldsFilled;
@@ -104,36 +102,34 @@ const Register = () => {
       return;
     }
 
-    // VERIFICAÇÃO DE EMAIL JÁ CADASTRADO
-    const emailExists = userService.checkEmailExists(data.email);
-
-    if (emailExists) {
-      setEmailCadastradoError("E-mail já cadastrado!");
-      return;
-    }
-
     // PROCESSAMENTO DOS DADOS (cadastro bem-sucedido)
     setConfirmPasswordError("");
     setEmailCadastradoError("");
 
- try {
-    const newUser = userService.addUser({
-      name: data.name,
-      profissao: data.profissao,
-      email: data.email,
-      password: data.password 
-    });
+    try {
+      const newUser = await userService.addUser({
+        name: data.name,
+        profissao: data.profissao,
+        email: data.email,
+        password: data.password 
+      });
 
-    console.log("Usuário cadastrado com sucesso:", newUser);
-    
-    setUserName(data.name);
-    navigate("/home");
-    
-  } catch (error) {
-    console.error("Erro ao cadastrar usuário:", error);
-    setEmailCadastradoError("Erro ao cadastrar usuário. Tente novamente.");
-  }
-};
+      console.log("Usuário cadastrado com sucesso:", newUser);
+      
+      setUserName(data.name);
+      navigate("/home");
+      
+    } catch (error) {
+      console.error("Erro ao cadastrar usuário:", error);
+      
+      // Verificar se o erro é de email já cadastrado
+      if (error.message && error.message.includes('já cadastrado')) {
+        setEmailCadastradoError("E-mail já cadastrado!");
+      } else {
+        setEmailCadastradoError("Erro ao cadastrar usuário. Tente novamente.");
+      }
+    }
+  };
 
   return (
     <Box

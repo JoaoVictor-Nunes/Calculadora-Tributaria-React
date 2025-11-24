@@ -50,24 +50,30 @@ const Login = () => {
   const isButtonDisabled = !areAllFieldsFilled;
 
   // Handler de submit do formulário
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // Limpa erros anteriores
     setLoginError("");
 
-    // VALIDA LOGIN COM O JSON
-    const user = userService.validateLogin(data.email, data.password);
+    try {
+      // VALIDA LOGIN COM O BACKEND
+      const user = await userService.validateLogin(data.email, data.password);
 
-    if (user) {
-      // Login bem-sucedido
-      console.log("Login bem-sucedido:", user);
+      if (user) {
+        // Login bem-sucedido
+        console.log("Login bem-sucedido:", user);
 
-      setUserName(user.name);
+        setUserName(user.username || user.name);
 
-      navigate("/home");
-    } else {
+        navigate("/home");
+      } else {
+        // Login falhou
+        setLoginError("Email ou senha incorretos");
+        console.log("Login falhou - email ou senha inválidos");
+      }
+    } catch (error) {
       // Login falhou
-      setLoginError("Email ou senha incorretos");
-      console.log("Login falhou - email ou senha inválidos");
+      setLoginError(error.message || "Email ou senha incorretos");
+      console.error("Erro no login:", error);
     }
   };
 
