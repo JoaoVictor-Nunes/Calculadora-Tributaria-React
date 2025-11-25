@@ -7,6 +7,7 @@ import ButtonUsage from "../../Components/ButtonUsage";
 import EmailInput from "../../Components/Inputs/EmailInput";
 import Footer from "../../Components/Footer";
 import { tokens, ColorModeContext } from "../../Tema";
+import { userService } from "../../services/userService";
 
 const Esqueci = () => {
   const theme = useTheme();
@@ -16,7 +17,7 @@ const Esqueci = () => {
   // Configuração do formulário com react-hook-form
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
   
-  // Estado para controlar visibilidade do alerta de sucesso
+  const [emailError, setEmailError] = useState("");
   const [alertVisible, setAlertVisible] = useState(false);
 
   const navigate = useNavigate();
@@ -25,22 +26,37 @@ const Esqueci = () => {
   const watchedFields = watch();
 
   // Verifica se o campo obrigatório está preenchido
-  const areAllFieldsFilled = watchedFields.email
+  const areAllFieldsFilled = watchedFields.email;
   const isButtonDisabled = !areAllFieldsFilled;
 
-  // Handler de submit do formulário
-  const onSubmit = (data) => {
-    console.log("Link enviado para:", data);
-    setAlertVisible(true);
-    // Auto-esconde o alerta após 2 segundos
-    setTimeout(() => {
-      setAlertVisible(false);
-    }, 2000);
+  const onSubmit = async (data) => {
+-
+    setEmailError("");
+
+    try {
+      
+      const user = await userService.sendPasswordResetLink(data.email);
+
+      // CORREÇÃO: verificar user em vez de email
+      if (user) {
+        console.log("Enviado email de redefinição de senha para: ", data.email);
+        setAlertVisible(true);
+        // Auto-esconde o alerta após 2 segundos
+        setTimeout(() => {
+          setAlertVisible(false);
+        }, 2000);
+      } else {
+        setEmailError("Email não existe");
+        console.log("Email não encontrado no Banco de Dados");
+      }
+    } catch (error) {
+      setEmailError(error.message || "Email não existe");
+      console.error("Erro ao enviar link de recuperação:", error);
+    }
   };
 
   return (
     <Box
-      // ESTILIZAÇÃO DA PÁGINA
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -97,7 +113,12 @@ const Esqueci = () => {
 
         {/* FORMULÁRIO DE RECUPERAÇÃO */}
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <EmailInput register={register} errors={errors} />
+          {/* CORREÇÃO: Passar emailError para o EmailInput */}
+          <EmailInput 
+            register={register} 
+            errors={errors} 
+            customError={emailError} 
+          />
 
           <ButtonUsage type="submit" disabled={isButtonDisabled} sx={{ mt: 3 }}>
             Enviar link
@@ -150,9 +171,7 @@ const Esqueci = () => {
         </Collapse>
       </Box>
 
-
       <Footer />
-
     </Box>
   );
 };

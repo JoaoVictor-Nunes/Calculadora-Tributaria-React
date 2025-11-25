@@ -16,6 +16,7 @@ const Contatos = () => {
         register,
         handleSubmit,
         watch,
+        reset, // Adiciona reset para limpar o formulário após o envio
         formState: { errors },
     } = useForm();
 
@@ -27,20 +28,22 @@ const Contatos = () => {
         watchedFields.email &&
         watchedFields.name &&
         watchedFields.message &&
-        watchedFields.phone;
-
+        watchedFields.subject;
 
     // Desabilita o botão se algum campo estiver vazio
     const isButtonDisabled = !areAllFIeldsFilled;
 
     // Extrai mensagens de erro para cada campo ou string vazia se não houver erro
     const errorName = errors.name ? errors.name.message : "";
-    const errorPhone = errors.phone ? errors.phone.message : "";
+    const errorSubject = errors.subject ? errors.subject.message : "";
     const errorMessage = errors.message ? errors.message.message : "";
 
     // ESTADOS DA APLICAÇÃO
-    const [alertVisible, setAlertVisible] = useState(false); // Controla visibilidade do alerta de sucesso
-    const [mapLoaded, setMapLoaded] = useState(false); // Controla carregamento do mapa
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState(""); // Estado para mensagem do alerta
+    const [alertSeverity, setAlertSeverity] = useState("success"); // Estado para tipo de alerta
+    const [isLoading, setIsLoading] = useState(false); // Estado para loading durante o envio
+    const [mapLoaded, setMapLoaded] = useState(false);
 
     // Define um timeout para mostrar o skeleton loading por 3 segundos
     useEffect(() => {
@@ -48,24 +51,54 @@ const Contatos = () => {
             setMapLoaded(true);
         }, 1000);
 
-        return () => clearTimeout(timer); // Cleanup do timeout
+        return () => clearTimeout(timer);
     }, []);
 
     // HANDLER DE CARREGAMENTO DO MAPA
-    // Chamado quando o iframe do mapa termina de carregar
     const handleMapLoaded = () => {
         setMapLoaded(true);
     }
 
-    // SUBMISSÃO DO FORMULÁRIO
-    // Processa os dados do formulário e mostra alerta de sucesso
-    const onSubmit = (data) => {
-        console.log("Dados enviados: ", data);
-        setAlertVisible(true);
-        // Auto-esconde o alerta após 2 segundos
-        setTimeout(() => {
-            setAlertVisible(false);
-        }, 2000);
+    // SUBMISSÃO DO FORMULÁRIO - MODIFICADA
+    const onSubmit = async (data) => {
+        setIsLoading(true); // Inicia o loading
+        
+        try {
+            const response = await fetch("http://localhost:3000/api/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Sucesso
+                setAlertMessage("Mensagem enviada com sucesso! Entraremos em contato em breve.");
+                setAlertSeverity("success");
+                setAlertVisible(true);
+                reset(); // Limpa o formulário após envio bem-sucedido
+            } else {
+                // Erro do servidor
+                setAlertMessage(result.error || "Erro ao enviar mensagem. Tente novamente.");
+                setAlertSeverity("error");
+                setAlertVisible(true);
+            }
+        } catch (error) {
+            // Erro de rede
+            console.error("Erro ao enviar formulário:", error);
+            setAlertMessage("Erro de conexão. Verifique sua internet e tente novamente.");
+            setAlertSeverity("error");
+            setAlertVisible(true);
+        } finally {
+            setIsLoading(false); // Finaliza o loading
+            // Auto-esconde o alerta após 5 segundos
+            setTimeout(() => {
+                setAlertVisible(false);
+            }, 5000);
+        }
     }
 
     return (
@@ -100,7 +133,7 @@ const Contatos = () => {
                     boxShadow: 3,
                     width: { xs: '92vw', sm: '90vw', md: '95vw', lg: 1200 },
                     display: "flex",
-                    flexDirection: { xs: "column", md: "row" }, // Responsivo: coluna em mobile, linha em desktop
+                    flexDirection: { xs: "column", md: "row" },
                     gap: 4,
                     alignItems: "flex-start",
                     justifyContent: "center",
@@ -114,7 +147,7 @@ const Contatos = () => {
                         display: "flex",
                         flexDirection: "column",
                         gap: 2,
-                        width: { xs: "100%", md: "50%" }, // 100% em mobile, 50% em desktop
+                        width: { xs: "100%", md: "50%" },
                         flexShrink: 0
                     }}
                 >
@@ -150,14 +183,13 @@ const Contatos = () => {
                             }}
                             {...register("name", { required: "Nome é obrigatório!" })}
                         />
-                        {/*  MENSAGEM DE ERRO DO NOME */}
                         <Typography
                             variant="caption"
                             sx={{
                                 minHeight: "20px",
                                 fontWeight: "bold",
-                                color: errors.name ? colors.redAccent[100] : "transparent", // Vermelho se erro, transparente se não
-                                visibility: errors.name ? "visible" : "hidden", // Mostra apenas se houver erro
+                                color: errors.name ? colors.redAccent[100] : "transparent",
+                                visibility: errors.name ? "visible" : "hidden",
                                 marginTop: "4px",
                                 display: "block",
                                 fontSize: "12px"
@@ -167,16 +199,15 @@ const Contatos = () => {
                         </Typography>
                     </Box>
 
-                    {/*  COMPONENTE EMAIL INPUT REUTILIZÁVEL */}
+                    {/* COMPONENTE EMAIL INPUT REUTILIZÁVEL */}
                     <EmailInput register={register} errors={errors} />
 
-                    {/* INPUT TELEFONE */}
+                    {/* INPUT ASSUNTO */}
                     <Box>
                         <TextField
-                            label="Telefone"
+                            label="Subject"
                             variant="outlined"
                             size="small"
-                            placeholder="(99) 99999-9999"
                             sx={{
                                 width: "100%",
                                 '& .MuiOutlinedInput-root': {
@@ -201,32 +232,27 @@ const Contatos = () => {
                                     color: colors.grey[100],
                                 },
                             }}
-                            {...register("phone", {
-                                required: "Telefone é obrigatório!",
-                                pattern: {
-                                    value: /^\(?\d{2}\)?\s?(?:9\d{4}|\d{4})-?\d{4}$/, // Regex para validar telefone brasileiro
-                                    message: "Formato de telefone inválido!",
-                                },
+                            {...register("subject", {
+                                required: "Assunto é obrigatório!",
                             })}
                         />
-                        {/*  MENSAGEM DE ERRO DO TELEFONE */}
                         <Typography
                             variant="caption"
                             sx={{
                                 minHeight: "20px",
                                 fontWeight: "bold",
-                                color: errors.phone ? colors.redAccent[100] : "transparent",
-                                visibility: errors.phone ? "visible" : "hidden",
+                                color: errors.subject ? colors.redAccent[100] : "transparent",
+                                visibility: errors.subject ? "visible" : "hidden",
                                 marginTop: "4px",
                                 display: "block",
                                 fontSize: "12px"
                             }}
                         >
-                            {errorPhone}
+                            {errorSubject}
                         </Typography>
                     </Box>
 
-                    {/*  INPUT MENSAGEM (Textarea) */}
+                    {/* INPUT MENSAGEM (Textarea) */}
                     <Box>
                         <TextField
                             label="Mensagem"
@@ -260,7 +286,6 @@ const Contatos = () => {
                             }}
                             {...register("message", { required: "Mensagem é obrigatória!" })}
                         />
-                        {/*  MENSAGEM DE ERRO DA MENSAGEM */}
                         <Typography
                             variant="caption"
                             sx={{
@@ -277,15 +302,15 @@ const Contatos = () => {
                         </Typography>
                     </Box>
 
-                    {/*  BOTÃO DE ENVIAR REUTILIZÁVEL */}
+                    {/* BOTÃO DE ENVIAR REUTILIZÁVEL */}
                     <ButtonUsage
                         type="submit"
-                        disabled={isButtonDisabled}
+                        disabled={isButtonDisabled || isLoading} // Desabilita durante o loading
                     >
-                        Enviar
+                        {isLoading ? "Enviando..." : "Enviar"}
                     </ButtonUsage>
 
-                    {/*  INFORMAÇÕES DE CONTATO ALTERNATIVAS */}
+                    {/* INFORMAÇÕES DE CONTATO ALTERNATIVAS */}
                     <Box
                         sx={{
                             display: "flex",
@@ -296,7 +321,6 @@ const Contatos = () => {
                             gap: 5
                         }}
                     >
-                        {/*  EMAIL NAF */}
                         <Typography variant="body1" sx={{
                             color: colors.grey[100],
                             display: "flex",
@@ -308,7 +332,6 @@ const Contatos = () => {
                             naf01.dl@unichristus.edu.br
                         </Typography>
                         
-                        {/*  INSTAGRAM NAF */}
                         <Typography variant="body1" sx={{
                             color: colors.grey[100],
                             display: "flex",
@@ -322,10 +345,10 @@ const Contatos = () => {
                     </Box>
                 </Box>
 
-                {/*  MAPA DE LOCALIZAÇÃO (lado direito) */}
+                {/* MAPA DE LOCALIZAÇÃO (lado direito) */}
                 <Box
                     sx={{
-                        width: { xs: "100%", md: "50%" }, // 100% em mobile, 50% em desktop
+                        width: { xs: "100%", md: "50%" },
                         height: "100%",
                         display: "flex",
                         justifyContent: "center",
@@ -333,7 +356,6 @@ const Contatos = () => {
                     }}
                 >
                     {mapLoaded ? (
-                        // 🔗 localização no Google Maps da sede do NAF
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.344439541306!2d-38.4933941!3d-3.7349014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c7487d0c53520f%3A0xd568fa9590e225b9!2sR.%20Cel.%20Linhares%2C%20771%20-%20Meireles%2C%20Fortaleza%20-%20CE%2C%2060170-075!5e0!3m2!1spt-BR!2sbr"
                             width="100%"
@@ -346,7 +368,6 @@ const Contatos = () => {
                             onLoad={handleMapLoaded}
                         ></iframe>
                     ) : (
-                        //  SKELETON LOADING ENQUANTO MAPA CARREGA
                         <Skeleton variant="rectangular"
                             sx={{
                                 width: "100%",
@@ -357,7 +378,7 @@ const Contatos = () => {
                 </Box>
             </Box>
 
-            {/*  ALERTA DE SUCESSO (Após envio do formulário) */}
+            {/* ALERTA DINÂMICO (Sucesso ou Erro) */}
             <Box
                 sx={{
                     display: "block",
@@ -372,19 +393,25 @@ const Contatos = () => {
             >
                 <Collapse in={alertVisible}>
                     <Alert
-                        severity="success"
+                        severity={alertSeverity}
                         onClose={() => setAlertVisible(false)}
                         sx={{
-                            backgroundColor: colors.greenAccent[100],
-                            color: colors.greenAccent[900],
+                            backgroundColor: alertSeverity === "success" 
+                                ? colors.greenAccent[100] 
+                                : colors.redAccent[100],
+                            color: alertSeverity === "success" 
+                                ? colors.greenAccent[900] 
+                                : colors.redAccent[900],
                             width: "100%",
                             fontSize: '1.1rem',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center', // Centraliza horizontalmente
-                            textAlign: 'center', // Centraliza o texto
+                            justifyContent: 'center',
+                            textAlign: 'center',
                             '& .MuiAlert-icon': {
-                                color: colors.greenAccent[500],
+                                color: alertSeverity === "success" 
+                                    ? colors.greenAccent[500] 
+                                    : colors.redAccent[500],
                                 fontSize: 'inherit',
                             },
                             '& .MuiAlert-message': {
@@ -392,12 +419,12 @@ const Contatos = () => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                flex: 1, // Ocupa todo o espaço disponível
+                                flex: 1,
                                 textAlign: 'center',
                             },
                         }}
                     >
-                        Mensagem Enviada! Obrigado.
+                        {alertMessage}
                     </Alert>
                 </Collapse>
             </Box>
