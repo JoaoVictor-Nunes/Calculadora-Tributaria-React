@@ -37,7 +37,6 @@ const Esqueci = () => {
       
       const user = await userService.sendPasswordResetLink(data.email);
 
-      // CORREÇÃO: verificar user em vez de email
       if (user) {
         console.log("Enviado email de redefinição de senha para: ", data.email);
         setAlertVisible(true);
@@ -113,7 +112,7 @@ const Esqueci = () => {
 
         {/* FORMULÁRIO DE RECUPERAÇÃO */}
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {/* CORREÇÃO: Passar emailError para o EmailInput */}
+          {/* Passar emailError para o EmailInput */}
           <EmailInput 
             register={register} 
             errors={errors} 
