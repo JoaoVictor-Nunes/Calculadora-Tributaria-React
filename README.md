@@ -121,6 +121,12 @@ Suporte a tema claro e escuro com:
 1. MySQL instalado e rodando
 2. Banco de dados `auth_db` criado (ou será criado automaticamente)
 
+## Instale as dependências
+
+```bash
+npm install express mysql2 nodemailer jsonwebtoken dotenv body-parser
+```
+
 ## Configuração do Banco de Dados
 
 1. Abra o MySQL e crie o banco de dados:
