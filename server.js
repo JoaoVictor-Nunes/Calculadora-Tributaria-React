@@ -56,12 +56,13 @@ app.post("/api/contact", (req, res) => {
       </p>
     </div>
     `;
-  // template de email para o usuario
+  // email para o usuario
   const userHtml = `
     <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
       <h2>Novo formulário</h2>
       <p>Olá, ${name}</p>
       <p>Recebemos seu email. Obrigado por nos contatar!</p>
+      <h2>ATENÇÃO: NÃO RESPONDEMOS ESTE EMAIL. ELE SERVE APENAS PARA SER UM RECIBO AUTOMÁTICO.</h2>
     </div>
     `;
   const nafMailOptions = {
@@ -109,7 +110,7 @@ app.use(express.json());
 const dbConfig = {
   host: "localhost",
   user: "root",
-  password: "M1nhaSenhaMS",
+  password: process.env.db_pass,
   database: "auth_db",
 };
 
@@ -232,9 +233,30 @@ app.post("/api/send-reset-link", async (req, res) => {
 
     const user = users[0];
 
-    // Simular envio de email
-    console.log(`[RECUPERAÇÃO] Link de recuperação para: ${email}`);
-    console.log(`[RECUPERAÇÃO] Usuário: ${user.username}`);
+    const passResetHtml = `
+    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+      <h2>Recuperação de Senha</h2>
+      <p>Olá, ${user.username}</p>
+      <p>Sua senha foi solicitada para recuperação.</p>
+      <h2>ISTO É APENAS UM TESTE, NÃO DEVE SER REALMENTE RECUPERADA.</h2>
+    </div>`
+
+    const passResetOptions = {
+      from: process.env.email,
+      to: email,
+      subject: "Recuperação de Senha",
+      html: passResetHtml,
+    }
+    transporter.sendMail(passResetOptions, (error, info) => {
+      if(error) {
+        console.error("Erro ao enviar email de recuperação: ", error);
+        return res.status(500).json({ error: "Erro ao enviar email de recuperação."});
+      }
+      console.log("Email de recuperação enviado: " + info.response);
+    })
+    // // Simular envio de email
+    // console.log(`[RECUPERAÇÃO] Link de recuperação para: ${email}`);
+    // console.log(`[RECUPERAÇÃO] Usuário: ${user.username}`);
 
     res.status(200).json({
       message: "Link de recuperação enviado com sucesso!",

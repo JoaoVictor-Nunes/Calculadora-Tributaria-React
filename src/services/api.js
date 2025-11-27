@@ -1,9 +1,8 @@
 // Configuração da API base
 const API_BASE_URL = 'http://localhost:3000';
 
-/**
- * Função genérica para fazer requisições HTTP
- */
+
+ // Função genérica para fazer requisições HTTP
 async function apiRequest(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
   
@@ -36,14 +35,13 @@ async function apiRequest(endpoint, options = {}) {
   }
 }
 
-/**
- * Serviço de autenticação
- */
+
+ // Serviço de autenticação 
 export const authService = {
-  /**
-   * Registra um novo usuário
-   */
+  
+// Registra um novo usuário
 async register(username, profissao, email, password) {
+
   // Criar objeto limpo para garantir que não há propriedades circulares
   const requestBody = {
     username: username,
@@ -58,9 +56,8 @@ async register(username, profissao, email, password) {
   });
 },
 
-  /**
-   * Faz login do usuário
-   */
+
+   // Faz login do usuário
   async login(email, password) {
     const response = await apiRequest('/login', {
       method: 'POST',
@@ -75,23 +72,18 @@ async register(username, profissao, email, password) {
     return response;
   },
 
-  /**
-   * Faz logout (remove o token)
-   */
+   // Faz logout (remove o token)   
   logout() {
     localStorage.removeItem('token');
   },
 
-  /**
-   * Verifica se o usuário está autenticado
-   */
+   // Verifica se o usuário está autenticado   
   isAuthenticated() {
     return !!localStorage.getItem('token');
   },
 
-  /**
-   * Obtém o token armazenado
-   */
+  
+   // Obtém o token armazenado
   getToken() {
     return localStorage.getItem('token');
   },
